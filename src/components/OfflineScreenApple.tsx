@@ -79,7 +79,7 @@ export const OfflineScreenApple: React.FC<OfflineScreenAppleProps> = ({
           <button
             onClick={handleRetry}
             disabled={isChecking}
-            className="w-full mt-2 py-3.5 px-4 rounded-[18px] bg-[#007AFF] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-[0.97] transition-all border border-[#007AFF] disabled:opacity-60"
+            className="w-full mt-2 py-3.5 px-4 rounded-[18px] bg-[#E8590C] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-[0.97] transition-all border border-[#E8590C] disabled:opacity-60"
           >
             <RefreshCw className={`w-4 h-4 ${isChecking ? "animate-spin" : ""}`} />
             <span>

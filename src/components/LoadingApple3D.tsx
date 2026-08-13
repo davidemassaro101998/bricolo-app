@@ -30,17 +30,17 @@ export const LoadingApple3D: React.FC<LoadingApple3DProps> = React.memo(({ langu
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center text-center p-4 sm:p-6 select-none bg-[#F2F2F7] relative overflow-y-auto">
-      {/* Background Soft Blue Ambient Depth */}
-      <div className="absolute w-80 h-80 bg-[#007AFF]/10 rounded-full blur-3xl -top-16 -left-16 pointer-events-none" />
+      {/* Background Soft Orange Ambient Depth */}
+      <div className="absolute w-80 h-80 bg-[#E8590C]/10 rounded-full blur-3xl -top-16 -left-16 pointer-events-none" />
       <div className="absolute w-80 h-80 bg-[#000000]/5 rounded-full blur-3xl -bottom-16 -right-16 pointer-events-none" />
 
       {/* Cinematic 3D Tool Assembly Stage (fluidly scaled to viewport height so it never gets clipped in short/narrow previews) */}
       <div className="relative mb-[clamp(0.75rem,4vh,2rem)] w-[clamp(6rem,26vh,11rem)] h-[clamp(6rem,26vh,11rem)] shrink-0 flex items-center justify-center">
-        {/* Outer Orbiting Apple Blue Ring */}
+        {/* Outer Orbiting Brand Ring */}
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 rounded-full border-2 border-dashed border-[#007AFF]/40"
+          className="absolute inset-0 rounded-full border-2 border-dashed border-[#E8590C]/40"
         />
 
         {/* Counter-rotating Ring */}
@@ -58,16 +58,16 @@ export const LoadingApple3D: React.FC<LoadingApple3DProps> = React.memo(({ langu
               scale: [0.98, 1.02, 0.98],
             }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="w-[72%] h-[72%] rounded-2xl bg-white border border-[#007AFF] shadow-xl flex items-center justify-center relative overflow-hidden"
+            className="w-[72%] h-[72%] rounded-2xl bg-white border border-[#E8590C] shadow-xl flex items-center justify-center relative overflow-hidden"
           >
             {/* Shimmer light pass */}
             <motion.div
               animate={{ x: ["-100%", "200%"] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", repeatDelay: 1 }}
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#007AFF]/10 to-transparent -skew-x-12"
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-[#E8590C]/10 to-transparent -skew-x-12"
             />
 
-            <Wrench className="w-[45%] h-[45%] text-[#007AFF]" />
+            <Wrench className="w-[45%] h-[45%] text-[#E8590C]" />
           </motion.div>
 
           {/* Orbiting Sparkles */}
@@ -77,9 +77,9 @@ export const LoadingApple3D: React.FC<LoadingApple3DProps> = React.memo(({ langu
               scale: [0.8, 1.2, 0.8],
             }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-1 right-1 text-[#007AFF]"
+            className="absolute top-1 right-1 text-[#E8590C]"
           >
-            <Zap className="w-[clamp(0.9rem,3.5vh,1.5rem)] h-[clamp(0.9rem,3.5vh,1.5rem)] fill-[#007AFF]" />
+            <Zap className="w-[clamp(0.9rem,3.5vh,1.5rem)] h-[clamp(0.9rem,3.5vh,1.5rem)] fill-[#E8590C]" />
           </motion.div>
 
           <motion.div
@@ -120,7 +120,7 @@ export const LoadingApple3D: React.FC<LoadingApple3DProps> = React.memo(({ langu
               key={idx}
               className={`p-3 rounded-[16px] border text-xs font-semibold flex items-center gap-3 transition-all duration-300 ${
                 isCurrent
-                  ? "bg-white border-[#007AFF] text-[#000000] shadow-[0_4px_12px_rgba(0,0,0,0.06)] font-extrabold"
+                  ? "bg-white border-[#E8590C] text-[#000000] shadow-[0_4px_12px_rgba(0,0,0,0.06)] font-extrabold"
                   : isDone
                   ? "bg-white border-[#E5E5EA] text-[#000000] shadow-2xs"
                   : "bg-white/60 border-transparent text-[#8E8E93]"
@@ -131,7 +131,7 @@ export const LoadingApple3D: React.FC<LoadingApple3DProps> = React.memo(({ langu
                   isDone
                     ? "bg-[#34C759] text-white font-black"
                     : isCurrent
-                    ? "bg-[#007AFF] text-white font-extrabold"
+                    ? "bg-[#E8590C] text-white font-extrabold"
                     : "bg-[#E5E5EA] text-[#8E8E93]"
                 }`}
               >

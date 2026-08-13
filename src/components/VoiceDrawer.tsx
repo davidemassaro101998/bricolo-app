@@ -157,8 +157,8 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
             <div className="w-12 h-1.5 rounded-full bg-[#E5E5EA] shrink-0 -mt-1" />
 
             <div className="w-full flex items-center justify-between">
-              <div className="flex items-center gap-2 text-[#007AFF]">
-                <Sparkles className="w-4 h-4 fill-[#007AFF]" />
+              <div className="flex items-center gap-2 text-[#E8590C]">
+                <Sparkles className="w-4 h-4 fill-[#E8590C]" />
                 <span className="text-xs font-bold uppercase tracking-wider">
                   {language === "it" ? "Assistente Vocale AI" : "AI Voice Assistant"}
                 </span>
@@ -179,8 +179,8 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
                 onClick={toggleMic}
                 className={`relative w-20 h-20 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-lg active:scale-95 ${
                   isListening
-                    ? "bg-[#007AFF] text-white shadow-[0_0_28px_rgba(0,122,255,0.5)]"
-                    : "bg-[#F2F2F7] text-[#007AFF] border border-[#E5E5EA]"
+                    ? "bg-[#E8590C] text-white shadow-[0_0_28px_rgba(232,89,12,0.5)]"
+                    : "bg-[#F2F2F7] text-[#E8590C] border border-[#E5E5EA]"
                 }`}
               >
                 {/* Ripple Effect ring when listening */}
@@ -188,7 +188,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
                   <motion.span
                     animate={{ scale: [1, 1.35, 1], opacity: [0.6, 0, 0.6] }}
                     transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute inset-0 rounded-full border-2 border-[#007AFF]"
+                    className="absolute inset-0 rounded-full border-2 border-[#E8590C]"
                   />
                 )}
                 {isListening ? (
@@ -198,7 +198,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
                 )}
               </button>
 
-              {/* Dynamic Waveform Bars in Apple Blue #007AFF.
+              {/* Dynamic Waveform Bars in Bricolo Orange #E8590C.
                   Fixed-height bars animated via scaleY (compositor-only
                   transform) instead of animating `height` directly — the
                   latter forces a layout+paint on every frame across all 7
@@ -223,7 +223,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
                         : { duration: 0.2 }
                     }
                     className={`w-1.5 h-[30px] rounded-full gpu-layer ${
-                      isListening ? "bg-[#007AFF]" : "bg-[#E5E5EA]"
+                      isListening ? "bg-[#E8590C]" : "bg-[#E5E5EA]"
                     }`}
                   />
                 ))}
@@ -263,7 +263,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
                       ? "Es. Trapano avvitatore affidabile per uso occasionale sotto i 50€..."
                       : "E.g. Reliable cordless drill for occasional use under 50€..."
                   }
-                  className="w-full p-3.5 rounded-[18px] bg-[#F2F2F7] text-[#000000] placeholder-[#8E8E93] text-base sm:text-lg font-bold leading-snug border border-[#E5E5EA] focus:outline-none focus:border-[#007AFF] transition-colors resize-none"
+                  className="w-full p-3.5 rounded-[18px] bg-[#F2F2F7] text-[#000000] placeholder-[#8E8E93] text-base sm:text-lg font-bold leading-snug border border-[#E5E5EA] focus:outline-none focus:border-[#E8590C] transition-colors resize-none"
                 />
                 {transcript && (
                   <button
@@ -283,7 +283,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
               type="button"
               disabled={!transcript.trim()}
               onClick={handleSubmit}
-              className="w-full py-4 px-6 rounded-[20px] bg-[#007AFF] hover:bg-[#0062CC] text-white font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2.5 shadow-[0_8px_20px_rgba(0,122,255,0.3)] active:scale-[0.98] transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed border border-[#007AFF] shrink-0 mt-1"
+              className="w-full py-4 px-6 rounded-[20px] bg-[#E8590C] hover:bg-[#C24A08] text-white font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2.5 shadow-[0_8px_20px_rgba(232,89,12,0.3)] active:scale-[0.98] transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed border border-[#E8590C] shrink-0 mt-1"
             >
               <Send className="w-4 h-4 fill-current stroke-[2]" />
               <span>
