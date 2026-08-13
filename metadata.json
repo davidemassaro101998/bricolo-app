@@ -1,0 +1,6 @@
+{
+  "name": "Bricolo AI",
+  "description": "Trova i 3 prodotti giusti per casa, giardino e fai-da-te su Amazon con Intelligenza Artificiale",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

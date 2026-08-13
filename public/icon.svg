@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient (arancione bruciato) -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8590C" />
+      <stop offset="100%" stop-color="#C24A08" />
+    </linearGradient>
+  </defs>
+
+  <!-- iOS Style Rounded App Icon Canvas -->
+  <rect x="0" y="0" width="512" height="512" rx="115" fill="url(#bgGrad)" />
+
+  <!-- Chiave inglese stilizzata -->
+  <g transform="translate(256 256) rotate(45)" stroke="#FFFFFF" stroke-linecap="round">
+    <rect x="-26" y="-140" width="52" height="280" rx="26" fill="#FFFFFF" />
+    <circle cx="0" cy="-140" r="52" fill="none" stroke-width="30" />
+    <circle cx="0" cy="140" r="40" fill="none" stroke-width="30" />
+  </g>
+</svg>
