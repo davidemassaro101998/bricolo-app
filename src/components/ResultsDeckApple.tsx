@@ -307,7 +307,7 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
                     rel="noopener noreferrer"
                     onClick={() => {
                       try {
-                        localStorage.setItem("kado_saved_session", JSON.stringify({
+                        localStorage.setItem("bricolo_saved_session", JSON.stringify({
                           screen: "results",
                           quizState,
                           gifts,
@@ -334,7 +334,7 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
                     rel="noopener noreferrer"
                     onClick={() => {
                       try {
-                        localStorage.setItem("kado_saved_session", JSON.stringify({
+                        localStorage.setItem("bricolo_saved_session", JSON.stringify({
                           screen: "results",
                           quizState,
                           gifts,

@@ -13,7 +13,7 @@
 // salvato una sola volta — un utente arrivato da TikTok resta
 // "tiktok" anche se poi riapre l'app direttamente dalla Home.
 
-const STORAGE_KEY = "kado_channel";
+const STORAGE_KEY = "bricolo_channel";
 const KNOWN_CHANNELS = ["tiktok", "instagram", "facebook", "whatsapp", "direct"];
 
 function detectChannel(): string {

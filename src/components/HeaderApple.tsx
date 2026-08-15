@@ -3,7 +3,7 @@ import { ToolBadge3D } from "./ToolBadge3D";
 import { CountryConfig } from "../types";
 import { COUNTRIES } from "../data/countries";
 import { Globe, Check, X, Languages, Settings } from "lucide-react";
-import { Language, TRANSLATIONS } from "../data/translations";
+import { Language, TRANSLATIONS, LANGUAGE_NAMES } from "../data/translations";
 import { FlagIcon } from "./FlagIcon";
 
 interface HeaderAppleProps {
@@ -105,31 +105,21 @@ export const HeaderApple: React.FC<HeaderAppleProps> = React.memo(({
                   {t.language}
                 </span>
                 <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => onSelectLanguage("en")}
-                    className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all ${
-                      language === "en"
-                        ? "bg-[#E8590C] text-white border-[#E8590C] shadow-xs"
-                        : "bg-white text-[#000000] border-[#E5E5EA] hover:bg-[#E5E5EA]"
-                    }`}
-                  >
-                    <FlagIcon code="GB" className="w-4 h-3" />
-                    <span>English</span>
-                    {language === "en" && <Check className="w-3.5 h-3.5 text-white ml-auto" />}
-                  </button>
-
-                  <button
-                    onClick={() => onSelectLanguage("it")}
-                    className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all ${
-                      language === "it"
-                        ? "bg-[#E8590C] text-white border-[#E8590C] shadow-xs"
-                        : "bg-white text-[#000000] border-[#E5E5EA] hover:bg-[#E5E5EA]"
-                    }`}
-                  >
-                    <FlagIcon code="IT" className="w-4 h-3" />
-                    <span>Italiano</span>
-                    {language === "it" && <Check className="w-3.5 h-3.5 text-white ml-auto" />}
-                  </button>
+                  {(["it", "en", "es", "fr", "de"] as Language[]).map((lang) => (
+                    <button
+                      key={lang}
+                      onClick={() => onSelectLanguage(lang)}
+                      className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-all ${
+                        language === lang
+                          ? "bg-[#E8590C] text-white border-[#E8590C] shadow-xs"
+                          : "bg-white text-[#000000] border-[#E5E5EA] hover:bg-[#E5E5EA]"
+                      }`}
+                    >
+                      <FlagIcon code={lang === "en" ? "GB" : lang} className="w-4 h-3" />
+                      <span>{LANGUAGE_NAMES[lang]}</span>
+                      {language === lang && <Check className="w-3.5 h-3.5 text-white ml-auto" />}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -146,8 +136,14 @@ export const HeaderApple: React.FC<HeaderAppleProps> = React.memo(({
                         key={c.code}
                         onClick={() => {
                           onSelectCountry(c);
-                          if (c.code === "IT" && language !== "it") {
-                            onSelectLanguage("it");
+                          // Suggerisce la lingua coerente con lo store scelto,
+                          // ma solo per i mercati con una lingua locale ovvia
+                          // (evita di forzarla per US/UK/CA/JP dove l'utente
+                          // potrebbe legittimamente preferire un'altra lingua).
+                          const suggestedLang: Language | undefined =
+                            c.code === "IT" ? "it" : c.code === "ES" ? "es" : c.code === "FR" ? "fr" : c.code === "DE" ? "de" : undefined;
+                          if (suggestedLang && language !== suggestedLang) {
+                            onSelectLanguage(suggestedLang);
                           }
                           setShowGeoModal(false);
                         }}

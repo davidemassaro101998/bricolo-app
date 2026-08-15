@@ -29,7 +29,7 @@ export default function App() {
   // Restore saved app session for background/app switch persistence
   const savedSession = React.useMemo(() => {
     try {
-      const stored = localStorage.getItem("kado_saved_session");
+      const stored = localStorage.getItem("bricolo_saved_session");
       if (stored) return JSON.parse(stored);
     } catch (e) {}
     return null;
@@ -49,7 +49,7 @@ export default function App() {
 
   const [hapticEnabled, setHapticEnabled] = useState<boolean>(() => {
     try {
-      return localStorage.getItem("kado_haptic_enabled") !== "false";
+      return localStorage.getItem("bricolo_haptic_enabled") !== "false";
     } catch (e) {
       return true;
     }
@@ -60,7 +60,7 @@ export default function App() {
       if (typeof window !== "undefined" && "Notification" in window) {
         return Notification.permission === "granted";
       }
-      return localStorage.getItem("kado_notifications_enabled") !== "false";
+      return localStorage.getItem("bricolo_notifications_enabled") !== "false";
     } catch (e) {
       return true;
     }
@@ -72,7 +72,7 @@ export default function App() {
   // Theme is strictly light mode
   useEffect(() => {
     try {
-      localStorage.setItem("kado_theme", "light");
+      localStorage.setItem("bricolo_theme", "light");
     } catch (e) {}
   }, []);
 
@@ -80,7 +80,7 @@ export default function App() {
   const handleToggleHaptic = useCallback((enabled: boolean) => {
     setHapticEnabled(enabled);
     try {
-      localStorage.setItem("kado_haptic_enabled", enabled ? "true" : "false");
+      localStorage.setItem("bricolo_haptic_enabled", enabled ? "true" : "false");
     } catch (e) {
       // ignore
     }
@@ -90,7 +90,7 @@ export default function App() {
   const handleToggleNotifications = useCallback((enabled: boolean) => {
     setNotificationsEnabled(enabled);
     try {
-      localStorage.setItem("kado_notifications_enabled", enabled ? "true" : "false");
+      localStorage.setItem("bricolo_notifications_enabled", enabled ? "true" : "false");
     } catch (e) {
       // ignore
     }
@@ -103,13 +103,17 @@ export default function App() {
     }
   }, []);
 
-  // Language State
+  // Language State — la rilevazione segue lo stesso ordine di priorita
+  // di detectUserCountry() in countries.ts cosi lingua e store suggerito
+  // partano coerenti al primo avvio.
   const [language, setLanguage] = useState<Language>(() => {
     try {
-      const userLang = navigator.language || "";
-      if (userLang.toLowerCase().includes("it")) {
-        return "it";
-      }
+      const userLang = (navigator.language || "").toLowerCase();
+      if (userLang.includes("it")) return "it";
+      if (userLang.includes("es")) return "es";
+      if (userLang.includes("fr")) return "fr";
+      if (userLang.includes("de")) return "de";
+      if (userLang.includes("en")) return "en";
     } catch (e) {
       // fallback
     }
@@ -118,8 +122,8 @@ export default function App() {
 
   // Quiz State
   const [quizState, setQuizState] = useState<QuizState>(() => savedSession?.quizState || {
-    recipient: "Partner",
-    vibe: "Tech",
+    recipient: "Casa",
+    vibe: "Elettroutensili",
     budget: "25-50€",
     formatPill: "Tutto",
     hasAlreadyEverything: false,
@@ -135,7 +139,7 @@ export default function App() {
   useEffect(() => {
     if (screen !== "loading") {
       try {
-        localStorage.setItem("kado_saved_session", JSON.stringify({
+        localStorage.setItem("bricolo_saved_session", JSON.stringify({
           screen,
           quizState,
           gifts,
@@ -265,7 +269,7 @@ export default function App() {
   // Memoized Navigation & Action Handlers
   const handleGoHome = useCallback(() => {
     try {
-      localStorage.removeItem("kado_saved_session");
+      localStorage.removeItem("bricolo_saved_session");
     } catch (e) {}
     setGifts([]);
     setActiveCardIndex(0);
