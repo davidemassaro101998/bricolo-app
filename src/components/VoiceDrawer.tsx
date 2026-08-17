@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Mic, MicOff, X, Sparkles, Send } from "lucide-react";
-import { Language } from "../data/translations";
+import { Language, TRANSLATIONS } from "../data/translations";
+
+const SPEECH_LOCALES: Record<Language, string> = {
+  en: "en-US",
+  it: "it-IT",
+  es: "es-ES",
+  fr: "fr-FR",
+  de: "de-DE",
+};
 
 interface VoiceDrawerProps {
   isOpen: boolean;
@@ -18,6 +26,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
   initialTranscript = "",
   language = "it",
 }) => {
+  const t = TRANSLATIONS[language] || TRANSLATIONS.en;
   const [transcript, setTranscript] = useState<string>(initialTranscript);
   const [isListening, setIsListening] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -47,11 +56,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      setErrorMsg(
-        language === "it"
-          ? "Riconoscimento vocale non supportato nel browser. Puoi digitare la tua idea!"
-          : "Voice recognition not supported in browser. You can type your idea!"
-      );
+      setErrorMsg(t.voiceNotSupported);
       return;
     }
 
@@ -61,7 +66,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
       }
 
       const recognition = new SpeechRecognition();
-      recognition.lang = language === "it" ? "it-IT" : "en-US";
+      recognition.lang = SPEECH_LOCALES[language] || "en-US";
       recognition.continuous = true;
       recognition.interimResults = true;
 
@@ -78,11 +83,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
         console.warn("Speech recognition error:", event.error);
         setIsListening(false);
         if (event.error === "not-allowed") {
-          setErrorMsg(
-            language === "it"
-              ? "Permesso microfono negato. Puoi digitare la tua idea qui sotto."
-              : "Microphone permission denied. You can type below."
-          );
+          setErrorMsg(t.micPermissionDenied);
         }
       };
 
@@ -160,13 +161,13 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
               <div className="flex items-center gap-2 text-[#E8590C]">
                 <Sparkles className="w-4 h-4 fill-[#E8590C]" />
                 <span className="text-xs font-bold uppercase tracking-wider">
-                  {language === "it" ? "Assistente Vocale AI" : "AI Voice Assistant"}
+                  {t.aiVoiceAssistantTitle}
                 </span>
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                className="p-1.5 rounded-full bg-[#F2F2F7] text-[#8E8E93] hover:text-[#000000] transition-colors cursor-pointer"
+                className="p-1.5 rounded-full bg-[#F2F2F7] text-[#68686D] hover:text-[#000000] transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4 stroke-[2.5]" />
               </button>
@@ -194,7 +195,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
                 {isListening ? (
                   <Mic className="w-9 h-9 text-white stroke-[2.5]" />
                 ) : (
-                  <MicOff className="w-8 h-8 text-[#8E8E93] stroke-[2]" />
+                  <MicOff className="w-8 h-8 text-[#68686D] stroke-[2]" />
                 )}
               </button>
 
@@ -229,14 +230,8 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
                 ))}
               </div>
 
-              <span className="text-xs font-semibold text-[#8E8E93]">
-                {isListening
-                  ? language === "it"
-                    ? "In ascolto... Parla liberamente"
-                    : "Listening... Speak freely"
-                  : language === "it"
-                  ? "Tocca il microfono per parlare"
-                  : "Tap microphone to speak"}
+              <span className="text-xs font-semibold text-[#68686D]">
+                {isListening ? t.listeningHint : t.tapMicHint}
               </span>
             </div>
 
@@ -249,8 +244,8 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
 
             {/* Live Transcription Area & Quick-Edit Textbox */}
             <div className="w-full space-y-2">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-[#8E8E93] block text-left">
-                {language === "it" ? "Trascrizione Live / Idea:" : "Live Transcript / Idea:"}
+              <label className="text-[11px] font-bold uppercase tracking-wider text-[#68686D] block text-left">
+                {t.liveTranscriptLabel}
               </label>
 
               <div className="relative w-full">
@@ -258,18 +253,14 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
                   rows={3}
                   value={transcript}
                   onChange={(e) => setTranscript(e.target.value)}
-                  placeholder={
-                    language === "it"
-                      ? "Es. Trapano avvitatore affidabile per uso occasionale sotto i 50€..."
-                      : "E.g. Reliable cordless drill for occasional use under 50€..."
-                  }
-                  className="w-full p-3.5 rounded-[18px] bg-[#F2F2F7] text-[#000000] placeholder-[#8E8E93] text-base sm:text-lg font-bold leading-snug border border-[#E5E5EA] focus:outline-none focus:border-[#E8590C] transition-colors resize-none"
+                  placeholder={t.voiceIdeaPlaceholder}
+                  className="w-full p-3.5 rounded-[18px] bg-[#F2F2F7] text-[#000000] placeholder-[#68686D] text-base sm:text-lg font-bold leading-snug border border-[#E5E5EA] focus:outline-none focus:border-[#E8590C] transition-colors resize-none"
                 />
                 {transcript && (
                   <button
                     type="button"
                     onClick={() => setTranscript("")}
-                    className="absolute right-3 top-3 p-1 rounded-full bg-[#E5E5EA] text-[#8E8E93] hover:text-[#000000] transition-colors cursor-pointer"
+                    className="absolute right-3 top-3 p-1 rounded-full bg-[#E5E5EA] text-[#68686D] hover:text-[#000000] transition-colors cursor-pointer"
                     title="Cancella"
                   >
                     <X className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -287,7 +278,7 @@ export const VoiceDrawer: React.FC<VoiceDrawerProps> = React.memo(({
             >
               <Send className="w-4 h-4 fill-current stroke-[2]" />
               <span>
-                {language === "it" ? "TROVA PRODOTTO ORA" : "FIND PRODUCT NOW"}
+                {t.findProductNow}
               </span>
             </button>
           </motion.div>

@@ -238,12 +238,12 @@ export default function App() {
       if (data.success && Array.isArray(data.gifts) && data.gifts.length > 0) {
         fetchedGifts = data.gifts.slice(0, 3);
       } else {
-        fetchedGifts = generateSmartFallbackGifts(quizData, currentCountry);
+        fetchedGifts = generateSmartFallbackGifts(quizData, currentCountry, language);
       }
     } catch (err) {
       clearTimeout(timeoutId);
       console.warn("API timeout or network error, applying emergency fallback parachute:", err);
-      fetchedGifts = generateSmartFallbackGifts(quizData, currentCountry);
+      fetchedGifts = generateSmartFallbackGifts(quizData, currentCountry, language);
     }
 
     await minLoadingPromise;
@@ -302,7 +302,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* Security & PWA Hardening Overlay Engine */}
-      <SecurityShieldAndPwa language={language} />
+      <SecurityShieldAndPwa language={language} screen={screen} />
 
       {/* Offline Apple Fallback Screen */}
       <OfflineScreenApple language={language} />

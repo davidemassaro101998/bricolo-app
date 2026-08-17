@@ -9,14 +9,24 @@ import {
   PlusSquare,
   ArrowDown,
 } from "lucide-react";
+import { Language, TRANSLATIONS } from "../data/translations";
+import { ScreenType } from "../types";
 
 interface SecurityShieldAndPwaProps {
-  language?: "it" | "en" | "es" | "de" | "fr";
+  language?: Language;
+  // Gates WHEN the install banner is allowed to appear (see the dedicated
+  // effect below) — previously it fired 2s after mount unconditionally,
+  // meaning it competed for attention during the quiz itself, before the
+  // user had seen a single product. Optional so callers that don't track
+  // screen state yet still get the old always-eligible behavior.
+  screen?: ScreenType;
 }
 
 export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
   language = "it",
+  screen,
 }) => {
+  const t = TRANSLATIONS[language] || TRANSLATIONS.en;
   // States
   const [isInAppBrowser, setIsInAppBrowser] = useState(false);
   const [showInAppBanner, setShowInAppBanner] = useState(false);
@@ -71,13 +81,6 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
 
     setIsStandalone(standaloneMode);
 
-    let isDismissed = false;
-    let isInstalled = false;
-    try {
-      isDismissed = localStorage.getItem("pwa_dismissed") === "true";
-      isInstalled = localStorage.getItem("pwa_installed") === "true";
-    } catch {}
-
     // Check In-App Browser (Instagram, TikTok, Facebook, Messenger, WeChat, etc.)
     const inAppRegex = /FBAN|FBAV|Instagram|TikTok|MicroMessenger|Line|Snapchat/i;
     const detectedInApp = inAppRegex.test(ua);
@@ -109,15 +112,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     window.addEventListener("appinstalled", handleAppInstalled);
 
-    // 3. Intro Timing: Appear 2 seconds after opening (IF NOT STANDALONE AND NOT DISMISSED)
-    let pwaTimer: any = null;
-    if (!standaloneMode && !isDismissed && !isInstalled) {
-      pwaTimer = setTimeout(() => {
-        setShowPwaBanner(true);
-      }, 2000);
-    }
-
-    // 4. Anti-Cloning & Security Hardening
+    // 3. Anti-Cloning & Security Hardening
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
       return false;
@@ -168,7 +163,6 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
     return () => {
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
       window.removeEventListener("appinstalled", handleAppInstalled);
-      if (pwaTimer) clearTimeout(pwaTimer);
       window.removeEventListener("contextmenu", handleContextMenu);
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("blur", handleBlur);
@@ -176,6 +170,29 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
+
+  // PWA Install Banner Timing: only becomes eligible once the user has
+  // reached the results screen (i.e. after they've actually seen a
+  // product), never during the quiz itself — asking for the install
+  // commitment before any value has been delivered competes with the
+  // wizard for attention and screen space. If no `screen` prop is
+  // passed at all, falls back to "always eligible" so this component
+  // stays safe to use standalone.
+  useEffect(() => {
+    const eligibleScreen = screen === undefined || screen === "results";
+    if (!eligibleScreen || isStandalone || showPwaBanner) return;
+
+    let isDismissed = false;
+    let isInstalled = false;
+    try {
+      isDismissed = localStorage.getItem("pwa_dismissed") === "true";
+      isInstalled = localStorage.getItem("pwa_installed") === "true";
+    } catch {}
+    if (isDismissed || isInstalled) return;
+
+    const timer = setTimeout(() => setShowPwaBanner(true), 1200);
+    return () => clearTimeout(timer);
+  }, [screen, isStandalone, showPwaBanner]);
 
   // Clean Dismiss Handler (Saves pwa_dismissed to localStorage and closes all modals)
   const handleDismiss = () => {
@@ -207,11 +224,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
       setShowIosGuide(true);
     } else {
       // General Fallback
-      alert(
-        language === "it"
-          ? "Per installare l'app, usa il menu del tuo browser e seleziona 'Aggiungi a Schermata Home'."
-          : "To install the app, open your browser menu and select 'Add to Home Screen'."
-      );
+      alert(t.installFallbackAlert);
     }
   };
 
@@ -237,9 +250,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
             <div className="flex items-center gap-2">
               <Smartphone className="w-4 h-4 text-[#E8590C] shrink-0" />
               <span className="font-semibold text-[11px] sm:text-xs">
-                {language === "it"
-                  ? "Per la migliore esperienza, apri in Safari o Chrome"
-                  : "For the best experience, open in Safari or Chrome"}
+                {t.inAppBrowserWarning}
               </span>
             </div>
             <button
@@ -255,7 +266,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
         )}
       </AnimatePresence>
 
-      {/* 2. INTRO SMART INSTALL BANNER (Apple Minimalist Glassmorphism - 2 sec delay) */}
+      {/* 2. INTRO SMART INSTALL BANNER (Apple Minimalist Glassmorphism) */}
       <AnimatePresence>
         {!isStandalone && showPwaBanner && (
           <motion.div
@@ -276,12 +287,10 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
                 />
                 <div>
                   <h4 className="font-black text-sm text-[#000000] tracking-tight leading-tight">
-                    {language === "it" ? "Installa l'App in 1 Tap" : "Install App in 1 Tap"}
+                    {t.installAppTitle}
                   </h4>
-                  <p className="text-[11px] text-[#8E8E93] font-medium leading-normal mt-0.5">
-                    {language === "it"
-                      ? "Accedi all'istante dalla tua Schermata Home senza scaricare dagli store."
-                      : "Instant 1-tap access from your Home Screen without app stores."}
+                  <p className="text-[11px] text-[#68686D] font-medium leading-normal mt-0.5">
+                    {t.installAppBody}
                   </p>
                 </div>
               </div>
@@ -289,8 +298,8 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
               {/* Minimal Dismiss "X" Button */}
               <button
                 onClick={handleDismiss}
-                className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#8E8E93] hover:text-[#000000] transition-colors cursor-pointer shrink-0"
-                title="Chiudi"
+                className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#68686D] hover:text-[#000000] transition-colors cursor-pointer shrink-0"
+                title={t.close}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -302,15 +311,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
               className="w-full py-3.5 px-4 rounded-[18px] bg-[#000000] hover:bg-[#1A1A1A] active:scale-[0.97] text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all uppercase tracking-wide border border-black"
             >
               <Download className="w-4 h-4 text-white" />
-              <span>
-                {deferredPrompt
-                  ? language === "it"
-                    ? "INSTALLA SUBITO IN HOME"
-                    : "INSTALL NOW ON HOME"
-                  : language === "it"
-                  ? "AGGIUNGI A SCHERMATA HOME"
-                  : "ADD TO HOME SCREEN"}
-              </span>
+              <span>{deferredPrompt ? t.installNowBtn : t.addToHomeScreenBtn}</span>
             </button>
           </motion.div>
         )}
@@ -339,13 +340,13 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
                     <Smartphone className="w-4 h-4" />
                   </div>
                   <h3 className="font-extrabold text-sm text-[#000000]">
-                    {language === "it" ? "Aggiungi a Home Screen iOS" : "Add to iOS Home Screen"}
+                    {t.iosAddToHomeTitle}
                   </h3>
                 </div>
                 <button
                   onClick={handleDismiss}
-                  className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#8E8E93] hover:text-[#000000] transition-colors cursor-pointer"
-                  title="Chiudi"
+                  className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#68686D] hover:text-[#000000] transition-colors cursor-pointer"
+                  title={t.close}
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -359,12 +360,10 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
                   </div>
                   <div className="flex-1 text-xs">
                     <span className="font-extrabold text-[#000000]">
-                      {language === "it" ? "Tocca il tasto 'Condividi'" : "Tap the 'Share' button"}
+                      {t.iosStep1Title}
                     </span>
-                    <p className="text-[11px] text-[#8E8E93] font-medium mt-0.5">
-                      {language === "it"
-                        ? "Si trova nella barra in basso di Safari"
-                        : "Located in Safari bottom bar"}
+                    <p className="text-[11px] text-[#68686D] font-medium mt-0.5">
+                      {t.iosStep1Body}
                     </p>
                   </div>
                   <Share className="w-5 h-5 text-[#E8590C] shrink-0" />
@@ -376,12 +375,10 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
                   </div>
                   <div className="flex-1 text-xs">
                     <span className="font-extrabold text-[#000000]">
-                      {language === "it" ? "Seleziona 'Aggiungi alla schermata Home'" : "Select 'Add to Home Screen'"}
+                      {t.iosStep2Title}
                     </span>
-                    <p className="text-[11px] text-[#8E8E93] font-medium mt-0.5">
-                      {language === "it"
-                        ? "Scorri le opzioni del menu di condivisione"
-                        : "Scroll through options in the share sheet"}
+                    <p className="text-[11px] text-[#68686D] font-medium mt-0.5">
+                      {t.iosStep2Body}
                     </p>
                   </div>
                   <PlusSquare className="w-5 h-5 text-[#000000] shrink-0" />
@@ -392,7 +389,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
               <div className="flex flex-col items-center justify-center pt-1 animate-bounce text-[#E8590C]">
                 <ArrowDown className="w-6 h-6 stroke-[3]" />
                 <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#E8590C] mt-0.5">
-                  {language === "it" ? "Premi Condividi Qui Sotto" : "Press Share Below"}
+                  {t.iosPressShare}
                 </span>
               </div>
 
@@ -401,7 +398,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
                 onClick={handleDismiss}
                 className="w-full py-3.5 rounded-[20px] bg-[#000000] hover:bg-[#1A1A1A] active:scale-[0.97] text-white font-black text-xs uppercase tracking-wider cursor-pointer shadow-md transition-all border border-black"
               >
-                {language === "it" ? "HO CAPITO" : "GOT IT"}
+                {t.gotIt}
               </button>
             </motion.div>
           </motion.div>

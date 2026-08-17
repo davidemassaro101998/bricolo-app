@@ -4,11 +4,12 @@ import { createServer as createViteServer } from "vite";
 import { GoogleGenAI, Type, Modality } from "@google/genai";
 import dotenv from "dotenv";
 import { createServer } from "http";
+import { isPaapiConfigured, searchAmazonProduct } from "./paapi";
 
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 const httpServer = createServer(app);
 
 app.use(express.json());
@@ -22,6 +23,19 @@ app.use((req, res, next) => {
 });
 
 // Simple In-Memory Rate Limiter (60 requests per minute per IP)
+//
+// SCALING CAVEAT: this Map lives in the process's own memory, so it is
+// per-instance, not per-app. Fine on Railway's default single-instance
+// setup. If this ever runs with more than 1 replica (horizontal
+// scaling / multiple regions), each instance gets its own counter, so
+// the *effective* limit becomes (60 * number of instances) without
+// anyone changing this number — silently weaker exactly when traffic
+// (and the risk this exists to guard against) is highest. Same caveat
+// applies to DAILY_GEMINI_CALL_CAP and recommendationsCache below. If
+// you scale beyond 1 instance, move all three to a shared store
+// (Railway's Redis add-on is the natural fit) before doing so — don't
+// let this comment be the only thing standing between "it usually
+// works" and a real bill surprise.
 const ipRequestCounts = new Map<string, { count: number; resetTime: number }>();
 app.use("/api/", (req, res, next) => {
   const clientIp = (req.headers["x-forwarded-for"] as string) || req.socket.remoteAddress || "127.0.0.1";
@@ -94,6 +108,48 @@ function sanitizeText(value: unknown, maxLen = 200): string {
   return value.replace(/[\r\n]+/g, " ").trim().slice(0, maxLen);
 }
 
+// Localized copy the server itself needs to generate (Gemini prompt
+// instructions, the 3 fixed gift-card badges, and the safety-net
+// replacement titles used when a suggestion overshoots the budget).
+// Kept local to server.ts rather than importing the frontend's
+// translations module, since this is backend-generated content, not
+// UI chrome — the two are allowed to evolve independently.
+const SUPPORTED_LANGUAGES = ["en", "it", "es", "fr", "de"] as const;
+type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
+
+function resolveLanguage(value: unknown): SupportedLanguage {
+  const v = sanitizeText(value, 5).toLowerCase();
+  return (SUPPORTED_LANGUAGES as readonly string[]).includes(v) ? (v as SupportedLanguage) : "en";
+}
+
+const LANGUAGE_NAMES: Record<SupportedLanguage, string> = {
+  en: "English",
+  it: "Italian",
+  es: "Spanish",
+  fr: "French",
+  de: "German",
+};
+
+// The 3 fixed diversification badges, in card order (Bestseller / Essential / Top Quality).
+const GIFT_TAGS: Record<SupportedLanguage, [string, string, string]> = {
+  en: ["Top Pick", "Essential", "Top Quality"],
+  it: ["Più Scelto", "Essenziale", "Top Qualità"],
+  es: ["Más Elegido", "Esencial", "Máxima Calidad"],
+  fr: ["Le Plus Choisi", "Essentiel", "Qualité Supérieure"],
+  de: ["Meistgewählt", "Unverzichtbar", "Top-Qualität"],
+};
+
+// Safety-net replacement titles used when a high-end suggestion slips
+// through for a low budget and needs to be swapped for something
+// realistically priced — see the budget-enforcement pass below.
+const DOWNGRADE_FALLBACK_TITLES: Record<SupportedLanguage, { tech: string; books: string; other: string }> = {
+  en: { tech: "Anker Power Bank Wireless 10000mAh", books: "Illustrated DIY Guide Book", other: "Compact Multi-Tool Storage Case" },
+  it: { tech: "Anker Power Bank Wireless 10000mAh", books: "Manuale Illustrato Fai-da-Te", other: "Custodia Compatta Porta Utensili" },
+  es: { tech: "Power Bank Anker Inalámbrico 10000mAh", books: "Manual Ilustrado de Bricolaje", other: "Estuche Compacto Portaherramientas" },
+  fr: { tech: "Batterie Externe Anker Sans Fil 10000mAh", books: "Guide Illustré du Bricolage", other: "Boîte à Outils Compacte" },
+  de: { tech: "Anker Wireless Powerbank 10000mAh", books: "Illustrierter Heimwerker-Ratgeber", other: "Kompakte Werkzeug-Tasche" },
+};
+
 // In-Memory Recommendations Cache (30 Minutes TTL)
 interface CacheEntry {
   data: any;
@@ -102,9 +158,9 @@ interface CacheEntry {
 const recommendationsCache = new Map<string, CacheEntry>();
 
 function getCacheKey(body: any): string {
-  const { recipient, occasion, budget, vibe, formatPill, hasAlreadyEverything, extraDetails, fastTrackIdea, currencySymbol, countryCode } = body;
+  const { recipient, occasion, budget, vibe, formatPill, hasAlreadyEverything, extraDetails, fastTrackIdea, currencySymbol, countryCode, language } = body;
   const cleanExtra = (extraDetails || fastTrackIdea || "").trim().toLowerCase();
-  return `${recipient || ""}_${occasion || ""}_${budget || ""}_${vibe || ""}_${formatPill || ""}_${hasAlreadyEverything ? 1 : 0}_${cleanExtra}_${currencySymbol || "€"}_${countryCode || "IT"}`.toLowerCase();
+  return `${recipient || ""}_${occasion || ""}_${budget || ""}_${vibe || ""}_${formatPill || ""}_${hasAlreadyEverything ? 1 : 0}_${cleanExtra}_${currencySymbol || "€"}_${countryCode || "IT"}_${language || "en"}`.toLowerCase();
 }
 
 // Initialize Gemini Client
@@ -168,7 +224,23 @@ function getRandomImage(category: string, index: number): string {
   return pool[index % pool.length];
 }
 
-// API endpoint for Gift Recommendations
+// Mirrors the VITE_AMAZON_TAG_* variables src/data/countries.ts reads
+// client-side — Vite exposes them to the browser bundle, but the
+// underlying env var is the same one process.env sees here in the Node
+// server. No real tag configured for a marketplace -> skip PA-API for
+// it entirely; there's no point calling Amazon with a placeholder tag
+// it will reject anyway.
+function getPartnerTag(countryCode: string): string | undefined {
+  const value = process.env[`VITE_AMAZON_TAG_${countryCode}`];
+  return value && value.trim() ? value.trim() : undefined;
+}
+
+// Health check endpoint (used by Railway and other deploy platforms)
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok" });
+});
+
+// API endpoint for Product Recommendations
 app.post("/api/recommend-gifts", async (req, res) => {
   try {
     const rawBody = req.body || {};
@@ -185,6 +257,9 @@ app.post("/api/recommend-gifts", async (req, res) => {
       : [];
     const countryCode = sanitizeText(rawBody.countryCode, 5);
     const currencySymbol = sanitizeText(rawBody.currencySymbol, 5) || "€";
+    const language = resolveLanguage(rawBody.language);
+    const languageName = LANGUAGE_NAMES[language];
+    const [tagTopPick, tagEssential, tagTopQuality] = GIFT_TAGS[language];
 
     // Check In-Memory Cache (skip cache if excludeTitles is populated)
     const cacheKey = getCacheKey({
@@ -198,6 +273,7 @@ app.post("/api/recommend-gifts", async (req, res) => {
       fastTrackIdea,
       currencySymbol,
       countryCode,
+      language,
     });
     if (excludeTitles.length === 0) {
       const cached = recommendationsCache.get(cacheKey);
@@ -208,6 +284,8 @@ app.post("/api/recommend-gifts", async (req, res) => {
 
     const prompt = `You are an expert Amazon product curator for BRICOLO AI, a tool that helps people find the right hardware/DIY/home-improvement product for their own personal use (this is NOT a gift-finder — the user is buying for themselves, never for someone else).
 Your absolute top priority is ULTRA-PRECISION and HIGH RELEVANCE to the user's exact inputs.
+
+RESPONSE LANGUAGE: ${languageName}. The "title" and "reason" fields MUST be written in natural, professional ${languageName} — not a literal word-for-word translation. Product titles may keep well-known brand/model names as-is.
 
 USER SELECTION CONSTRAINTS:
 - Use Case Area: ${recipient || "Casa"} (Casa = home repairs/maintenance, Giardino = outdoor/garden tools, Bricolage = DIY/hobby projects, Officina = technical/garage work)
@@ -230,9 +308,9 @@ STRICT BUDGET PRICE ENFORCEMENT RULES:
 - If budget is ">100€": price MUST be strictly greater than 100€ (e.g. "129€", "159€").
 
 MANDATORY DIVERSIFICATION RULE (EXACTLY 3 CARDS):
-1. Card 1 (tag: "Più Scelto"): Bestseller product directly solving the user's stated need/category — the single best all-round pick.
-2. Card 2 (tag: "Essenziale"): A complementary essential item (accessory, consumable, or safety item) that pairs with card 1 for the same task.
-3. Card 3 (tag: "Top Qualità"): Higher-end/premium version or complete kit for the same category, for users who want to invest more.
+1. Card 1 (tag: "${tagTopPick}"): Bestseller product directly solving the user's stated need/category — the single best all-round pick.
+2. Card 2 (tag: "${tagEssential}"): A complementary essential item (accessory, consumable, or safety item) that pairs with card 1 for the same task.
+3. Card 3 (tag: "${tagTopQuality}"): Higher-end/premium version or complete kit for the same category, for users who want to invest more.
 
 STRICT AMAZON QUALITY FILTERS:
 - Rating MUST be between 4.4 and 4.9 stars.
@@ -276,7 +354,7 @@ STRICT AMAZON QUALITY FILTERS:
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.ARRAY,
-          description: "List of 3 diversified gift recommendations",
+          description: "List of 3 diversified product recommendations",
           items: {
             type: Type.OBJECT,
             properties: {
@@ -285,7 +363,7 @@ STRICT AMAZON QUALITY FILTERS:
               price: { type: Type.STRING },
               reason: { type: Type.STRING, description: "1 sentence motivation sentence" },
               matchScore: { type: Type.INTEGER },
-              tag: { type: Type.STRING, description: "Exact badge: Più Scelto, Originale / Libro, or Top Qualità" },
+              tag: { type: Type.STRING, description: `Exact badge: ${tagTopPick}, ${tagEssential}, or ${tagTopQuality}` },
               amazonSearchQuery: { type: Type.STRING },
               category: { type: Type.STRING },
               rating: { type: Type.NUMBER, description: "Rating score e.g. 4.8" },
@@ -314,7 +392,7 @@ STRICT AMAZON QUALITY FILTERS:
     const jsonText = response.text ? response.text.trim() : "[]";
     const rawGifts = JSON.parse(jsonText);
 
-    const fallbackBadges = ["Più Scelto", "Originale / Libro", "Top Qualità"];
+    const fallbackBadges = GIFT_TAGS[language];
 
     // Budget range helper
     const cleanB = (budget || "").replace(/\s+/g, "").replace(/\$/g, "").replace(/€/g, "");
@@ -359,12 +437,13 @@ STRICT AMAZON QUALITY FILTERS:
         finalPrice = `${currencySymbol}${targetVal}`;
 
         const titleLower = (gift.title || "").toLowerCase();
-        const highEndKeywords = ["theragun", "playstation", "canon", "iphone", "apple watch", "macbook", "bose soundlink", "sony wh-1000", "fellow stagg", "dyson"];
+        const highEndKeywords = ["theragun", "playstation", "canon", "iphone", "apple watch", "macbook", "bose soundlink", "sony wh-1000", "fellow stagg", "dyson", "dewalt", "makita"];
         if (maxBudget <= 50 && highEndKeywords.some((k) => titleLower.includes(k))) {
           const cat = (gift.category || "").toLowerCase();
-          if (cat.includes("tech")) finalTitle = "Anker Power Bank Wireless 10000mAh";
-          else if (cat.includes("books")) finalTitle = "Libro Guida Bestseller Illustrato";
-          else finalTitle = "Set Diffusore Aromaterapia in Ceramica";
+          const downgradeTitles = DOWNGRADE_FALLBACK_TITLES[language];
+          if (cat.includes("tech")) finalTitle = downgradeTitles.tech;
+          else if (cat.includes("books")) finalTitle = downgradeTitles.books;
+          else finalTitle = downgradeTitles.other;
         }
       }
 
@@ -373,13 +452,50 @@ STRICT AMAZON QUALITY FILTERS:
         title: finalTitle,
         price: finalPrice,
         id: gift.id || `gift-${Date.now()}-${idx}`,
-        tag: gift.tag || fallbackBadges[idx % 3],
+        // Assegnato in modo deterministico dalla posizione della card
+        // (non dal valore restituito dal modello): 3 badge fissi in 5
+        // lingue sono un enum piccolo, meglio garantirne noi la lingua
+        // corretta piuttosto che fidarsi che il modello riecheggi
+        // esattamente la stringa richiesta.
+        tag: fallbackBadges[idx % 3],
         rating: gift.rating && gift.rating >= 4.3 ? gift.rating : 4.7,
         reviewsCount: gift.reviewsCount && gift.reviewsCount >= 100 ? gift.reviewsCount : 1250 + idx * 430,
         isPrime: gift.isPrime !== undefined ? gift.isPrime : true,
         imageUrl: getRandomImage(gift.category || "default", idx),
       };
     });
+
+    // Best-effort real-data overlay: once Amazon approves PA-API access
+    // and AMAZON_PAAPI_ACCESS_KEY/SECRET_KEY + a real Associates tag are
+    // set, replace the AI-estimated fields with a real Amazon match —
+    // real ASIN, live price, real rating/review count, real image —
+    // instead of the values Gemini was told to estimate above. Until
+    // then (or for any gift PA-API can't confidently match) the
+    // AI-generated fields are kept exactly as today, just labeled so the
+    // frontend can eventually distinguish verified data from an estimate.
+    const partnerTag = getPartnerTag(countryCode || "US");
+    if (isPaapiConfigured() && partnerTag) {
+      await Promise.all(
+        gifts.map(async (gift: any) => {
+          const match = await searchAmazonProduct(gift.amazonSearchQuery || gift.title, countryCode || "US", partnerTag);
+          if (match) {
+            gift.asin = match.asin;
+            gift.price = match.price || gift.price;
+            gift.imageUrl = match.imageUrl || gift.imageUrl;
+            gift.rating = match.rating || gift.rating;
+            gift.reviewsCount = match.reviewsCount || gift.reviewsCount;
+            gift.isPrime = match.isPrime !== undefined ? match.isPrime : gift.isPrime;
+            gift.dataSource = "amazon";
+          } else {
+            gift.dataSource = "ai-estimate";
+          }
+        })
+      );
+    } else {
+      gifts.forEach((gift: any) => {
+        gift.dataSource = "ai-estimate";
+      });
+    }
 
     // Cache valid response for 30 minutes
     if (gifts.length > 0 && excludeTitles.length === 0) {
@@ -400,7 +516,7 @@ STRICT AMAZON QUALITY FILTERS:
   }
 });
 
-// API endpoint for AI Gift Chatbot
+// API endpoint for AI Product Chatbot
 app.post("/api/chat", async (req, res) => {
   try {
     const rawMessages = Array.isArray(req.body?.messages) ? req.body.messages : [];
@@ -412,23 +528,27 @@ app.post("/api/chat", async (req, res) => {
       role: m?.role === "user" ? "user" : "model",
       content: sanitizeText(m?.content, 800),
     }));
-    const language = sanitizeText(req.body?.language, 5) || "en";
+    const language = resolveLanguage(req.body?.language);
     const quizState = req.body?.quizState || {};
 
     if (!process.env.GEMINI_API_KEY) {
       return res.json({
         success: false,
-        response: "I am ready to help you find the perfect gift!",
+        response: "I am ready to help you find the perfect product!",
       });
     }
 
     if (!canCallGeminiToday()) {
+      const busyMessages: Record<SupportedLanguage, string> = {
+        en: "We're very busy right now — please try again shortly.",
+        it: "Siamo molto richiesti in questo momento — riprova tra poco.",
+        es: "Estamos con mucha demanda en este momento — inténtalo de nuevo en breve.",
+        fr: "Nous sommes très sollicités en ce moment — réessayez dans un instant.",
+        de: "Wir sind gerade sehr gefragt — versuch es gleich noch einmal.",
+      };
       return res.json({
         success: false,
-        response:
-          language === "it"
-            ? "Siamo molto richiesti in questo momento — riprova tra poco."
-            : "We're very busy right now — please try again shortly.",
+        response: busyMessages[language],
       });
     }
 
@@ -465,7 +585,7 @@ Context from current selection: Use Case Area: ${quizState?.recipient || "Not sp
     }));
 
     if (chatContents.length === 0) {
-      chatContents.push({ role: "user", parts: [{ text: "Hello! Help me find a gift." }] });
+      chatContents.push({ role: "user", parts: [{ text: "Hello! Help me find the right product." }] });
     }
 
     const response = await ai.models.generateContent({
@@ -477,7 +597,7 @@ Context from current selection: Use Case Area: ${quizState?.recipient || "Not sp
       },
     });
 
-    const replyText = response.text || "I'm here to help! Could you tell me a little more about the person you're buying for?";
+    const replyText = response.text || "I'm here to help! Could you tell me a little more about what you need?";
 
     let extractedGifts: any[] | null = null;
     const jsonMatch = replyText.match(/```json\s*(\{[\s\S]*?\})\s*```/);
@@ -588,4 +708,3 @@ async function startServer() {
 }
 
 startServer();
-

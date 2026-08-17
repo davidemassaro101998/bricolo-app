@@ -70,6 +70,9 @@ export interface Translations {
   loadingStep3: string;
 
   // Results Deck
+  resultsHeaderTag: string;
+  backLabel: string;
+  optionLabel: string;
   newSearch: string;
   previous: string;
   next: string;
@@ -78,6 +81,9 @@ export interface Translations {
   whyPerfect: string;
   seeInStore: string;
   addToCart: string;
+  searchOnAmazon: string;
+  dgmAppsCredit: string;
+  reminderIosStorageHint: string;
   copyLink: string;
   copyLinkDone: string;
   moreProducts: string;
@@ -217,6 +223,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     loadingStep2: "Filtro dei prodotti più affidabili per categoria",
     loadingStep3: "Preparazione link store e dettagli",
 
+    resultsHeaderTag: "BRICOLO AI • 3 SELEZIONI",
+    backLabel: "Indietro",
+    optionLabel: "Opzione",
     newSearch: "Nuova Ricerca",
     previous: "Precedente",
     next: "Successivo",
@@ -225,6 +234,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     whyPerfect: "Perché è perfetto:",
     seeInStore: "VEDI NELLO STORE",
     addToCart: "METTI IN CARRELLO",
+    searchOnAmazon: "CERCA SU AMAZON",
+    dgmAppsCredit: "Parte di DGM Apps",
+    reminderIosStorageHint: "Su iPhone, Safari può cancellare i dati salvati dopo una settimana senza aprire il sito. Aggiungi Bricolo AI alla Home per essere sicuro che questo promemoria arrivi davvero il giorno giusto.",
     copyLink: "Copia Link",
     copyLinkDone: "Copiato & Aperto!",
     moreProducts: "Altri 3 Prodotti",
@@ -277,7 +289,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       "Titolare del Trattamento: Bricolo AI opera nel rispetto dei principi di minimizzazione dei dati e riservatezza.",
       "Tipologia di Dati Raccolti: Bricolo AI NON raccoglie, profila né vende dati personali degli utenti. L'applicazione funziona interamente tramite salvataggi locali tecnici nel browser/dispositivo dell'utente (localStorage) per memorizzare le impostazioni di lingua, paese Amazon e promemoria progetti.",
       "Cookie Tecnici: Vengono utilizzati esclusivamente cookie e archivi locali strettamente necessari per le funzionalità operative dell'applet (stato PWA, preferenze lingua, lista promemoria). Non vengono impiegati cookie di tracciamento pubblicitario o profilazione di terze parti.",
-      "Servizi Terzi (Google Gemini AI & Amazon PA-API): Le elaborazioni per la raccomandazione dei prodotti avvengono lato server tramite connessioni crittografate HTTPS. Nessun identificativo dell'utente viene trasmesso ai modelli AI.",
+      "Servizi Terzi (Google Gemini AI & Amazon): Le elaborazioni per la raccomandazione dei prodotti avvengono lato server tramite connessioni crittografate HTTPS. Nessun identificativo dell'utente viene trasmesso ai modelli AI.",
       "Diritti dell'Utente: L'utente può in qualsiasi momento cancellare i propri dati salvati semplicemente svuotando la cache del browser o ripristinando le impostazioni dell'app.",
     ],
     termsBody: [
@@ -290,7 +302,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     affiliateStatement: "In qualità di Affiliato Amazon, Bricolo AI riceve un guadagno dagli acquisti idonei.",
     affiliateProgramNote: "Bricolo AI partecipa al Programma Affiliazione Amazon EU e Amazon Associates US, un programma di affiliazione progettato per fornire ai siti un mezzo per guadagnare commissioni pubblicitarie creando link verso Amazon.it, Amazon.com e i rispettivi store internazionali.",
     affiliatePricingTitle: "Disclaimer Prezzi e Disponibilità:",
-    affiliatePricingNote: "Prezzi e disponibilità dei prodotti sono forniti in tempo reale da Amazon PA-API e sono soggetti a variazioni continue. Fa fede il prezzo e la disponibilità mostrati sulla pagina prodotto di Amazon al momento dell'acquisto finale.",
+    affiliatePricingNote: "I prezzi dei prodotti mostrati sono indicativi, generati dall'intelligenza artificiale al momento della ricerca; fa sempre fede il prezzo e la disponibilità mostrati sulla pagina prodotto di Amazon al momento dell'acquisto finale. Quando l'integrazione diretta con l'Amazon Product Advertising API sarà attiva, i prezzi saranno recuperati in tempo reale direttamente da Amazon.",
 
     cookieBannerText: "Bricolo AI utilizza cookie tecnici e servizi di affiliazione per consigliarti i prodotti giusti. Continuando ad usare l'app accetti la nostra Privacy Policy.",
     privacyPolicyLabel: "Privacy Policy",
@@ -367,6 +379,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     loadingStep2: "Filtering the most reliable products by category",
     loadingStep3: "Preparing direct store links & details",
 
+    resultsHeaderTag: "BRICOLO AI • 3 PICKS",
+    backLabel: "Back",
+    optionLabel: "Option",
     newSearch: "New Search",
     previous: "Previous",
     next: "Next",
@@ -375,6 +390,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     whyPerfect: "Why it's perfect:",
     seeInStore: "SEE IN STORE",
     addToCart: "ADD TO CART",
+    searchOnAmazon: "SEARCH ON AMAZON",
+    dgmAppsCredit: "Part of DGM Apps",
+    reminderIosStorageHint: "On iPhone, Safari can clear saved data after a week of not opening the site. Add Bricolo AI to your Home Screen so this reminder is safe until the day it matters.",
     copyLink: "Copy Link",
     copyLinkDone: "Copied & Opened!",
     moreProducts: "3 More Products",
@@ -427,7 +445,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       "Data Controller: Bricolo AI operates in line with the principles of data minimization and confidentiality.",
       "Data Collected: Bricolo AI does NOT collect, profile, or sell users' personal data. The app runs entirely on technical local storage in the user's browser/device (localStorage) to remember language settings, Amazon country, and project reminders.",
       "Technical Cookies: Only cookies and local storage strictly necessary for the applet's core functionality are used (PWA state, language preference, reminders list). No advertising tracking or third-party profiling cookies are used.",
-      "Third-Party Services (Google Gemini AI & Amazon PA-API): Product recommendation processing happens server-side over encrypted HTTPS connections. No user identifier is ever transmitted to the AI models.",
+      "Third-Party Services (Google Gemini AI & Amazon): Product recommendation processing happens server-side over encrypted HTTPS connections. No user identifier is ever transmitted to the AI models.",
       "User Rights: Users can delete their saved data at any time simply by clearing the browser cache or resetting the app's settings.",
     ],
     termsBody: [
@@ -440,7 +458,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     affiliateStatement: "As an Amazon Associate, Bricolo AI earns from qualifying purchases.",
     affiliateProgramNote: "Bricolo AI participates in the Amazon EU Associates Programme and Amazon Associates US, an affiliate advertising program designed to provide a means for sites to earn advertising fees by linking to Amazon.com, Amazon.it and their respective international stores.",
     affiliatePricingTitle: "Pricing & Availability Disclaimer:",
-    affiliatePricingNote: "Product prices and availability are provided in real time by the Amazon PA-API and are subject to continuous change. The price and availability shown on the Amazon product page at the time of final purchase always apply.",
+    affiliatePricingNote: "Product prices shown are indicative, generated by AI at search time; the price and availability shown on the Amazon product page at the time of final purchase always apply. Once direct integration with the Amazon Product Advertising API is active, prices will be retrieved in real time directly from Amazon.",
 
     cookieBannerText: "Bricolo AI uses technical cookies and affiliate services to recommend the right products. By continuing to use the app, you accept our Privacy Policy.",
     privacyPolicyLabel: "Privacy Policy",
@@ -517,6 +535,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     loadingStep2: "Filtrando los productos más fiables por categoría",
     loadingStep3: "Preparando enlaces directos y detalles",
 
+    resultsHeaderTag: "BRICOLO AI • 3 SELECCIONES",
+    backLabel: "Atrás",
+    optionLabel: "Opción",
     newSearch: "Nueva Búsqueda",
     previous: "Anterior",
     next: "Siguiente",
@@ -525,6 +546,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     whyPerfect: "Por qué es perfecto:",
     seeInStore: "VER EN LA TIENDA",
     addToCart: "AÑADIR AL CARRITO",
+    searchOnAmazon: "BUSCAR EN AMAZON",
+    dgmAppsCredit: "Parte de DGM Apps",
+    reminderIosStorageHint: "En iPhone, Safari puede borrar los datos guardados tras una semana sin abrir el sitio. Añade Bricolo AI a tu pantalla de inicio para asegurarte de que este recordatorio llegue el día que importa.",
     copyLink: "Copiar Enlace",
     copyLinkDone: "¡Copiado y Abierto!",
     moreProducts: "3 Productos Más",
@@ -577,7 +601,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       "Responsable del Tratamiento: Bricolo AI opera respetando los principios de minimización de datos y confidencialidad.",
       "Tipo de Datos Recopilados: Bricolo AI NO recopila, perfila ni vende datos personales de los usuarios. La aplicación funciona enteramente mediante almacenamiento técnico local en el navegador/dispositivo del usuario (localStorage) para guardar el idioma, el país de Amazon y los recordatorios de proyectos.",
       "Cookies Técnicas: Se utilizan exclusivamente cookies y almacenamiento local estrictamente necesarios para el funcionamiento de la aplicación (estado PWA, preferencia de idioma, lista de recordatorios). No se utilizan cookies de seguimiento publicitario ni de perfilado de terceros.",
-      "Servicios de Terceros (Google Gemini AI y Amazon PA-API): El procesamiento de las recomendaciones de productos se realiza en el servidor mediante conexiones HTTPS cifradas. No se transmite ningún identificador del usuario a los modelos de IA.",
+      "Servicios de Terceros (Google Gemini AI y Amazon): El procesamiento de las recomendaciones de productos se realiza en el servidor mediante conexiones HTTPS cifradas. No se transmite ningún identificador del usuario a los modelos de IA.",
       "Derechos del Usuario: El usuario puede eliminar en cualquier momento sus datos guardados simplemente vaciando la caché del navegador o restableciendo la configuración de la app.",
     ],
     termsBody: [
@@ -590,7 +614,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     affiliateStatement: "Como Afiliado de Amazon, Bricolo AI obtiene ingresos por las compras que cumplen los requisitos.",
     affiliateProgramNote: "Bricolo AI participa en el Programa de Afiliados de Amazon EU y Amazon Associates US, un programa de afiliación diseñado para ofrecer a los sitios web un medio para obtener comisiones publicitarias mediante enlaces a Amazon.es, Amazon.com y sus respectivas tiendas internacionales.",
     affiliatePricingTitle: "Aviso sobre Precios y Disponibilidad:",
-    affiliatePricingNote: "Los precios y la disponibilidad de los productos se ofrecen en tiempo real a través de Amazon PA-API y están sujetos a cambios continuos. Prevalece el precio y la disponibilidad mostrados en la página del producto de Amazon en el momento de la compra final.",
+    affiliatePricingNote: "Los precios de los productos mostrados son indicativos, generados por la inteligencia artificial en el momento de la búsqueda; siempre prevalece el precio y la disponibilidad mostrados en la página del producto de Amazon en el momento de la compra final. Cuando la integración directa con la Amazon Product Advertising API esté activa, los precios se obtendrán en tiempo real directamente desde Amazon.",
 
     cookieBannerText: "Bricolo AI utiliza cookies técnicas y servicios de afiliación para recomendarte los productos adecuados. Al seguir usando la app, aceptas nuestra Política de Privacidad.",
     privacyPolicyLabel: "Política de Privacidad",
@@ -667,6 +691,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     loadingStep2: "Filtrage des produits les plus fiables par catégorie",
     loadingStep3: "Préparation des liens directs et des détails",
 
+    resultsHeaderTag: "BRICOLO AI • 3 SÉLECTIONS",
+    backLabel: "Retour",
+    optionLabel: "Option",
     newSearch: "Nouvelle Recherche",
     previous: "Précédent",
     next: "Suivant",
@@ -675,6 +702,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     whyPerfect: "Pourquoi c'est parfait :",
     seeInStore: "VOIR SUR LA BOUTIQUE",
     addToCart: "AJOUTER AU PANIER",
+    searchOnAmazon: "RECHERCHER SUR AMAZON",
+    dgmAppsCredit: "Fait partie de DGM Apps",
+    reminderIosStorageHint: "Sur iPhone, Safari peut effacer les données enregistrées après une semaine sans ouvrir le site. Ajoutez Bricolo AI à votre écran d'accueil pour que ce rappel arrive bien le jour J.",
     copyLink: "Copier le Lien",
     copyLinkDone: "Copié & Ouvert !",
     moreProducts: "3 Autres Produits",
@@ -727,7 +757,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       "Responsable du Traitement : Bricolo AI opère dans le respect des principes de minimisation des données et de confidentialité.",
       "Types de Données Collectées : Bricolo AI ne collecte, ne profile ni ne vend AUCUNE donnée personnelle de ses utilisateurs. L'application fonctionne entièrement via un stockage technique local dans le navigateur/appareil de l'utilisateur (localStorage) pour mémoriser la langue, le pays Amazon et les rappels de projets.",
       "Cookies Techniques : Seuls sont utilisés les cookies et stockages locaux strictement nécessaires au fonctionnement de l'application (état PWA, préférence de langue, liste des rappels). Aucun cookie de suivi publicitaire ou de profilage tiers n'est utilisé.",
-      "Services Tiers (Google Gemini AI & Amazon PA-API) : Le traitement des recommandations de produits s'effectue côté serveur via des connexions HTTPS chiffrées. Aucun identifiant utilisateur n'est jamais transmis aux modèles d'IA.",
+      "Services Tiers (Google Gemini AI et Amazon) : Le traitement des recommandations de produits s'effectue côté serveur via des connexions HTTPS chiffrées. Aucun identifiant utilisateur n'est jamais transmis aux modèles d'IA.",
       "Droits de l'Utilisateur : L'utilisateur peut à tout moment supprimer ses données enregistrées en vidant simplement le cache du navigateur ou en réinitialisant les réglages de l'application.",
     ],
     termsBody: [
@@ -740,7 +770,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     affiliateStatement: "En tant que Partenaire Amazon, Bricolo AI perçoit une commission sur les achats éligibles.",
     affiliateProgramNote: "Bricolo AI participe au Programme Partenaires Amazon EU et Amazon Associates US, un programme d'affiliation conçu pour permettre aux sites de percevoir des commissions publicitaires en créant des liens vers Amazon.fr, Amazon.com et leurs boutiques internationales respectives.",
     affiliatePricingTitle: "Avertissement Prix et Disponibilité :",
-    affiliatePricingNote: "Les prix et la disponibilité des produits sont fournis en temps réel par Amazon PA-API et sont susceptibles de changer en continu. Le prix et la disponibilité affichés sur la page produit Amazon au moment de l'achat final font foi.",
+    affiliatePricingNote: "Les prix des produits affichés sont indicatifs, générés par l'intelligence artificielle au moment de la recherche ; le prix et la disponibilité affichés sur la page produit Amazon au moment de l'achat final font toujours foi. Lorsque l'intégration directe avec l'Amazon Product Advertising API sera active, les prix seront récupérés en temps réel directement depuis Amazon.",
 
     cookieBannerText: "Bricolo AI utilise des cookies techniques et des services de partenariat pour vous recommander les bons produits. En continuant à utiliser l'application, vous acceptez notre Politique de Confidentialité.",
     privacyPolicyLabel: "Politique de Confidentialité",
@@ -817,6 +847,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     loadingStep2: "Filtern der zuverlässigsten Produkte nach Kategorie",
     loadingStep3: "Vorbereitung der Direktlinks und Details",
 
+    resultsHeaderTag: "BRICOLO AI • 3 AUSWAHLEN",
+    backLabel: "Zurück",
+    optionLabel: "Option",
     newSearch: "Neue Suche",
     previous: "Zurück",
     next: "Weiter",
@@ -825,6 +858,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     whyPerfect: "Warum es perfekt passt:",
     seeInStore: "IM STORE ANSEHEN",
     addToCart: "IN DEN WARENKORB",
+    searchOnAmazon: "AUF AMAZON SUCHEN",
+    dgmAppsCredit: "Teil von DGM Apps",
+    reminderIosStorageHint: "Auf dem iPhone kann Safari gespeicherte Daten nach einer Woche ohne Öffnen der Seite löschen. Füge Bricolo AI zum Home-Bildschirm hinzu, damit diese Erinnerung sicher am richtigen Tag ankommt.",
     copyLink: "Link Kopieren",
     copyLinkDone: "Kopiert & Geöffnet!",
     moreProducts: "3 Weitere Produkte",
@@ -877,7 +913,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
       "Verantwortlicher: Bricolo AI arbeitet nach den Grundsätzen der Datenminimierung und Vertraulichkeit.",
       "Art der erhobenen Daten: Bricolo AI erfasst, profiliert oder verkauft KEINE personenbezogenen Daten der Nutzer. Die App funktioniert vollständig über technische lokale Speicherung im Browser/Gerät des Nutzers (localStorage), um Spracheinstellungen, das Amazon-Land und Projekterinnerungen zu speichern.",
       "Technische Cookies: Es werden ausschließlich Cookies und lokale Speicher verwendet, die für die Kernfunktionen der App zwingend erforderlich sind (PWA-Status, Spracheinstellung, Erinnerungsliste). Es werden keine Werbe-Tracking- oder Profiling-Cookies Dritter verwendet.",
-      "Drittanbieterdienste (Google Gemini AI & Amazon PA-API): Die Verarbeitung der Produktempfehlungen erfolgt serverseitig über verschlüsselte HTTPS-Verbindungen. Es wird keine Nutzerkennung an die KI-Modelle übermittelt.",
+      "Drittanbieterdienste (Google Gemini AI & Amazon): Die Verarbeitung der Produktempfehlungen erfolgt serverseitig über verschlüsselte HTTPS-Verbindungen. Es wird keine Nutzerkennung an die KI-Modelle übermittelt.",
       "Rechte des Nutzers: Der Nutzer kann seine gespeicherten Daten jederzeit löschen, indem er einfach den Browser-Cache leert oder die App-Einstellungen zurücksetzt.",
     ],
     termsBody: [
@@ -890,7 +926,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     affiliateStatement: "Als Amazon-Partner verdient Bricolo AI an qualifizierten Käufen.",
     affiliateProgramNote: "Bricolo AI nimmt am Amazon EU-Partnerprogramm und Amazon Associates US teil, einem Partnerprogramm, das Websites eine Möglichkeit bietet, durch Links zu Amazon.de, Amazon.com und den jeweiligen internationalen Stores Werbekostenerstattung zu verdienen.",
     affiliatePricingTitle: "Hinweis zu Preisen und Verfügbarkeit:",
-    affiliatePricingNote: "Produktpreise und Verfügbarkeit werden in Echtzeit über die Amazon PA-API bereitgestellt und können sich laufend ändern. Maßgeblich sind Preis und Verfügbarkeit, die zum Zeitpunkt des endgültigen Kaufs auf der Amazon-Produktseite angezeigt werden.",
+    affiliatePricingNote: "Die angezeigten Produktpreise sind unverbindlich und werden von der KI zum Zeitpunkt der Suche generiert; maßgeblich sind stets Preis und Verfügbarkeit, die zum Zeitpunkt des endgültigen Kaufs auf der Amazon-Produktseite angezeigt werden. Sobald die direkte Integration mit der Amazon Product Advertising API aktiv ist, werden die Preise in Echtzeit direkt von Amazon abgerufen.",
 
     cookieBannerText: "Bricolo AI verwendet technische Cookies und Partnerprogramm-Dienste, um dir die passenden Produkte zu empfehlen. Durch die weitere Nutzung der App stimmst du unserer Datenschutzerklärung zu.",
     privacyPolicyLabel: "Datenschutzerklärung",

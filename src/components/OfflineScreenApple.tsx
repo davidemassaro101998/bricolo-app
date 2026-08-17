@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { WifiOff, RefreshCw } from "lucide-react";
+import { Language, TRANSLATIONS } from "../data/translations";
 
 interface OfflineScreenAppleProps {
-  language?: "it" | "en" | "es" | "de" | "fr";
+  language?: Language;
 }
 
 export const OfflineScreenApple: React.FC<OfflineScreenAppleProps> = ({
@@ -45,6 +46,8 @@ export const OfflineScreenApple: React.FC<OfflineScreenAppleProps> = ({
 
   if (!isOffline) return null;
 
+  const t = TRANSLATIONS[language] || TRANSLATIONS.en;
+
   return (
     <AnimatePresence>
       <motion.div
@@ -60,18 +63,16 @@ export const OfflineScreenApple: React.FC<OfflineScreenAppleProps> = ({
           className="w-full max-w-sm bg-white border border-[#E5E5EA] rounded-[28px] p-6 shadow-[0_12px_36px_rgba(0,0,0,0.1)] flex flex-col items-center gap-4"
         >
           {/* Slashed Wi-Fi Icon Badge */}
-          <div className="w-16 h-16 rounded-full bg-[#F2F2F7] border border-[#E5E5EA] flex items-center justify-center text-[#8E8E93]">
-            <WifiOff className="w-8 h-8 text-[#8E8E93] stroke-[2]" />
+          <div className="w-16 h-16 rounded-full bg-[#F2F2F7] border border-[#E5E5EA] flex items-center justify-center text-[#68686D]">
+            <WifiOff className="w-8 h-8 text-[#68686D] stroke-[2]" />
           </div>
 
           <div className="space-y-1.5 text-center">
             <h2 className="text-lg font-extrabold tracking-tight text-[#000000]">
-              {language === "it" ? "Nessuna Connessione" : "No Connection"}
+              {t.noConnectionTitle}
             </h2>
-            <p className="text-xs text-[#8E8E93] leading-relaxed font-normal">
-              {language === "it"
-                ? "Verifica la tua rete internet per continuare a cercare i regali."
-                : "Check your internet connection to continue searching for gifts."}
+            <p className="text-xs text-[#68686D] leading-relaxed font-normal">
+              {t.noConnectionBody}
             </p>
           </div>
 
@@ -83,13 +84,7 @@ export const OfflineScreenApple: React.FC<OfflineScreenAppleProps> = ({
           >
             <RefreshCw className={`w-4 h-4 ${isChecking ? "animate-spin" : ""}`} />
             <span>
-              {isChecking
-                ? language === "it"
-                  ? "VERIFICA IN CORSO..."
-                  : "CHECKING..."
-                : language === "it"
-                ? "RIPROVA"
-                : "RETRY"}
+              {isChecking ? t.checking : t.retry}
             </span>
           </button>
         </motion.div>

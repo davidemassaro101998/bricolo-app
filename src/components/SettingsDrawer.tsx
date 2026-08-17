@@ -18,11 +18,20 @@ import { LegalDocType } from "./LegalModal";
 import { triggerTestNotification } from "../lib/pwaNotifications";
 import { getReminders, deleteReminder } from "../lib/reminders";
 import { SavedReminder } from "../types";
+import { Language, TRANSLATIONS } from "../data/translations";
+
+const DATE_LOCALES: Record<Language, string> = {
+  en: "en-US",
+  it: "it-IT",
+  es: "es-ES",
+  fr: "fr-FR",
+  de: "de-DE",
+};
 
 interface SettingsDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  language?: string;
+  language?: Language;
   theme: "light";
   onSelectTheme: (theme: "light") => void;
   hapticEnabled: boolean;
@@ -44,7 +53,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
   onOpenLegalModal,
   onSendFeedback,
 }) => {
-  const isIt = language === "it";
+  const t = TRANSLATIONS[language] || TRANSLATIONS.en;
   const [micPermission, setMicPermission] = useState<"unknown" | "granted" | "denied" | "prompt">("unknown");
   const [reminders, setReminders] = useState<SavedReminder[]>([]);
 
@@ -133,12 +142,12 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                   <Settings className="w-4 h-4" />
                 </div>
                 <h2 className="text-base font-extrabold text-[#000000]">
-                  {isIt ? "Impostazioni & App" : "Settings & App"}
+                  {t.settingsTitle}
                 </h2>
               </div>
               <button
                 onClick={onClose}
-                className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#8E8E93] transition-colors cursor-pointer"
+                className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#68686D] transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -148,8 +157,8 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
             <div className="flex-1 overflow-y-auto space-y-4 pr-1">
               {/* 1. SEZIONE INTERAZIONE */}
               <div className="space-y-2">
-                <span className="text-[11px] font-bold text-[#8E8E93] uppercase tracking-wider block px-1">
-                  {isIt ? "INTERAZIONE" : "INTERACTION"}
+                <span className="text-[11px] font-bold text-[#68686D] uppercase tracking-wider block px-1">
+                  {t.interactionSection}
                 </span>
 
                 {/* Haptic Switch */}
@@ -157,7 +166,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                   <div className="flex items-center gap-2.5">
                     <Vibrate className="w-4 h-4 text-[#E8590C]" />
                     <span className="text-xs font-semibold">
-                      {isIt ? "Feedback Tattile (Vibrazione)" : "Haptic Feedback"}
+                      {t.hapticFeedback}
                     </span>
                   </div>
                   <button
@@ -182,8 +191,8 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
 
               {/* 2. SEZIONE PERMESSI & PRIVACY */}
               <div className="space-y-2">
-                <span className="text-[11px] font-bold text-[#8E8E93] uppercase tracking-wider block px-1">
-                  {isIt ? "PERMESSI & PRIVACY" : "PERMISSIONS & PRIVACY"}
+                <span className="text-[11px] font-bold text-[#68686D] uppercase tracking-wider block px-1">
+                  {t.permissionsSection}
                 </span>
 
                 {/* Microfono */}
@@ -193,16 +202,16 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                       <Mic className="w-4 h-4 text-[#E8590C]" />
                       <div>
                         <span className="text-xs font-semibold block">
-                          {isIt ? "Microfono (Ricerca Vocale)" : "Microphone (Voice Search)"}
+                          {t.microphoneLabel}
                         </span>
-                        <span className="text-[10px] text-[#8E8E93] font-normal">
+                        <span className="text-[10px] text-[#68686D] font-normal">
                           {micPermission === "granted"
-                            ? isIt ? "Permesso concesso" : "Permission granted"
+                            ? t.micGranted
                             : micPermission === "denied"
-                            ? isIt ? "Permesso negato dal browser" : "Denied by browser"
+                            ? t.micDenied
                             : micPermission === "prompt"
-                            ? isIt ? "Non ancora richiesto" : "Not requested yet"
-                            : isIt ? "Da verificare" : "Not checked yet"}
+                            ? t.micPrompt
+                            : t.micUnchecked}
                         </span>
                       </div>
                     </div>
@@ -212,13 +221,13 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                           ? "border-[#34C759] text-[#34C759]"
                           : micPermission === "denied"
                           ? "border-[#FF4D6D] text-[#FF4D6D]"
-                          : "border-[#E5E5EA] text-[#8E8E93]"
+                          : "border-[#E5E5EA] text-[#68686D]"
                       }`}
                     >
                       {micPermission === "granted"
-                        ? isIt ? "Attivo" : "On"
+                        ? t.micOn
                         : micPermission === "denied"
-                        ? isIt ? "Bloccato" : "Blocked"
+                        ? t.micBlocked
                         : "—"}
                     </span>
                   </div>
@@ -232,15 +241,13 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                       className="w-full py-2 px-3 rounded-xl bg-white border border-[#E5E5EA] hover:border-[#E8590C] text-xs font-bold text-[#E8590C] flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
                     >
                       <Mic className="w-3.5 h-3.5 text-[#E8590C]" />
-                      <span>{isIt ? "Attiva Permesso Microfono" : "Enable Microphone Permission"}</span>
+                      <span>{t.enableMicBtn}</span>
                     </button>
                   )}
 
                   {micPermission === "denied" && (
-                    <p className="text-[10px] text-[#8E8E93] text-center px-1 leading-relaxed">
-                      {isIt
-                        ? "Hai bloccato il microfono per questo sito. Riattivalo dalle impostazioni del browser (icona lucchetto nella barra indirizzo)."
-                        : "You've blocked the microphone for this site. Re-enable it from your browser's site settings (padlock icon in the address bar)."}
+                    <p className="text-[10px] text-[#68686D] text-center px-1 leading-relaxed">
+                      {t.micBlockedHelp}
                     </p>
                   )}
                 </div>
@@ -251,7 +258,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                     <div className="flex items-center gap-2.5">
                       <Bell className="w-4 h-4 text-[#E8590C]" />
                       <span className="text-xs font-semibold">
-                        {isIt ? "Notifiche PWA Promemoria" : "PWA Reminder Notifications"}
+                        {t.notificationsLabel}
                       </span>
                     </div>
                     <button
@@ -279,7 +286,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                     className="w-full py-2 px-3 rounded-xl bg-white border border-[#E5E5EA] hover:border-[#E8590C] text-xs font-bold text-[#E8590C] flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
                   >
                     <Bell className="w-3.5 h-3.5 text-[#E8590C]" />
-                    <span>{isIt ? "⚡ Invia Notifica di Prova PWA" : "⚡ Send Test PWA Notification"}</span>
+                    <span>{t.testNotificationBtn}</span>
                   </button>
                 </div>
               </div>
@@ -290,15 +297,13 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                   14/7/3 giorni prima esisteva gia, qui c'e finalmente
                   un posto per vedere/gestire cosa hai salvato. */}
               <div className="space-y-2">
-                <span className="text-[11px] font-bold text-[#8E8E93] uppercase tracking-wider block px-1">
-                  {isIt ? "I MIEI PROGETTI" : "MY PROJECTS"}
+                <span className="text-[11px] font-bold text-[#68686D] uppercase tracking-wider block px-1">
+                  {t.myProjectsSection}
                 </span>
                 <div className="p-3.5 rounded-[22px] bg-[#F2F2F7] border border-[#E5E5EA] space-y-2">
                   {reminders.length === 0 ? (
-                    <p className="text-[11px] text-[#8E8E93] text-center py-2">
-                      {isIt
-                        ? "Nessun progetto salvato. Dopo aver trovato un prodotto, potrai salvarlo per ricevere un promemoria."
-                        : "No saved projects yet. After finding a product, you can save it to get a reminder."}
+                    <p className="text-[11px] text-[#68686D] text-center py-2">
+                      {t.noProjectsSaved}
                     </p>
                   ) : (
                     reminders
@@ -317,9 +322,9 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                               <p className="text-xs font-bold text-[#000000] truncate">
                                 {rem.name || rem.relation}
                               </p>
-                              <p className="text-[10px] text-[#8E8E93]">
+                              <p className="text-[10px] text-[#68686D]">
                                 {new Date(rem.date + "T00:00:00").toLocaleDateString(
-                                  isIt ? "it-IT" : "en-US",
+                                  DATE_LOCALES[language] || "en-US",
                                   { day: "numeric", month: "long" }
                                 )}
                               </p>
@@ -330,8 +335,8 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                               triggerHaptic();
                               handleDeleteReminder(rem.id);
                             }}
-                            className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#8E8E93] hover:text-[#FF4D6D] transition-colors cursor-pointer shrink-0"
-                            aria-label={isIt ? "Elimina" : "Delete"}
+                            className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#68686D] hover:text-[#FF4D6D] transition-colors cursor-pointer shrink-0"
+                            aria-label={t.deleteLabel}
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -343,8 +348,8 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
 
               {/* 3. SEZIONE LEGALE & COMPLIANCE */}
               <div className="space-y-2">
-                <span className="text-[11px] font-bold text-[#8E8E93] uppercase tracking-wider block px-1">
-                  {isIt ? "LEGALE & COMPLIANCE" : "LEGAL & COMPLIANCE"}
+                <span className="text-[11px] font-bold text-[#68686D] uppercase tracking-wider block px-1">
+                  {t.legalSection}
                 </span>
 
                 <div className="p-1 rounded-[22px] bg-[#F2F2F7] border border-[#E5E5EA] space-y-1">
@@ -357,9 +362,9 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                   >
                     <div className="flex items-center gap-2.5">
                       <ShieldCheck className="w-4 h-4 text-[#E8590C]" />
-                      <span>Privacy Policy (GDPR EU)</span>
+                      <span>{t.privacyTitle}</span>
                     </div>
-                    <ExternalLink className="w-3.5 h-3.5 text-[#8E8E93]" />
+                    <ExternalLink className="w-3.5 h-3.5 text-[#68686D]" />
                   </button>
 
                   <button
@@ -371,9 +376,9 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                   >
                     <div className="flex items-center gap-2.5">
                       <FileText className="w-4 h-4 text-[#E8590C]" />
-                      <span>{isIt ? "Termini e Condizioni" : "Terms & Conditions"}</span>
+                      <span>{t.termsLabel}</span>
                     </div>
-                    <ExternalLink className="w-3.5 h-3.5 text-[#8E8E93]" />
+                    <ExternalLink className="w-3.5 h-3.5 text-[#68686D]" />
                   </button>
 
                   <button
@@ -385,17 +390,17 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                   >
                     <div className="flex items-center gap-2.5">
                       <ShoppingBag className="w-4 h-4 text-[#E8590C]" />
-                      <span>{isIt ? "Affiliazione Amazon & Disclaimers" : "Amazon Affiliate & Disclaimers"}</span>
+                      <span>{t.affiliateLabel}</span>
                     </div>
-                    <ExternalLink className="w-3.5 h-3.5 text-[#8E8E93]" />
+                    <ExternalLink className="w-3.5 h-3.5 text-[#68686D]" />
                   </button>
                 </div>
               </div>
 
               {/* 4. SEZIONE SUPPORTO */}
               <div className="space-y-2">
-                <span className="text-[11px] font-bold text-[#8E8E93] uppercase tracking-wider block px-1">
-                  {isIt ? "SUPPORTO & INFO" : "SUPPORT & INFO"}
+                <span className="text-[11px] font-bold text-[#68686D] uppercase tracking-wider block px-1">
+                  {t.supportSection}
                 </span>
 
                 <div className="p-3.5 rounded-[22px] bg-[#F2F2F7] border border-[#E5E5EA] space-y-3">
@@ -407,12 +412,15 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                     className="w-full py-2.5 px-3 rounded-xl bg-white border border-[#E5E5EA] hover:border-[#E8590C] text-xs font-bold text-[#E8590C] flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
                   >
                     <Mail className="w-4 h-4 text-[#E8590C]" />
-                    <span>{isIt ? "Invia un Feedback" : "Send Feedback"}</span>
+                    <span>{t.sendFeedbackBtn}</span>
                   </button>
 
-                  <div className="text-center pt-1 border-t border-[#E5E5EA]">
-                    <span className="text-[11px] text-[#8E8E93] font-medium block">
+                  <div className="text-center pt-1 border-t border-[#E5E5EA] space-y-1">
+                    <span className="text-[11px] text-[#68686D] font-medium block">
                       Bricolo AI v1.0.0 (Build Stable)
+                    </span>
+                    <span className="text-[10px] text-[#68686D] font-medium tracking-wide block">
+                      {t.dgmAppsCredit}
                     </span>
                   </div>
                 </div>
@@ -420,10 +428,8 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
 
               {/* Amazon Affiliate Legal Disclaimer Banner inside Drawer */}
               <div className="p-3.5 rounded-[22px] bg-[#F2F2F7] border border-[#E5E5EA]">
-                <p className="text-[11px] text-[#8E8E93] font-normal leading-relaxed text-center">
-                  {isIt
-                    ? "In qualità di Affiliato Amazon, Bricolo AI riceve un guadagno dagli acquisti idonei."
-                    : "As an Amazon Associate, Bricolo AI earns from qualifying purchases."}
+                <p className="text-[11px] text-[#68686D] font-normal leading-relaxed text-center">
+                  {t.affiliateStatement}
                 </p>
               </div>
             </div>

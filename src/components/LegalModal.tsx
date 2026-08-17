@@ -1,7 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { X, ShieldCheck, FileText, ShoppingBag } from "lucide-react";
-import { Language } from "../data/translations";
+import { Language, TRANSLATIONS } from "../data/translations";
 
 export type LegalDocType = "privacy" | "terms" | "affiliate" | null;
 
@@ -12,6 +12,15 @@ interface LegalModalProps {
   language: Language;
 }
 
+// privacyBody/termsBody entries are stored as "Label: rest of the sentence"
+// strings — split on the first colon so the label can render bold like the
+// original hand-written markup did.
+function splitLabel(entry: string): [string, string] {
+  const idx = entry.indexOf(":");
+  if (idx === -1) return ["", entry];
+  return [entry.slice(0, idx + 1), entry.slice(idx + 1).trim()];
+}
+
 export const LegalModal: React.FC<LegalModalProps> = React.memo(({
   isOpen,
   type,
@@ -20,12 +29,12 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
 }) => {
   if (!isOpen || !type) return null;
 
-  const isIt = language === "it";
+  const t = TRANSLATIONS[language] || TRANSLATIONS.en;
 
   const getTitle = () => {
-    if (type === "privacy") return "Privacy Policy (GDPR EU)";
-    if (type === "terms") return isIt ? "Termini e Condizioni" : "Terms & Conditions";
-    return isIt ? "Affiliazione Amazon & Disclaimers" : "Amazon Affiliate & Disclaimers";
+    if (type === "privacy") return t.privacyTitle;
+    if (type === "terms") return t.termsTitle;
+    return t.affiliateTitle;
   };
 
   const getIcon = () => {
@@ -56,7 +65,7 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#8E8E93] hover:text-[#000000] transition-colors cursor-pointer"
+              className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#68686D] hover:text-[#000000] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -67,67 +76,56 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
             {type === "privacy" && (
               <>
                 <p className="font-bold text-sm text-[#E8590C]">
-                  Informativa sulla Privacy e Trattamento Dati (GDPR EU 2016/679)
+                  {t.privacyTitle}
                 </p>
-                <p>
-                  <strong>1. Titolare del Trattamento:</strong> Bricolo AI opera nel rispetto dei principi di minimizzazione dei dati e riservatezza.
-                </p>
-                <p>
-                  <strong>2. Tipologia di Dati Raccolti:</strong> Bricolo AI NON raccoglie, profila né vende dati personali degli utenti. L'applicazione funziona interamente tramite salvataggi locali tecnici nel browser/dispositivo dell'utente (localStorage) per memorizzare le impostazioni di lingua, paese Amazon e promemoria calendario.
-                </p>
-                <p>
-                  <strong>3. Cookie Tecnici:</strong> Vengono utilizzati esclusivamente cookie e archivi locali strettamente necessari per le funzionalità operative dell'applet (PWA state, preferenze lingua, lista promemoria). Non vengono impiegati cookie di tracciamento pubblicitario o profilazione di terze parti.
-                </p>
-                <p>
-                  <strong>4. Servizi Terzi (Google Gemini AI & Amazon PA-API):</strong> Le elaborazioni per la raccomandazione dei prodotti avvengono lato server tramite connessioni crittografate HTTPS. Nessun identificativo dell'utente viene trasmesso ai modelli AI.
-                </p>
-                <p>
-                  <strong>5. Diritti dell'Utente:</strong> L'utente può in qualsiasi momento cancellare i propri dati salvati semplicemente svuotando la cache del browser o ripristinando le impostazioni dell'app.
-                </p>
+                {t.privacyBody.map((entry, i) => {
+                  const [label, rest] = splitLabel(entry);
+                  return (
+                    <p key={i}>
+                      <strong>{label}</strong> {rest}
+                    </p>
+                  );
+                })}
               </>
             )}
 
             {type === "terms" && (
               <>
                 <p className="font-bold text-sm text-[#E8590C]">
-                  {isIt ? "Termini e Condizioni di Utilizzo" : "Terms & Conditions"}
+                  {t.termsTitle}
                 </p>
-                <p>
-                  <strong>1. Natura del Servizio:</strong> Bricolo AI è un motore di raccomandazione intelligente sviluppato per suggerire prodotti per la casa, il giardino e il fai-da-te reperibili su store online come Amazon.
-                </p>
-                <p>
-                  <strong>2. Esclusione di Responsabilità:</strong> I suggerimenti generati dall'Intelligenza Artificiale hanno scopo informativo ed euristico. Bricolo AI non è il venditore diretto dei prodotti consigliati.
-                </p>
-                <p>
-                  <strong>3. Acquisti Esterni:</strong> Gli acquisti avvengono interamente sui siti ufficiali Amazon del paese selezionato. L'utente si affida alle condizioni di vendita, garanzia e spedizione fornite direttamente da Amazon.
-                </p>
-                <p>
-                  <strong>4. Proprietà Intellettuale:</strong> Il design, il codice e l'interfaccia di Bricolo AI sono protetti da copyright. I marchi Amazon e i loghi dei prodotti appartengono ai rispettivi proprietari.
-                </p>
+                {t.termsBody.map((entry, i) => {
+                  const [label, rest] = splitLabel(entry);
+                  return (
+                    <p key={i}>
+                      <strong>{label}</strong> {rest}
+                    </p>
+                  );
+                })}
               </>
             )}
 
             {type === "affiliate" && (
               <>
                 <p className="font-bold text-sm text-[#E8590C]">
-                  Dichiarazione di Affiliazione Amazon & Disclaimers Obbligatori
+                  {t.affiliateIntro}
                 </p>
 
                 <div className="p-3.5 rounded-2xl bg-[#F2F2F7] border border-[#E5E5EA] font-semibold text-xs text-[#000000] space-y-2">
                   <p>
-                    "In qualità di Affiliato Amazon, Bricolo AI riceve un guadagno dagli acquisti idonei."
+                    "{t.affiliateStatement}"
                   </p>
-                  <p className="text-[11px] font-normal text-[#8E8E93]">
-                    Bricolo AI partecipa al Programma Affiliazione Amazon EU e Amazon Associates US, un programma di affiliazione progettato per fornire ai siti un mezzo per guadagnare commissioni pubblicitarie creando link verso Amazon.it, Amazon.com e i rispettivi store internazionali.
+                  <p className="text-[11px] font-normal text-[#68686D]">
+                    {t.affiliateProgramNote}
                   </p>
                 </div>
 
                 <div className="p-3.5 rounded-2xl bg-[#F2F2F7] border border-[#E5E5EA] space-y-1.5">
                   <span className="font-bold text-xs text-[#000000] block">
-                    Disclaimer Prezzi e Disponibilità:
+                    {t.affiliatePricingTitle}
                   </span>
-                  <p className="text-[11px] text-[#8E8E93] leading-relaxed">
-                    Prezzi e disponibilità dei prodotti sono forniti in tempo reale da Amazon PA-API e sono soggetti a variazioni continue. Fa fede il prezzo ed la disponibilità mostrati sulla pagina prodotto di Amazon al momento dell'acquisto finale.
+                  <p className="text-[11px] text-[#68686D] leading-relaxed">
+                    {t.affiliatePricingNote}
                   </p>
                 </div>
               </>
@@ -140,7 +138,7 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
               onClick={onClose}
               className="py-2.5 px-5 rounded-xl bg-[#E8590C] text-white font-bold text-xs cursor-pointer hover:bg-[#C24A08] transition-colors"
             >
-              {isIt ? "Chiudi" : "Close"}
+              {t.close}
             </button>
           </div>
         </motion.div>
