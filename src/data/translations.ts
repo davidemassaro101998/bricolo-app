@@ -33,6 +33,7 @@ export interface Translations {
 
   // Home Screen — Fast-Track bar
   fastTrackPrompt: string;
+  heroMicLabel: string;
 
   // Home Screen — Step 1 (Use Case Area)
   step1Title: string;
@@ -172,6 +173,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     regionNotice: "I link dei prodotti si apriranno nella tua valuta e store locale.",
 
     fastTrackPrompt: "Hai un'idea o SOS? Parla o scrivi...",
+    heroMicLabel: "Tocca e parla",
 
     step1Title: "Per cosa ti serve?",
     step1Subtitle: "Seleziona l'ambito per personalizzare",
@@ -188,7 +190,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     clearLabel: "Cancella",
     extraOptionsLabel: "OPZIONI EXTRA",
     professionalGradeLabel: "Cerco qualcosa di livello professionale",
-    extraDetailsPlaceholder: "Dettaglio extra (opzionale)",
+    extraDetailsPlaceholder: "Aggiungi un dettaglio (es. marca, misura)",
     submitBtn: "MOSTRA I PRODOTTI GIUSTI",
 
     recipients: {
@@ -317,6 +319,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     regionNotice: "Product links will open in your local store currency and region.",
 
     fastTrackPrompt: "Have an idea or SOS? Speak or type...",
+    heroMicLabel: "Tap to speak",
 
     step1Title: "What do you need it for?",
     step1Subtitle: "Select the area to customize",
@@ -333,7 +336,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     clearLabel: "Clear",
     extraOptionsLabel: "EXTRA OPTIONS",
     professionalGradeLabel: "Looking for professional-grade quality",
-    extraDetailsPlaceholder: "Extra details (optional)",
+    extraDetailsPlaceholder: "Add a detail (e.g. brand, size)",
     submitBtn: "SHOW THE RIGHT PRODUCTS",
 
     recipients: {
@@ -462,6 +465,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     regionNotice: "Los enlaces de producto se abrirán con la moneda y la tienda de tu región.",
 
     fastTrackPrompt: "¿Tienes una idea o un SOS? Habla o escribe...",
+    heroMicLabel: "Toca y habla",
 
     step1Title: "¿Para qué lo necesitas?",
     step1Subtitle: "Selecciona el ámbito para personalizar",
@@ -478,7 +482,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     clearLabel: "Borrar",
     extraOptionsLabel: "OPCIONES EXTRA",
     professionalGradeLabel: "Busco algo de nivel profesional",
-    extraDetailsPlaceholder: "Detalle extra (opcional)",
+    extraDetailsPlaceholder: "Añade un detalle (ej. marca, medida)",
     submitBtn: "MOSTRAR LOS PRODUCTOS ADECUADOS",
 
     recipients: {
@@ -607,6 +611,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     regionNotice: "Les liens produits s'ouvriront dans la devise et la boutique de votre région.",
 
     fastTrackPrompt: "Une idée ou un SOS ? Parlez ou écrivez...",
+    heroMicLabel: "Touchez et parlez",
 
     step1Title: "Pour quoi en avez-vous besoin ?",
     step1Subtitle: "Sélectionnez le domaine à personnaliser",
@@ -623,7 +628,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     clearLabel: "Effacer",
     extraOptionsLabel: "OPTIONS SUPPLÉMENTAIRES",
     professionalGradeLabel: "Je cherche quelque chose de qualité professionnelle",
-    extraDetailsPlaceholder: "Détail supplémentaire (facultatif)",
+    extraDetailsPlaceholder: "Ajoutez un détail (ex. marque, taille)",
     submitBtn: "AFFICHER LES BONS PRODUITS",
 
     recipients: {
@@ -752,6 +757,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     regionNotice: "Produktlinks öffnen sich in der Währung und im Store deiner Region.",
 
     fastTrackPrompt: "Hast du eine Idee oder einen SOS? Sprich oder tippe...",
+    heroMicLabel: "Tippen und sprechen",
 
     step1Title: "Wofür brauchst du es?",
     step1Subtitle: "Wähle den Bereich zur Anpassung",
@@ -768,7 +774,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     clearLabel: "Löschen",
     extraOptionsLabel: "ZUSATZOPTIONEN",
     professionalGradeLabel: "Ich suche etwas in professioneller Qualität",
-    extraDetailsPlaceholder: "Zusätzliches Detail (optional)",
+    extraDetailsPlaceholder: "Füge ein Detail hinzu (z. B. Marke, Größe)",
     submitBtn: "DIE RICHTIGEN PRODUKTE ANZEIGEN",
 
     recipients: {
