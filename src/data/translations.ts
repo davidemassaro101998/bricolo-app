@@ -83,15 +83,9 @@ export interface Translations {
   addToCart: string;
   searchOnAmazon: string;
   dgmAppsCredit: string;
-  reminderIosStorageHint: string;
   copyLink: string;
   copyLinkDone: string;
   moreProducts: string;
-  saveForLater: string;
-  projectNamePlaceholder: string;
-  cancel: string;
-  save: string;
-  reminderSaved: string;
   amazonAffiliateDisclaimer: string;
   whatsAppShareText: string; // {title} e {price} vengono sostituiti nel testo
 
@@ -119,11 +113,6 @@ export interface Translations {
   micBlocked: string;
   enableMicBtn: string;
   micBlockedHelp: string;
-  notificationsLabel: string;
-  testNotificationBtn: string;
-  myProjectsSection: string;
-  noProjectsSaved: string;
-  deleteLabel: string;
   legalSection: string;
   termsLabel: string;
   affiliateLabel: string;
@@ -236,15 +225,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     addToCart: "METTI IN CARRELLO",
     searchOnAmazon: "CERCA SU AMAZON",
     dgmAppsCredit: "Parte di DGM Apps",
-    reminderIosStorageHint: "Su iPhone, Safari può cancellare i dati salvati dopo una settimana senza aprire il sito. Aggiungi Bricolo AI alla Home per essere sicuro che questo promemoria arrivi davvero il giorno giusto.",
     copyLink: "Copia Link",
     copyLinkDone: "Copiato & Aperto!",
     moreProducts: "Altri 3 Prodotti",
-    saveForLater: "Salva per dopo",
-    projectNamePlaceholder: "Nome progetto (facoltativo)",
-    cancel: "Annulla",
-    save: "Salva",
-    reminderSaved: "Promemoria salvato — te lo ricorderemo noi.",
     amazonAffiliateDisclaimer: "In qualità di Affiliato Amazon, Bricolo AI riceve un guadagno dagli acquisti idonei.",
     whatsAppShareText: "Ho trovato il prodotto giusto per il mio progetto: {title} ({price})! Guarda qui su Amazon: {url}",
 
@@ -270,11 +253,6 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     micBlocked: "Bloccato",
     enableMicBtn: "Attiva Permesso Microfono",
     micBlockedHelp: "Hai bloccato il microfono per questo sito. Riattivalo dalle impostazioni del browser (icona lucchetto nella barra indirizzo).",
-    notificationsLabel: "Notifiche PWA Promemoria",
-    testNotificationBtn: "⚡ Invia Notifica di Prova PWA",
-    myProjectsSection: "I MIEI PROGETTI",
-    noProjectsSaved: "Nessun progetto salvato. Dopo aver trovato un prodotto, potrai salvarlo per ricevere un promemoria.",
-    deleteLabel: "Elimina",
     legalSection: "LEGALE & COMPLIANCE",
     termsLabel: "Termini e Condizioni",
     affiliateLabel: "Affiliazione Amazon & Disclaimers",
@@ -392,15 +370,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     addToCart: "ADD TO CART",
     searchOnAmazon: "SEARCH ON AMAZON",
     dgmAppsCredit: "Part of DGM Apps",
-    reminderIosStorageHint: "On iPhone, Safari can clear saved data after a week of not opening the site. Add Bricolo AI to your Home Screen so this reminder is safe until the day it matters.",
     copyLink: "Copy Link",
     copyLinkDone: "Copied & Opened!",
     moreProducts: "3 More Products",
-    saveForLater: "Save for later",
-    projectNamePlaceholder: "Project name (optional)",
-    cancel: "Cancel",
-    save: "Save",
-    reminderSaved: "Reminder saved — we'll remind you.",
     amazonAffiliateDisclaimer: "As an Amazon Associate, Bricolo AI earns from qualifying purchases.",
     whatsAppShareText: "I found the right product for my project: {title} ({price})! Check it out: {url}",
 
@@ -426,11 +398,6 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     micBlocked: "Blocked",
     enableMicBtn: "Enable Microphone Permission",
     micBlockedHelp: "You've blocked the microphone for this site. Re-enable it from your browser's site settings (padlock icon in the address bar).",
-    notificationsLabel: "PWA Reminder Notifications",
-    testNotificationBtn: "⚡ Send Test PWA Notification",
-    myProjectsSection: "MY PROJECTS",
-    noProjectsSaved: "No saved projects yet. After finding a product, you can save it to get a reminder.",
-    deleteLabel: "Delete",
     legalSection: "LEGAL & COMPLIANCE",
     termsLabel: "Terms & Conditions",
     affiliateLabel: "Amazon Affiliate & Disclaimers",
@@ -548,15 +515,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     addToCart: "AÑADIR AL CARRITO",
     searchOnAmazon: "BUSCAR EN AMAZON",
     dgmAppsCredit: "Parte de DGM Apps",
-    reminderIosStorageHint: "En iPhone, Safari puede borrar los datos guardados tras una semana sin abrir el sitio. Añade Bricolo AI a tu pantalla de inicio para asegurarte de que este recordatorio llegue el día que importa.",
     copyLink: "Copiar Enlace",
     copyLinkDone: "¡Copiado y Abierto!",
     moreProducts: "3 Productos Más",
-    saveForLater: "Guardar para después",
-    projectNamePlaceholder: "Nombre del proyecto (opcional)",
-    cancel: "Cancelar",
-    save: "Guardar",
-    reminderSaved: "Recordatorio guardado — te lo recordaremos.",
     amazonAffiliateDisclaimer: "Como Afiliado de Amazon, Bricolo AI obtiene ingresos por las compras que cumplen los requisitos.",
     whatsAppShareText: "¡Encontré el producto ideal para mi proyecto: {title} ({price})! Míralo en Amazon: {url}",
 
@@ -582,11 +543,6 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     micBlocked: "Bloqueado",
     enableMicBtn: "Activar Permiso de Micrófono",
     micBlockedHelp: "Has bloqueado el micrófono para este sitio. Reactívalo desde la configuración del sitio en tu navegador (icono del candado en la barra de direcciones).",
-    notificationsLabel: "Notificaciones PWA de Recordatorios",
-    testNotificationBtn: "⚡ Enviar Notificación de Prueba PWA",
-    myProjectsSection: "MIS PROYECTOS",
-    noProjectsSaved: "Aún no hay proyectos guardados. Después de encontrar un producto, podrás guardarlo para recibir un recordatorio.",
-    deleteLabel: "Eliminar",
     legalSection: "LEGAL Y CUMPLIMIENTO",
     termsLabel: "Términos y Condiciones",
     affiliateLabel: "Afiliación de Amazon y Avisos Legales",
@@ -704,15 +660,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     addToCart: "AJOUTER AU PANIER",
     searchOnAmazon: "RECHERCHER SUR AMAZON",
     dgmAppsCredit: "Fait partie de DGM Apps",
-    reminderIosStorageHint: "Sur iPhone, Safari peut effacer les données enregistrées après une semaine sans ouvrir le site. Ajoutez Bricolo AI à votre écran d'accueil pour que ce rappel arrive bien le jour J.",
     copyLink: "Copier le Lien",
     copyLinkDone: "Copié & Ouvert !",
     moreProducts: "3 Autres Produits",
-    saveForLater: "Enregistrer pour plus tard",
-    projectNamePlaceholder: "Nom du projet (facultatif)",
-    cancel: "Annuler",
-    save: "Enregistrer",
-    reminderSaved: "Rappel enregistré — nous vous le rappellerons.",
     amazonAffiliateDisclaimer: "En tant que Partenaire Amazon, Bricolo AI perçoit une commission sur les achats éligibles.",
     whatsAppShareText: "J'ai trouvé le bon produit pour mon projet : {title} ({price}) ! Regarde ça sur Amazon : {url}",
 
@@ -738,11 +688,6 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     micBlocked: "Bloqué",
     enableMicBtn: "Activer la Permission du Microphone",
     micBlockedHelp: "Vous avez bloqué le microphone pour ce site. Réactivez-le depuis les réglages du site dans votre navigateur (icône du cadenas dans la barre d'adresse).",
-    notificationsLabel: "Notifications PWA de Rappel",
-    testNotificationBtn: "⚡ Envoyer une Notification de Test PWA",
-    myProjectsSection: "MES PROJETS",
-    noProjectsSaved: "Aucun projet enregistré pour le moment. Après avoir trouvé un produit, vous pourrez l'enregistrer pour recevoir un rappel.",
-    deleteLabel: "Supprimer",
     legalSection: "MENTIONS LÉGALES & CONFORMITÉ",
     termsLabel: "Conditions Générales",
     affiliateLabel: "Partenariat Amazon & Mentions Légales",
@@ -860,15 +805,9 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     addToCart: "IN DEN WARENKORB",
     searchOnAmazon: "AUF AMAZON SUCHEN",
     dgmAppsCredit: "Teil von DGM Apps",
-    reminderIosStorageHint: "Auf dem iPhone kann Safari gespeicherte Daten nach einer Woche ohne Öffnen der Seite löschen. Füge Bricolo AI zum Home-Bildschirm hinzu, damit diese Erinnerung sicher am richtigen Tag ankommt.",
     copyLink: "Link Kopieren",
     copyLinkDone: "Kopiert & Geöffnet!",
     moreProducts: "3 Weitere Produkte",
-    saveForLater: "Für später speichern",
-    projectNamePlaceholder: "Projektname (optional)",
-    cancel: "Abbrechen",
-    save: "Speichern",
-    reminderSaved: "Erinnerung gespeichert — wir erinnern dich rechtzeitig.",
     amazonAffiliateDisclaimer: "Als Amazon-Partner verdient Bricolo AI an qualifizierten Käufen.",
     whatsAppShareText: "Ich habe das richtige Produkt für mein Projekt gefunden: {title} ({price})! Schau es dir auf Amazon an: {url}",
 
@@ -894,11 +833,6 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     micBlocked: "Blockiert",
     enableMicBtn: "Mikrofonberechtigung aktivieren",
     micBlockedHelp: "Du hast das Mikrofon für diese Website blockiert. Aktiviere es erneut in den Website-Einstellungen deines Browsers (Schloss-Symbol in der Adressleiste).",
-    notificationsLabel: "PWA-Erinnerungsbenachrichtigungen",
-    testNotificationBtn: "⚡ Test-PWA-Benachrichtigung senden",
-    myProjectsSection: "MEINE PROJEKTE",
-    noProjectsSaved: "Noch keine Projekte gespeichert. Nachdem du ein Produkt gefunden hast, kannst du es speichern, um eine Erinnerung zu erhalten.",
-    deleteLabel: "Löschen",
     legalSection: "RECHTLICHES & COMPLIANCE",
     termsLabel: "Allgemeine Geschäftsbedingungen",
     affiliateLabel: "Amazon-Partnerprogramm & Hinweise",

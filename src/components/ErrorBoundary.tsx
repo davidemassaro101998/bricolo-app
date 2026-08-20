@@ -37,7 +37,7 @@ export class ErrorBoundary extends React.Component<
   handleReset = () => {
     // Pulisce solo lo stato di sessione/form che potrebbe essere la
     // causa (dato corrotto salvato in precedenza) — non tocca le
-    // occasioni salvate ne le preferenze dell'utente.
+    // preferenze dell'utente.
     try {
       localStorage.removeItem("bricolo_saved_session");
       localStorage.removeItem("bricolo_home_form_state");
