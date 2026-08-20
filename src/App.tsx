@@ -75,9 +75,6 @@ export default function App() {
   });
   const [currentCountry, setCurrentCountry] = useState<CountryConfig>(detectUserCountry());
 
-  // Settings & Theme State - Always light mode
-  const [theme, setTheme] = useState<"light">("light");
-
   const [hapticEnabled, setHapticEnabled] = useState<boolean>(() => {
     try {
       return localStorage.getItem("bricolo_haptic_enabled") !== "false";
@@ -99,13 +96,6 @@ export default function App() {
 
   const [showSettingsDrawer, setShowSettingsDrawer] = useState(false);
   const [legalModalType, setLegalModalType] = useState<LegalDocType | null>(null);
-
-  // Theme is strictly light mode
-  useEffect(() => {
-    try {
-      localStorage.setItem("bricolo_theme", "light");
-    } catch (e) {}
-  }, []);
 
   // Handle Haptic Toggle
   const handleToggleHaptic = useCallback((enabled: boolean) => {
@@ -414,8 +404,6 @@ export default function App() {
         isOpen={showSettingsDrawer}
         onClose={handleCloseSettings}
         language={language}
-        theme={theme}
-        onSelectTheme={setTheme}
         hapticEnabled={hapticEnabled}
         onToggleHaptic={handleToggleHaptic}
         notificationsEnabled={notificationsEnabled}
