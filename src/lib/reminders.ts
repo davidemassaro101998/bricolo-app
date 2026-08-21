@@ -7,7 +7,7 @@
 
 import { SavedReminder } from "../types";
 
-const STORAGE_KEY = "kado_saved_reminders";
+const STORAGE_KEY = "bricolo_saved_reminders";
 
 export function getReminders(): SavedReminder[] {
   try {

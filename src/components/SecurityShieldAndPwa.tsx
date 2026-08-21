@@ -411,7 +411,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
       {/* Bug corretto: qui viveva un SECONDO banner cookie indipendente
           (chiave "ideeregalo_cookie_consent", residuo di un altro
           progetto/prototipo mai ripulito) che si sovrapponeva a quello
-          vero in CookieBanner.tsx (chiave "kado_cookie_accepted") —
+          vero in CookieBanner.tsx (chiave "bricolo_cookie_accepted") —
           due banner, due modali privacy con testi diversi, stato non
           sincronizzato. Il consenso cookie ha un solo proprietario:
           App.tsx + CookieBanner.tsx. Rimosso qui. */}

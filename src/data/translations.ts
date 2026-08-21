@@ -107,7 +107,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     selectLanguageRegion: "Language & Region",
     language: "Language",
     storeRegion: "Store Region",
-    regionNotice: "Gift links will open in your local store currency and region.",
+    regionNotice: "Product links will open in your local store currency and region.",
     
     heroTag: "Ultra-Fast Gift Curation",
     heroTitleLine1: "The Right Gift.",
@@ -218,7 +218,7 @@ export const TRANSLATIONS: Record<Language, Translations> = {
     selectLanguageRegion: "Lingua e Regione",
     language: "Lingua",
     storeRegion: "Regione dello Store",
-    regionNotice: "I link dei regali si apriranno nella tua valuta e store locale.",
+    regionNotice: "I link dei prodotti si apriranno nella tua valuta e store locale.",
 
     heroTag: "Curatela Regali Ultra-Veloce",
     heroTitleLine1: "Il Regalo Perfetto.",

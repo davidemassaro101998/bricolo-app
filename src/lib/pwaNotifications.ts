@@ -140,7 +140,7 @@ export async function dispatchPwaNotification(payload: NotificationPayload): Pro
 function hasBeenSentToday(tag: string): boolean {
   try {
     const todayStr = new Date().toISOString().split("T")[0];
-    const key = `kado_sent_notif_${tag}_${todayStr}`;
+    const key = `bricolo_sent_notif_${tag}_${todayStr}`;
     return localStorage.getItem(key) === "true";
   } catch (e) {
     return false;
@@ -150,7 +150,7 @@ function hasBeenSentToday(tag: string): boolean {
 function markAsSentToday(tag: string): void {
   try {
     const todayStr = new Date().toISOString().split("T")[0];
-    const key = `kado_sent_notif_${tag}_${todayStr}`;
+    const key = `bricolo_sent_notif_${tag}_${todayStr}`;
     localStorage.setItem(key, "true");
   } catch (e) {
     // ignore

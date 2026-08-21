@@ -7,6 +7,7 @@ import { ResultsDeckApple } from "./components/ResultsDeckApple";
 import { SecurityShieldAndPwa } from "./components/SecurityShieldAndPwa";
 import { OfflineScreenApple } from "./components/OfflineScreenApple";
 import { SplashScreenApple } from "./components/SplashScreenApple";
+import { OnboardingHelpModal } from "./components/OnboardingHelpModal";
 import { SettingsDrawer } from "./components/SettingsDrawer";
 import { LegalModal, LegalDocType } from "./components/LegalModal";
 import { CookieBanner } from "./components/CookieBanner";
@@ -29,13 +30,23 @@ export default function App() {
   // Restore saved app session for background/app switch persistence
   const savedSession = React.useMemo(() => {
     try {
-      const stored = localStorage.getItem("kado_saved_session");
+      const stored = localStorage.getItem("bricolo_saved_session");
       if (stored) return JSON.parse(stored);
     } catch (e) {}
     return null;
   }, []);
 
   const [showSplash, setShowSplash] = useState(true);
+  // First-ever launch only -- an onboarding tip that reappeared on every
+  // open (including background resume) would be ignored at best and
+  // actively confusing once mic permission is already granted.
+  const [showOnboardingHelp, setShowOnboardingHelp] = useState(() => {
+    try {
+      return !localStorage.getItem("bricolo_onboarding_seen");
+    } catch (e) {
+      return false;
+    }
+  });
   const [screen, setScreen] = useState<ScreenType>(() => {
     if (savedSession?.screen === "results" && Array.isArray(savedSession?.gifts) && savedSession.gifts.length > 0) {
       return "results";
@@ -49,7 +60,7 @@ export default function App() {
 
   const [hapticEnabled, setHapticEnabled] = useState<boolean>(() => {
     try {
-      return localStorage.getItem("kado_haptic_enabled") !== "false";
+      return localStorage.getItem("bricolo_haptic_enabled") !== "false";
     } catch (e) {
       return true;
     }
@@ -60,7 +71,7 @@ export default function App() {
       if (typeof window !== "undefined" && "Notification" in window) {
         return Notification.permission === "granted";
       }
-      return localStorage.getItem("kado_notifications_enabled") !== "false";
+      return localStorage.getItem("bricolo_notifications_enabled") !== "false";
     } catch (e) {
       return true;
     }
@@ -80,7 +91,7 @@ export default function App() {
   const handleToggleHaptic = useCallback((enabled: boolean) => {
     setHapticEnabled(enabled);
     try {
-      localStorage.setItem("kado_haptic_enabled", enabled ? "true" : "false");
+      localStorage.setItem("bricolo_haptic_enabled", enabled ? "true" : "false");
     } catch (e) {
       // ignore
     }
@@ -90,7 +101,7 @@ export default function App() {
   const handleToggleNotifications = useCallback((enabled: boolean) => {
     setNotificationsEnabled(enabled);
     try {
-      localStorage.setItem("kado_notifications_enabled", enabled ? "true" : "false");
+      localStorage.setItem("bricolo_notifications_enabled", enabled ? "true" : "false");
     } catch (e) {
       // ignore
     }
@@ -135,7 +146,7 @@ export default function App() {
   useEffect(() => {
     if (screen !== "loading") {
       try {
-        localStorage.setItem("kado_saved_session", JSON.stringify({
+        localStorage.setItem("bricolo_saved_session", JSON.stringify({
           screen,
           quizState,
           gifts,
@@ -265,7 +276,7 @@ export default function App() {
   // Memoized Navigation & Action Handlers
   const handleGoHome = useCallback(() => {
     try {
-      localStorage.removeItem("kado_saved_session");
+      localStorage.removeItem("bricolo_saved_session");
     } catch (e) {}
     setGifts([]);
     setActiveCardIndex(0);
@@ -288,6 +299,12 @@ export default function App() {
     }
   }, []);
   const handleHideSplash = useCallback(() => setShowSplash(false), []);
+  const handleDismissOnboardingHelp = useCallback(() => {
+    setShowOnboardingHelp(false);
+    try {
+      localStorage.setItem("bricolo_onboarding_seen", "1");
+    } catch (e) {}
+  }, []);
 
   return (
     <div id="app-root" className="app-container fixed inset-0 h-[100dvh] w-[100vw] overflow-hidden bg-[#F2F2F7] text-[#000000] select-none flex flex-col font-sans gpu-layer">
@@ -296,6 +313,12 @@ export default function App() {
           <SplashScreenApple onComplete={handleHideSplash} />
         )}
       </AnimatePresence>
+
+      <OnboardingHelpModal
+        isOpen={!showSplash && showOnboardingHelp}
+        onDismiss={handleDismissOnboardingHelp}
+        language={language}
+      />
 
       {/* Security & PWA Hardening Overlay Engine */}
       <SecurityShieldAndPwa language={language} />
