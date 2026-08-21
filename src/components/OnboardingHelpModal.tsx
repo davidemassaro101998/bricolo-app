@@ -60,6 +60,11 @@ export const OnboardingHelpModal: React.FC<OnboardingHelpModalProps> = ({
               <h2 className="text-lg font-bold text-[#000000]">
                 {language === "it" ? "Benvenuto su Bricolo AI" : "Welcome to Bricolo AI"}
               </h2>
+              <p className="text-sm text-[#000000] leading-relaxed font-medium">
+                {language === "it"
+                  ? "L'AI ti trova l'attrezzo giusto su Amazon in 3 tap: dì o scegli l'ambito, cosa ti serve e il budget."
+                  : "AI finds the right tool on Amazon in 3 taps: say or pick the area, what you need, and your budget."}
+              </p>
               <p className="text-sm text-[#8E8E93] leading-relaxed">
                 {language === "it"
                   ? "Tocca il microfono e descrivi a voce cosa ti serve: se al primo utilizzo il telefono chiede il permesso al microfono, tocca \"Consenti\" per usare la ricerca vocale."
