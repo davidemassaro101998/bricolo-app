@@ -211,7 +211,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                         micPermission === "granted"
                           ? "border-[#34C759] text-[#34C759]"
                           : micPermission === "denied"
-                          ? "border-[#FF4D6D] text-[#FF4D6D]"
+                          ? "border-[#E8590C] text-[#E8590C]"
                           : "border-[#E5E5EA] text-[#8E8E93]"
                       }`}
                     >
@@ -330,7 +330,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                               triggerHaptic();
                               handleDeleteReminder(rem.id);
                             }}
-                            className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#8E8E93] hover:text-[#FF4D6D] transition-colors cursor-pointer shrink-0"
+                            className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#8E8E93] hover:text-[#E8590C] transition-colors cursor-pointer shrink-0"
                             aria-label={isIt ? "Elimina" : "Delete"}
                           >
                             <Trash2 className="w-3.5 h-3.5" />

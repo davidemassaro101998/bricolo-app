@@ -98,30 +98,6 @@
     background-position: 0 0, 15px 15px;
   }
 
-  /* Tactile Slate Blue Soft-Touch Button */
-  .bg-slate-blue {
-    background: linear-gradient(145deg, #2C4E6F, #1C354E);
-  }
-
-  /* Ultra-smooth, elegant tactile blue primary button without ugly/harsh dark shadows */
-  .btn-tactile-blue {
-    background: linear-gradient(145deg, #325B84, #1C354E);
-    border: 1px solid rgba(223, 185, 96, 0.45);
-    box-shadow: 0 4px 12px -2px rgba(28, 53, 78, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .btn-tactile-blue:hover {
-    background: linear-gradient(145deg, #3A6693, #224160);
-    border-color: rgba(223, 185, 96, 0.75);
-    box-shadow: 0 6px 16px -2px rgba(28, 53, 78, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  }
-
-  .btn-tactile-blue:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 6px -1px rgba(28, 53, 78, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-
   /* Secondary Tactile Soft Button */
   .btn-tactile-secondary {
     background: linear-gradient(145deg, #FFFFFF, #FAF7F2);
@@ -142,13 +118,6 @@
     border: 1px solid #EBE6DC;
     box-shadow: 0 4px 14px -3px rgba(60, 50, 30, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .card-tactile-selected {
-    background: linear-gradient(145deg, #2C4E6F, #1C354E);
-    border: 1px solid #DFB960;
-    box-shadow: 0 6px 16px -3px rgba(28, 53, 78, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    color: #FFFFFF;
   }
 
   /* Pale Gold Accent Text & Border */
