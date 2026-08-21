@@ -37,7 +37,7 @@ export const SplashScreenApple: React.FC<SplashScreenAppleProps> = ({ onComplete
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.35, ease: "easeInOut" }}
-      className="fixed inset-0 z-50 bg-[#F2F2F7] flex flex-col items-center justify-between py-12 px-6 select-none font-sans gpu-layer"
+      className="fixed inset-0 z-50 bg-tactile-linen flex flex-col items-center justify-between py-12 px-6 select-none font-sans"
     >
       <div className="flex-1" />
 
@@ -48,7 +48,7 @@ export const SplashScreenApple: React.FC<SplashScreenAppleProps> = ({ onComplete
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="flex flex-col items-center gap-4 text-center"
       >
-        <div className="w-20 h-20 rounded-[28px] bg-white border border-[#E5E5EA] shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center justify-center p-3">
+        <div className="card-tactile w-20 h-20 rounded-[28px] flex items-center justify-center p-3">
           <ToolBadge3D size="lg" />
         </div>
 
@@ -78,7 +78,7 @@ export const SplashScreenApple: React.FC<SplashScreenAppleProps> = ({ onComplete
             <div className="absolute inset-0 rounded-full bg-[#E8590C]/20 blur-md animate-pulse" />
             
             {/* Cinematic spinning gradient ring */}
-            <div className="w-7 h-7 rounded-full border-[2.5px] border-[#E5E5EA] border-t-[#E8590C] border-r-[#E8590C]/60 animate-spin" />
+            <div className="w-7 h-7 rounded-full border-[2.5px] border-[#EBE6DC] border-t-[#E8590C] border-r-[#E8590C]/60 animate-spin" />
             
             {/* Core dot */}
             <div className="absolute w-2 h-2 rounded-full bg-[#E8590C] shadow-xs" />
