@@ -17,6 +17,7 @@ import {
   CountryConfig,
 } from "./types";
 import { detectUserCountry } from "./data/countries";
+import { getDefaultBudget } from "./data/budgetBands";
 import { generateSmartFallbackGifts } from "./data/mockGifts";
 import { Language } from "./data/translations";
 import { registerServiceWorker } from "./lib/pwaNotifications";
@@ -120,7 +121,7 @@ export default function App() {
   const [quizState, setQuizState] = useState<QuizState>(() => savedSession?.quizState || {
     recipient: "Partner",
     vibe: "Tech",
-    budget: "25-50€",
+    budget: getDefaultBudget(currentCountry.currency, currentCountry.symbol),
     formatPill: "Tutto",
     hasAlreadyEverything: false,
     extraDetails: "",
@@ -336,6 +337,7 @@ export default function App() {
             >
               <HomeScreenApple
                 language={language}
+                country={currentCountry}
                 onGenerateGifts={handleGenerateGiftsHome}
               />
             </motion.div>
