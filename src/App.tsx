@@ -19,11 +19,7 @@ import {
 import { detectUserCountry } from "./data/countries";
 import { generateSmartFallbackGifts } from "./data/mockGifts";
 import { Language } from "./data/translations";
-import {
-  registerServiceWorker,
-  checkSavedEventNotifications,
-} from "./lib/pwaNotifications";
-import { getReminders } from "./lib/reminders";
+import { registerServiceWorker } from "./lib/pwaNotifications";
 
 export default function App() {
   // Restore saved app session for background/app switch persistence
@@ -65,17 +61,6 @@ export default function App() {
     }
   });
 
-  const [notificationsEnabled, setNotificationsEnabled] = useState<boolean>(() => {
-    try {
-      if (typeof window !== "undefined" && "Notification" in window) {
-        return Notification.permission === "granted";
-      }
-      return localStorage.getItem("bricolo_notifications_enabled") !== "false";
-    } catch (e) {
-      return true;
-    }
-  });
-
   const [showSettingsDrawer, setShowSettingsDrawer] = useState(false);
   const [legalModalType, setLegalModalType] = useState<LegalDocType | null>(null);
 
@@ -96,34 +81,14 @@ export default function App() {
     }
   }, []);
 
-  // Handle Notifications Toggle
-  const handleToggleNotifications = useCallback((enabled: boolean) => {
-    setNotificationsEnabled(enabled);
-    try {
-      localStorage.setItem("bricolo_notifications_enabled", enabled ? "true" : "false");
-    } catch (e) {
-      // ignore
-    }
-    if (enabled && typeof window !== "undefined" && "Notification" in window && Notification.permission !== "granted") {
-      try {
-        Notification.requestPermission();
-      } catch (e) {
-        // ignore
-      }
-    }
-  }, []);
-
   // Language State
   const [language, setLanguage] = useState<Language>(() => {
     try {
       const userLang = navigator.language || "";
-      if (userLang.toLowerCase().includes("it")) {
-        return "it";
-      }
+      return userLang.toLowerCase().includes("it") ? "it" : "en";
     } catch (e) {
-      // fallback
+      return "it";
     }
-    return "it";
   });
 
   // Quiz State
@@ -167,14 +132,6 @@ export default function App() {
   useEffect(() => {
     registerServiceWorker();
 
-    if (notificationsEnabled) {
-      // Le notifiche di festivita (San Valentino, Natale, ecc.) non si
-      // applicano a un'app di prodotti per la casa/fai-da-te — rimosse.
-      // Resta solo il motore di promemoria progetti salvati (14/7/3
-      // giorni prima della data indicata dall'utente).
-      checkSavedEventNotifications(getReminders());
-    }
-
     // Parse URL Action parameters from Notification click
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -192,7 +149,7 @@ export default function App() {
         setShowSplash(false);
       }
     }
-  }, [notificationsEnabled]);
+  }, []);
 
   // Main Gift Generator Handler (Optimistic Instant 0ms Transition)
   const handleGenerateGifts = useCallback(async (quizData: QuizState, forceRegenerate = false) => {
@@ -405,8 +362,6 @@ export default function App() {
         onSelectTheme={setTheme}
         hapticEnabled={hapticEnabled}
         onToggleHaptic={handleToggleHaptic}
-        notificationsEnabled={notificationsEnabled}
-        onToggleNotifications={handleToggleNotifications}
         onOpenLegalModal={handleOpenLegalModal}
         onSendFeedback={handleSendFeedback}
       />

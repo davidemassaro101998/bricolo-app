@@ -1,6 +1,6 @@
 // Bricolo AI - PWA Service Worker for Smart Web Push Notifications
 
-const CACHE_NAME = 'bricolo-ai-v2';
+const CACHE_NAME = 'bricolo-ai-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
