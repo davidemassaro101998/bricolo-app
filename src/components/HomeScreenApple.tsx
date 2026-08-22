@@ -140,21 +140,37 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
     });
   }, [triggerHaptic, recipient, vibe, budget, extraDetails, formatPill, hasAlreadyEverything, fastTrackIdea, onGenerateGifts]);
 
-  const recipientOptions = [
-    { label: "Casa", icon: HomeIcon },
-    { label: "Giardino", icon: TreePine },
-    { label: "Bricolage", icon: Hammer },
-    { label: "Officina", icon: Wrench },
-  ];
+  const recipientOptions = language === "it"
+    ? [
+        { label: "Casa", icon: HomeIcon },
+        { label: "Giardino", icon: TreePine },
+        { label: "Bricolage", icon: Hammer },
+        { label: "Officina", icon: Wrench },
+      ]
+    : [
+        { label: "Home", icon: HomeIcon },
+        { label: "Garden", icon: TreePine },
+        { label: "DIY", icon: Hammer },
+        { label: "Workshop", icon: Wrench },
+      ];
 
-  const vibeOptions = [
-    { label: "Elettroutensili", icon: Zap },
-    { label: "Utensili manuali", icon: Hammer },
-    { label: "Fissaggio", icon: Wrench },
-    { label: "Sicurezza", icon: ShieldCheck },
-    { label: "Organizzazione", icon: Box },
-    { label: "Illuminazione", icon: Lightbulb },
-  ];
+  const vibeOptions = language === "it"
+    ? [
+        { label: "Elettroutensili", icon: Zap },
+        { label: "Utensili manuali", icon: Hammer },
+        { label: "Fissaggio", icon: Wrench },
+        { label: "Sicurezza", icon: ShieldCheck },
+        { label: "Organizzazione", icon: Box },
+        { label: "Illuminazione", icon: Lightbulb },
+      ]
+    : [
+        { label: "Power Tools", icon: Zap },
+        { label: "Hand Tools", icon: Hammer },
+        { label: "Fastening", icon: Wrench },
+        { label: "Safety", icon: ShieldCheck },
+        { label: "Organization", icon: Box },
+        { label: "Lighting", icon: Lightbulb },
+      ];
 
   const budgetOptions = ["< 25€", "25 - 50€", "50 - 100€", "100€+"];
 
