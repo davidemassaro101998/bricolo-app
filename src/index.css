@@ -1,46 +1,42 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap");
 
 @layer base {
   :root {
     --pwa-banner-h: 0px;
-    --bg-main: #F2F2F7;
-    --bg-header: rgba(255, 255, 255, 0.85);
-    --bg-card: #FFFFFF;
-    --bg-card-selected: #E8590C;
-    --text-main: #000000;
-    --text-sub: #8E8E93;
+    --bg-main: #100E0B;
+    --bg-header: rgba(16, 14, 11, 0.85);
+    --bg-card: #1A140F;
+    --bg-card-selected: #FF8A1F;
+    --text-main: #F5F1EA;
+    --text-sub: #97908A;
     --text-selected: #FFFFFF;
-    --border-card: rgba(0, 0, 0, 0.05);
-    --accent-primary: #E8590C;
+    --border-card: rgba(255, 255, 255, 0.07);
+    --accent-primary: #FF8A1F;
 
-    /* Identita di marchio: arancio bruciato ovunque nella UI (bottoni,
-       icone, bordi selezionati, focus) al posto dell'azzurro di sistema
-       ereditato da Kado AI — differenziazione visiva netta tra le tre
-       app. Arancio bruciato scelto perche e il colore-schema che il
-       cervello associa a utensili/hardware (coerenza di categoria =
-       fiducia immediata); la versione "bruciata" (piu scura, meno
-       satura) evita l'effetto plasticoso di un arancio sicurezza puro.
-       Oro tenue riservato al solo badge "Top Qualita". */
-    --brand-coral: #E8590C;
-    --brand-coral-dark: #C24A08;
-    --brand-coral-gradient: linear-gradient(135deg, #FF8A3D 0%, #E8590C 55%, #C24A08 100%);
-    --brand-gold: #C9A15C;
+    /* Identita di marchio "Aura": base quasi-nera tinta ambra e un solo
+       dispositivo luminoso ripetuto ovunque — il bagliore aura dietro
+       ogni superficie selezionata, ambra su grafite. Ambra scelto per
+       l'associazione metallo caldo/officina, distinto dal magenta di
+       Kado e dal lime di Forma pur restando nella stessa famiglia. */
+    --brand-coral: #FF8A1F;
+    --brand-coral-dark: #D96F0F;
+    --brand-coral-gradient: linear-gradient(135deg, #FF8A1F 0%, #FFA83A 55%, #FFC24D 100%);
+    --brand-gold: #FFC24D;
 
     --text-primary: var(--text-main);
     --text-secondary: var(--text-sub);
     --accent: var(--accent-primary);
 
     /* Font display: solo per i momenti di marchio (splash, titolo del
-       risultato) — tutta la UI funzionale resta sul font di sistema,
-       zero costo di caricamento, massima familiarita/velocita. */
-    --font-display: "Fraunces", ui-serif, Georgia, serif;
+       risultato) — la UI funzionale resta sul font di sistema. */
+    --font-display: "Archivo", system-ui, sans-serif;
 
     --sat: env(safe-area-inset-top, 0px);
     --sab: env(safe-area-inset-bottom, 0px);
     --sal: env(safe-area-inset-left, 0px);
     --sar: env(safe-area-inset-right, 0px);
-    color-scheme: light;
+    color-scheme: dark;
   }
 
   html, body, #root, #app-root {
@@ -58,8 +54,8 @@
     bottom: 0;
     margin: 0;
     padding: 0;
-    background-color: #FAF7F2;
-    color: #000000;
+    background-color: #100E0B;
+    color: #F5F1EA;
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     touch-action: manipulation;
@@ -83,7 +79,7 @@
     user-select: text !important;
     -webkit-user-select: text !important;
   }
-  
+
   /* Smooth native-like scrolling for overflow containers */
   .overflow-y-auto {
     -webkit-overflow-scrolling: touch;
@@ -95,58 +91,60 @@
 }
 
 @layer utilities {
-  /* Warm Linen / Paper Background Texture */
+  /* Base quasi-nera tinta ambra con micro-texture a puntini appena
+     percepibile (stessa tecnica della vecchia trama lino, invertita). */
   .bg-tactile-linen {
-    background-color: #FAF7F2;
-    background-image: radial-gradient(#E8E2D8 0.75px, transparent 0.75px), radial-gradient(#E8E2D8 0.75px, #FAF7F2 0.75px);
+    background-color: #100E0B;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.028) 0.75px, transparent 0.75px), radial-gradient(rgba(255, 255, 255, 0.028) 0.75px, #100E0B 0.75px);
     background-size: 30px 30px;
     background-position: 0 0, 15px 15px;
   }
 
-  /* Secondary Tactile Soft Button */
+  /* Secondary Tactile Soft Button (dark) */
   .btn-tactile-secondary {
-    background: linear-gradient(145deg, #FFFFFF, #FAF7F2);
-    border: 1px solid #E0D9CC;
-    box-shadow: 0 2px 6px -1px rgba(60, 50, 30, 0.05);
+    background: linear-gradient(145deg, #241C14, #1A140F);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 2px 6px -1px rgba(0, 0, 0, 0.4);
     transition: all 0.2s ease;
   }
 
   .btn-tactile-secondary:hover {
-    background: #EFECE6;
-    border-color: #C5A059;
-    box-shadow: 0 4px 10px -2px rgba(60, 50, 30, 0.08);
+    background: #2A2015;
+    border-color: #FFC24D;
+    box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.5);
   }
 
-  /* Soft Physical Card Shadow */
+  /* Soft Physical Card (dark surface) */
   .card-tactile {
-    background-color: #FFFFFF;
-    border: 1px solid #EBE6DC;
-    box-shadow: 0 4px 14px -3px rgba(60, 50, 30, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+    background-color: #1A140F;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  /* Pale Gold Accent Text & Border */
+  /* Gold Accent Text & Border */
   .text-pale-gold {
-    color: #C5A059;
+    color: #FFC24D;
   }
 
   .border-pale-gold {
-    border-color: #DFB960;
+    border-color: #FFC24D;
   }
 
-  /* Tactile Engraved/Embossed Icon Container */
+  /* Tactile Engraved/Embossed Icon Container (dark inset) */
   .icon-engraved {
-    background: linear-gradient(145deg, #EFECE6, #FFFFFF);
-    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.05), inset -1px -1px 2px rgba(255, 255, 255, 0.8);
+    background: linear-gradient(145deg, #241C14, #2A2015);
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.5), inset -1px -1px 2px rgba(255, 255, 255, 0.05);
   }
 
-  /* Selected/primary surfaces in brand orange: a gradient (not a flat
-     fill) plus a thin bright top edge, so selected cards and the primary
-     CTA read as a lifted, physical object catching light rather than a
-     flat color swatch. */
+  /* Superfici selezionate/primarie nell'aura ambra: gradiente (non
+     tinta piatta) + bordo luminoso in alto, cosi card selezionate e CTA
+     leggono come un oggetto che emana luce, non un colore piatto. Il
+     filo lucido usa 2px di blur (non 0): a spigolo vivo si taglia di
+     netto sull'angolo arrotondato invece di seguirne la curva. */
   .surface-coral-tactile {
     background: var(--brand-coral-gradient);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 -10px 16px -10px rgba(0, 0, 0, 0.18);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), inset 0 -10px 16px -10px rgba(0, 0, 0, 0.25), 0 0 24px rgba(255, 138, 31, 0.35);
   }
 
   /* GPU Layer Acceleration & Zero Layout Thrashing Utilities */
@@ -193,9 +191,9 @@
     padding: clamp(10px, 3vw, 20px);
   }
 
-  /* Tumbler Date Picker Reel Overlay */
+  /* Tumbler Date Picker Reel Overlay (dark) */
   .wheel-fade-overlay {
-    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,0) 65%, #FFFFFF 100%);
+    background: linear-gradient(180deg, #1A140F 0%, rgba(26,20,15,0) 35%, rgba(26,20,15,0) 65%, #1A140F 100%);
   }
 }
 

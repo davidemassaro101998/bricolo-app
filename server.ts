@@ -513,6 +513,68 @@ Context from current selection: Use Case Area: ${quizState?.recipient || "Not sp
   }
 });
 
+/* Foto -> descrizione del lavoro da fare.
+   Qui la fotocamera vale piu' che altrove: descrivere a parole una
+   staffa storta o un raccordo che perde e' difficile anche per chi sa
+   come si chiamano i pezzi, e chi non lo sa non ha proprio le parole.
+   Inquadrarlo le salta tutte. */
+app.post("/api/analyze-photo", async (req, res) => {
+  try {
+    const rawImage = typeof req.body?.image === "string" ? req.body.image : "";
+    const language = sanitizeText(req.body?.language, 5) || "it";
+
+    const match = rawImage.match(/^data:(image\/(?:jpeg|jpg|png|webp));base64,([A-Za-z0-9+/=]+)$/);
+    if (!match) {
+      return res.status(400).json({ success: false, error: "Invalid image payload" });
+    }
+    const mimeType = match[1];
+    const base64 = match[2];
+
+    // Il client ridimensiona gia' a 1024px di lato lungo. Il tetto qui
+    // e' un margine ampio sopra quel valore: ferma un payload costruito
+    // a mano, non una foto vera un po' piu' pesante del previsto.
+    if (base64.length > 4_000_000) {
+      return res.status(413).json({ success: false, error: "Image too large" });
+    }
+
+    if (!process.env.GEMINI_API_KEY || !canCallGeminiToday()) {
+      return res.json({ success: false, error: "Vision temporarily unavailable" });
+    }
+
+    const outputLanguage = language === "it" ? "Italian" : "English";
+    const prompt = `Look at this photo. Someone is about to do a DIY, repair or maintenance job and needs the right TOOL or material for it.
+
+Write ONE sentence in ${outputLanguage} (max 30 words) describing the job the photo shows: what the object or surface is, what looks damaged or needed, and the material involved if you can tell.
+
+Rules:
+- Describe the job and the materials, never people.
+- Name the material when visible (plasterboard, solid brick, tile, hardwood, copper pipe...) — it decides which tool is right.
+- If the photo shows nothing related to a job, reply exactly: UNCLEAR
+- Output only the sentence, no preamble, no quotes.`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-3.6-flash",
+      contents: [
+        {
+          role: "user",
+          parts: [{ inlineData: { mimeType, data: base64 } }, { text: prompt }],
+        },
+      ],
+    });
+
+    const description = (response.text || "").trim();
+
+    if (!description || /^unclear$/i.test(description)) {
+      return res.json({ success: false, error: "Nothing useful in the photo" });
+    }
+
+    return res.json({ success: true, description: description.slice(0, 300) });
+  } catch (error: any) {
+    console.warn("Notice: photo analysis failed:", error?.message || error);
+    return res.json({ success: false, error: "Analysis failed" });
+  }
+});
+
 // API endpoint for Text-To-Speech (Gemini TTS)
 app.post("/api/tts", async (req, res) => {
   try {

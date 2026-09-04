@@ -220,7 +220,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
       {/* Privacy Blur Overlay when App is sent to system background */}
       {isWindowBlurred && (
         <div className="fixed inset-0 z-[9999] bg-[#000000]/60 backdrop-blur-xl flex flex-col items-center justify-center p-6 text-white text-center pointer-events-none select-none transition-opacity duration-150">
-          <ShieldCheck className="w-10 h-10 text-[#E8590C] mb-2 animate-pulse" />
+          <ShieldCheck className="w-10 h-10 text-[#FF8A1F] mb-2 animate-pulse" />
           <h3 className="text-base font-extrabold tracking-tight">Bricolo AI</h3>
         </div>
       )}
@@ -232,10 +232,10 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
-            className="fixed top-0 left-0 right-0 z-[100] bg-[#000000] text-white px-3 py-2 border-b border-[#E5E5EA]/20 flex items-center justify-between shadow-lg text-xs"
+            className="fixed top-0 left-0 right-0 z-[100] bg-[#000000] text-white px-3 py-2 border-b border-[#2B2130]/20 flex items-center justify-between shadow-lg text-xs"
           >
             <div className="flex items-center gap-2">
-              <Smartphone className="w-4 h-4 text-[#E8590C] shrink-0" />
+              <Smartphone className="w-4 h-4 text-[#FF8A1F] shrink-0" />
               <span className="font-semibold text-[11px] sm:text-xs">
                 {language === "it"
                   ? "Per la migliore esperienza, apri in Safari o Chrome"
@@ -265,7 +265,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="fixed bottom-4 left-3 right-3 sm:left-auto sm:right-6 sm:max-w-md z-[90] bg-white/95 backdrop-blur-2xl text-[#000000] p-4 rounded-[20px] border border-[#E5E5EA] shadow-[0_12px_32px_rgba(0,0,0,0.12)] flex flex-col gap-3 font-sans select-none"
+            className="fixed bottom-4 left-3 right-3 sm:left-auto sm:right-6 sm:max-w-md z-[90] bg-[#17111A]/95 backdrop-blur-2xl text-[#F5F1EA] p-4 rounded-[20px] border border-[#2B2130] shadow-[0_12px_32px_rgba(0,0,0,0.12)] flex flex-col gap-3 font-sans select-none"
           >
             {/* Header with Title, Subtitle, Close X */}
             <div className="flex items-start justify-between gap-2">
@@ -273,13 +273,13 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
                 <img
                   src="/apple-touch-icon.png"
                   alt="Bricolo AI Icon"
-                  className="w-10 h-10 rounded-2xl object-cover border border-[#E5E5EA] shadow-2xs shrink-0"
+                  className="w-10 h-10 rounded-2xl object-cover border border-[#2B2130] shadow-2xs shrink-0"
                 />
                 <div>
-                  <h4 className="font-black text-sm text-[#000000] tracking-tight leading-tight">
+                  <h4 className="font-black text-sm text-[#F5F1EA] tracking-tight leading-tight">
                     {language === "it" ? "Installa l'App in 1 Tap" : "Install App in 1 Tap"}
                   </h4>
-                  <p className="text-[11px] text-[#8E8E93] font-medium leading-normal mt-0.5">
+                  <p className="text-[11px] text-[#97908A] font-medium leading-normal mt-0.5">
                     {language === "it"
                       ? "Accedi all'istante dalla tua Schermata Home senza scaricare dagli store."
                       : "Instant 1-tap access from your Home Screen without app stores."}
@@ -290,7 +290,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
               {/* Minimal Dismiss "X" Button */}
               <button
                 onClick={handleDismiss}
-                className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#8E8E93] hover:text-[#000000] transition-colors cursor-pointer shrink-0"
+                className="p-1.5 rounded-full hover:bg-[#1C1520] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer shrink-0"
                 title="Chiudi"
               >
                 <X className="w-4 h-4" />
@@ -332,20 +332,20 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: 120, opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 320, damping: 28 }}
-              className="w-full max-w-md mx-auto bg-white/95 backdrop-blur-2xl rounded-[28px] border border-[#E5E5EA] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] flex flex-col gap-4 text-[#000000] relative"
+              className="w-full max-w-md mx-auto bg-[#17111A]/95 backdrop-blur-2xl rounded-[28px] border border-[#2B2130] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] flex flex-col gap-4 text-[#F5F1EA] relative"
             >
-              <div className="flex items-center justify-between border-b border-[#E5E5EA] pb-3">
+              <div className="flex items-center justify-between border-b border-[#2B2130] pb-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 rounded-2xl bg-[#E8590C] text-white shadow-2xs">
+                  <div className="p-2 rounded-2xl bg-[#FF8A1F] text-white shadow-2xs">
                     <Smartphone className="w-4 h-4" />
                   </div>
-                  <h3 className="font-extrabold text-sm text-[#000000]">
+                  <h3 className="font-extrabold text-sm text-[#F5F1EA]">
                     {language === "it" ? "Aggiungi a Home Screen iOS" : "Add to iOS Home Screen"}
                   </h3>
                 </div>
                 <button
                   onClick={handleDismiss}
-                  className="p-1.5 rounded-full hover:bg-[#F2F2F7] text-[#8E8E93] hover:text-[#000000] transition-colors cursor-pointer"
+                  className="p-1.5 rounded-full hover:bg-[#1C1520] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer"
                   title="Chiudi"
                 >
                   <X className="w-4 h-4" />
@@ -354,45 +354,45 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
 
               {/* Step 1 & Step 2 Visual Instructions */}
               <div className="space-y-3">
-                <div className="p-3.5 rounded-2xl bg-[#F2F2F7] border border-[#E5E5EA] flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-[#E8590C] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-2xs">
+                <div className="p-3.5 rounded-2xl bg-[#1C1520] border border-[#2B2130] flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-[#FF8A1F] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-2xs">
                     1
                   </div>
                   <div className="flex-1 text-xs">
-                    <span className="font-extrabold text-[#000000]">
+                    <span className="font-extrabold text-[#F5F1EA]">
                       {language === "it" ? "Tocca il tasto 'Condividi'" : "Tap the 'Share' button"}
                     </span>
-                    <p className="text-[11px] text-[#8E8E93] font-medium mt-0.5">
+                    <p className="text-[11px] text-[#97908A] font-medium mt-0.5">
                       {language === "it"
                         ? "Si trova nella barra in basso di Safari"
                         : "Located in Safari bottom bar"}
                     </p>
                   </div>
-                  <Share className="w-5 h-5 text-[#E8590C] shrink-0" />
+                  <Share className="w-5 h-5 text-[#FF8A1F] shrink-0" />
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-[#F2F2F7] border border-[#E5E5EA] flex items-center gap-3">
+                <div className="p-3.5 rounded-2xl bg-[#1C1520] border border-[#2B2130] flex items-center gap-3">
                   <div className="w-8 h-8 rounded-xl bg-[#000000] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-2xs">
                     2
                   </div>
                   <div className="flex-1 text-xs">
-                    <span className="font-extrabold text-[#000000]">
+                    <span className="font-extrabold text-[#F5F1EA]">
                       {language === "it" ? "Seleziona 'Aggiungi alla schermata Home'" : "Select 'Add to Home Screen'"}
                     </span>
-                    <p className="text-[11px] text-[#8E8E93] font-medium mt-0.5">
+                    <p className="text-[11px] text-[#97908A] font-medium mt-0.5">
                       {language === "it"
                         ? "Scorri le opzioni del menu di condivisione"
                         : "Scroll through options in the share sheet"}
                     </p>
                   </div>
-                  <PlusSquare className="w-5 h-5 text-[#000000] shrink-0" />
+                  <PlusSquare className="w-5 h-5 text-[#F5F1EA] shrink-0" />
                 </div>
               </div>
 
               {/* Dynamic Animated Pointer Arrow */}
-              <div className="flex flex-col items-center justify-center pt-1 animate-bounce text-[#E8590C]">
+              <div className="flex flex-col items-center justify-center pt-1 animate-bounce text-[#FF8A1F]">
                 <ArrowDown className="w-6 h-6 stroke-[3]" />
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#E8590C] mt-0.5">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#FF8A1F] mt-0.5">
                   {language === "it" ? "Premi Condividi Qui Sotto" : "Press Share Below"}
                 </span>
               </div>

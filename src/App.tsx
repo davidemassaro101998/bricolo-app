@@ -198,7 +198,12 @@ export default function App() {
       return;
     }
 
-    const minLoadingPromise = new Promise((resolve) => setTimeout(resolve, 1500));
+    /* Attesa minima perche' il "Rito" non sia un lampo: quando l'API
+       risponde in 300ms, saltare di colpo al risultato legge come un
+       glitch, non come velocita. Ma 1500ms erano piu' del doppio del
+       necessario -- tempo morto aggiunto a OGNI ricerca. 600ms bastano
+       a far leggere il momento e dimezzano abbondantemente l'attesa. */
+    const minLoadingPromise = new Promise((resolve) => setTimeout(resolve, 600));
 
     let fetchedGifts: GiftItem[] = [];
 
@@ -242,7 +247,11 @@ export default function App() {
 
     // Track shown titles for regenerate exclusion
     const newTitles = fetchedGifts.map((g) => g.title);
-    setShownTitles((prev) => [...prev, ...newTitles]);
+    /* La lista dei titoli gia' visti cresceva senza limite per tutta la
+       sessione: ogni ricerca spediva un payload piu' grande e il prompt
+       si allungava fino a peggiorare le risposte. Le ultime 24 coprono
+       abbondantemente le rigenerazioni che uno fa davvero. */
+    setShownTitles((prev) => [...prev, ...newTitles].slice(-24));
 
     setGifts(fetchedGifts);
     startTransition(() => {
@@ -289,7 +298,7 @@ export default function App() {
   }, []);
 
   return (
-    <div id="app-root" className="app-container fixed inset-0 h-[var(--app-height,100dvh)] w-[100vw] overflow-hidden bg-[#FAF7F2] text-[#000000] select-none flex flex-col font-sans">
+    <div id="app-root" className="app-container fixed inset-0 h-[var(--app-height,100dvh)] w-[100vw] overflow-hidden bg-[#100E0B] text-[#F5F1EA] select-none flex flex-col font-sans">
       <AnimatePresence>
         {showSplash && (
           <SplashScreenApple onComplete={handleHideSplash} />

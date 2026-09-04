@@ -1,17 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
-import { Zap, CheckCircle, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Language, TRANSLATIONS } from "../data/translations";
-import { ToolBadge3D } from "./ToolBadge3D";
 
 interface LoadingApple3DProps {
   language?: Language;
   subtitle?: string;
 }
 
+// "Il Rito": cronometro da pit-stop che conta IN SU con i decimi, dentro
+// un arco d'aura che ruota, aura ambra che respira ai bordi dello
+// schermo e un battito aptico a ogni cambio di fase. Niente conto alla
+// rovescia: mostrare un numero che scende ancorerebbe l'utente a
+// un'attesa percepita fissa anche quando la risposta arriva prima. Il
+// cronometro che sale con i decimi che corrono comunica velocita, e
+// quando il risultato arriva si ferma: quel tempo e la vittoria, ed e
+// lo stesso numero che finisce nel badge della card condivisibile.
+const RING_RADIUS = 106;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
+const ARC_DASH = `${RING_CIRCUMFERENCE * 0.28} ${RING_CIRCUMFERENCE * 0.72}`;
+
 export const LoadingApple3D: React.FC<LoadingApple3DProps> = React.memo(({ language = "en", subtitle }) => {
   const t = TRANSLATIONS[language] || TRANSLATIONS.en;
-  const [activeStep, setActiveStep] = useState(0);
+  const [tenths, setTenths] = useState(0);
 
   const steps = [
     t.loadingStep1,
@@ -19,86 +30,99 @@ export const LoadingApple3D: React.FC<LoadingApple3DProps> = React.memo(({ langu
     t.loadingStep3,
   ];
 
-  useEffect(() => {
-    const timer1 = setTimeout(() => setActiveStep(1), 1200);
-    const timer2 = setTimeout(() => setActiveStep(2), 2400);
+  const elapsedSeconds = tenths / 10;
+  const activeStep = elapsedSeconds >= 9 ? 2 : elapsedSeconds >= 4 ? 1 : 0;
 
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTenths((prev) => prev + 1);
+    }, 100);
+    return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.navigator.vibrate) {
+      try {
+        window.navigator.vibrate(activeStep === 0 ? 12 : 24);
+      } catch (e) {
+        // ignore
+      }
+    }
+  }, [activeStep]);
+
+  const stopwatch = (tenths / 10).toFixed(1);
+
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center text-center p-4 sm:p-6 select-none bg-tactile-linen relative overflow-y-auto">
-      {/* Background Soft Orange Ambient Depth */}
-      <div className="absolute w-80 h-80 bg-[#E8590C]/10 rounded-full blur-3xl -top-16 -left-16 pointer-events-none" />
-      <div className="absolute w-80 h-80 bg-[#000000]/5 rounded-full blur-3xl -bottom-16 -right-16 pointer-events-none" />
+    <div className="w-full h-full flex flex-col items-center justify-center text-center p-4 sm:p-6 select-none bg-[#0C0906] relative overflow-hidden">
+      {/* Aura ai bordi dello schermo: il dispositivo di marca. */}
+      <motion.div
+        animate={{ opacity: [0.65, 1, 0.65] }}
+        transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute inset-0 pointer-events-none"
+        style={{ boxShadow: "inset 0 0 100px 10px rgba(255,138,31,0.4), inset 0 0 240px 50px rgba(255,194,77,0.15)" }}
+      />
+      <div className="absolute -top-28 -left-28 w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(255,138,31,0.35), transparent)", filter: "blur(36px)" }} />
+      <div className="absolute -bottom-24 -right-28 w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(255,194,77,0.28), transparent)", filter: "blur(36px)" }} />
 
-      {/* Cinematic 3D Tool Assembly Stage (fluidly scaled to viewport height so it never gets clipped in short/narrow previews) */}
-      <div className="relative mb-[clamp(0.75rem,4vh,2rem)] w-[clamp(6rem,26vh,11rem)] h-[clamp(6rem,26vh,11rem)] shrink-0 flex items-center justify-center">
-        {/* Outer Orbiting Brand Ring */}
-        <motion.div
+      <div className="relative z-10 flex flex-col items-center gap-1.5 shrink-0">
+        <span className="text-[10px] font-extrabold tracking-[0.3em] text-[#B3ACA1] uppercase">Bricolo AI</span>
+        <h2
+          className="text-xl sm:text-2xl text-[#F5F1EA] leading-tight"
+          style={{ fontFamily: "var(--font-display)", fontWeight: 900 }}
+        >
+          {t.curating}
+        </h2>
+        <p className="text-[11px] text-[#97908A] font-medium max-w-xs">
+          {subtitle || t.curatingSub}
+        </p>
+      </div>
+
+      <div className="relative z-10 my-[clamp(0.75rem,3.5vh,2rem)] w-[clamp(11rem,32vh,15rem)] h-[clamp(11rem,32vh,15rem)] shrink-0 flex items-center justify-center">
+        <div className="absolute inset-[-14%] rounded-full pointer-events-none" style={{ background: "radial-gradient(closest-side, rgba(255,138,31,0.3), rgba(255,194,77,0.1) 60%, transparent)", filter: "blur(26px)" }} />
+        <motion.svg
+          viewBox="0 0 240 240"
+          className="absolute inset-0 w-full h-full"
           animate={{ rotate: 360 }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 rounded-full border-2 border-dashed border-[#E8590C]/40"
-        />
-
-        {/* Counter-rotating Ring */}
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-2 rounded-full border border-black/10"
-        />
-
-        {/* Floating Tool Badge: the same signature mark used on the splash
-            screen and header, so the brand's one distinctive visual stays
-            consistent through the whole flow instead of switching to a
-            generic icon during the longest-dwell-time screen. */}
-        <div className="relative z-10 w-[64%] h-[64%] flex items-center justify-center">
-          <ToolBadge3D animateFloating className="w-[78%] h-[78%]" />
-
-          {/* Orbiting Sparkles */}
-          <motion.div
-            animate={{
-              rotate: [0, 180, 360],
-              scale: [0.8, 1.2, 0.8],
+          transition={{ duration: 1.4, repeat: Infinity, ease: "linear" }}
+        >
+          <circle cx="120" cy="120" r={RING_RADIUS} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="6" />
+          <circle
+            cx="120"
+            cy="120"
+            r={RING_RADIUS}
+            fill="none"
+            stroke="url(#ritoRingGrad)"
+            strokeWidth="6"
+            strokeLinecap="round"
+            strokeDasharray={ARC_DASH}
+          />
+          <defs>
+            <linearGradient id="ritoRingGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stopColor="#FF8A1F" />
+              <stop offset="1" stopColor="#FFC24D" />
+            </linearGradient>
+          </defs>
+        </motion.svg>
+        <div className="relative flex flex-col items-center gap-0.5">
+          <span
+            className="text-[clamp(2.8rem,9vh,4.5rem)] leading-none bg-clip-text text-transparent tabular-nums"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 900,
+              backgroundImage: "linear-gradient(135deg, #FF8A1F, #FFC24D)",
+              WebkitBackgroundClip: "text",
+              fontVariantNumeric: "tabular-nums",
             }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-1 right-1 text-[#E8590C]"
           >
-            <Zap className="w-[clamp(0.9rem,3.5vh,1.5rem)] h-[clamp(0.9rem,3.5vh,1.5rem)] fill-[#E8590C]" />
-          </motion.div>
-
-          <motion.div
-            animate={{
-              rotate: [360, 180, 0],
-              scale: [1, 0.7, 1],
-            }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute bottom-2 left-1 text-[#000000]"
-          >
-            <CheckCircle className="w-[clamp(0.75rem,3vh,1.25rem)] h-[clamp(0.75rem,3vh,1.25rem)] text-[#000000]" />
-          </motion.div>
+            {stopwatch}
+          </span>
+          <span className="text-[10px] font-bold tracking-[0.22em] text-[#97908A] uppercase">
+            {language === "it" ? "secondi" : "seconds"}
+          </span>
         </div>
       </div>
 
-      {/* Micro-text CURATING... */}
-      <motion.p
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: [0.6, 1, 0.6], y: 0 }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-        className="text-xs sm:text-sm font-extrabold tracking-[0.25em] text-[#000000] uppercase relative z-10 shrink-0"
-      >
-        {t.curating}
-      </motion.p>
-
-      <p className="text-[11px] text-[#8E8E93] font-medium mt-1 max-w-xs relative z-10 shrink-0">
-        {subtitle || t.curatingSub}
-      </p>
-
-      {/* Step Progress Assembly List */}
-      <div className="mt-[clamp(0.5rem,3vh,1.5rem)] w-full max-w-xs space-y-2 relative z-10 shrink-0">
+      <div className="relative z-10 w-full max-w-xs space-y-2 shrink-0">
         {steps.map((stepText, idx) => {
           const isDone = idx < activeStep;
           const isCurrent = idx === activeStep;
@@ -108,22 +132,28 @@ export const LoadingApple3D: React.FC<LoadingApple3DProps> = React.memo(({ langu
               key={idx}
               className={`p-3 rounded-[16px] border text-xs font-semibold flex items-center gap-3 transition-all duration-300 ${
                 isCurrent
-                  ? "bg-white border-[#E8590C] text-[#000000] shadow-[0_4px_12px_rgba(0,0,0,0.06)] font-extrabold"
+                  ? "bg-[rgba(255,138,31,0.1)] border-[rgba(255,138,31,0.45)] text-[#F5F1EA] shadow-[0_0_24px_rgba(255,138,31,0.18)] font-extrabold"
                   : isDone
-                  ? "bg-white border-[#EBE6DC] text-[#000000] shadow-2xs"
-                  : "bg-white/60 border-transparent text-[#8E8E93]"
+                  ? "bg-[rgba(255,255,255,0.05)] border-[rgba(255,255,255,0.1)] text-[#F5F1EA]"
+                  : "bg-[rgba(255,255,255,0.03)] border-transparent text-[#8B857A]"
               }`}
             >
               <div
                 className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-[10px] ${
                   isDone
-                    ? "bg-[#34C759] text-white font-black"
+                    ? "bg-[#FF8A1F] text-white font-black"
                     : isCurrent
-                    ? "bg-[#E8590C] text-white font-extrabold"
-                    : "bg-[#EBE6DC] text-[#8E8E93]"
+                    ? "border-2 border-[#FF8A1F] shadow-[0_0_12px_rgba(255,138,31,0.6)]"
+                    : "bg-[rgba(255,255,255,0.08)] text-[#8B857A]"
                 }`}
               >
-                {isDone ? <Check className="w-3 h-3 text-white stroke-[3]" /> : idx + 1}
+                {isDone ? (
+                  <Check className="w-3 h-3 text-white stroke-[3]" />
+                ) : isCurrent ? (
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF8A1F]" />
+                ) : (
+                  idx + 1
+                )}
               </div>
               <span className="text-[11px] text-left line-clamp-1">{stepText}</span>
             </div>

@@ -54,12 +54,12 @@ export const SplashScreenApple: React.FC<SplashScreenAppleProps> = ({ onComplete
 
         <div className="space-y-1">
           <h1
-            className="text-4xl tracking-tight text-[#000000]"
+            className="text-4xl tracking-tight text-[#F5F1EA]"
             style={{ fontFamily: "var(--font-display)", fontWeight: 600 }}
           >
             Bricolo <span style={{ color: "var(--brand-coral)" }}>AI</span>
           </h1>
-          <p className="text-xs font-semibold text-[#8E8E93] tracking-wide uppercase">
+          <p className="text-xs font-semibold text-[#97908A] tracking-wide uppercase">
             Il Prodotto Giusto per Te
           </p>
         </div>
@@ -75,13 +75,13 @@ export const SplashScreenApple: React.FC<SplashScreenAppleProps> = ({ onComplete
             className="relative flex items-center justify-center w-10 h-10"
           >
             {/* Soft pulsing outer glow halo */}
-            <div className="absolute inset-0 rounded-full bg-[#E8590C]/20 blur-md animate-pulse" />
+            <div className="absolute inset-0 rounded-full bg-[#FF8A1F]/20 blur-md animate-pulse" />
             
             {/* Cinematic spinning gradient ring */}
-            <div className="w-7 h-7 rounded-full border-[2.5px] border-[#EBE6DC] border-t-[#E8590C] border-r-[#E8590C]/60 animate-spin" />
+            <div className="w-7 h-7 rounded-full border-[2.5px] border-[#2B2130] border-t-[#FF8A1F] border-r-[#FF8A1F]/60 animate-spin" />
             
             {/* Core dot */}
-            <div className="absolute w-2 h-2 rounded-full bg-[#E8590C] shadow-xs" />
+            <div className="absolute w-2 h-2 rounded-full bg-[#FF8A1F] shadow-xs" />
           </motion.div>
         )}
       </div>
