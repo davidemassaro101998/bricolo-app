@@ -57,7 +57,7 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
             <button
               onClick={onClose}
               aria-label={isIt ? "Chiudi" : "Close"}
-              className="p-1.5 rounded-full hover:bg-[#1C1520] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer"
+              className="tocco-44 relative p-1.5 rounded-full hover:bg-[#1C1520] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -139,7 +139,7 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
           <div className="pt-3 border-t border-[#2B2130] mt-3 flex justify-end shrink-0">
             <button
               onClick={onClose}
-              className="py-2.5 px-5 rounded-xl bg-[#FF8A1F] text-white font-bold text-xs cursor-pointer hover:bg-[#D96F0F] transition-colors"
+              className="py-2.5 px-5 rounded-xl bg-[#FF8A1F] text-[#100E0B] font-bold text-xs cursor-pointer hover:bg-[#D96F0F] transition-colors"
             >
               {isIt ? "Chiudi" : "Close"}
             </button>
