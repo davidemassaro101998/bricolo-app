@@ -372,7 +372,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
                       onClick={() => handleSelectRecipient(opt.label)}
                       className={`h-[95px] sm:h-[110px] p-3 sm:p-3.5 rounded-[20px] border flex flex-col items-center justify-center text-center gap-1.5 sm:gap-2 cursor-pointer transition-transform duration-150 active:scale-[0.97] ${
                         isSel
-                          ? "surface-coral-tactile text-white border-transparent shadow-[0_8px_24px_rgba(255,138,31,0.3)]"
+                          ? "surface-coral-selected text-[#F5F1EA] border-transparent"
                           : "card-tactile text-[#F5F1EA] hover:border-[#FFC24D]"
                       }`}
                     >
@@ -418,7 +418,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
                       onClick={() => handleSelectVibe(opt.label)}
                       className={`h-[95px] sm:h-[110px] p-2.5 sm:p-3.5 rounded-[20px] border flex flex-col items-center justify-center text-center gap-1.5 cursor-pointer transition-transform duration-150 active:scale-[0.97] ${
                         isSel
-                          ? "surface-coral-tactile text-white border-transparent shadow-[0_6px_20px_rgba(255,138,31,0.28)]"
+                          ? "surface-coral-selected text-[#F5F1EA] border-transparent"
                           : "card-tactile text-[#F5F1EA] hover:border-[#FFC24D]"
                       }`}
                     >
@@ -467,7 +467,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
                       }}
                       className={`py-3.5 px-4 sm:py-4 rounded-[22px] border flex flex-col items-center justify-center text-center cursor-pointer transition-transform duration-150 active:scale-[0.97] ${
                         isSel
-                          ? "surface-coral-tactile text-white border-transparent shadow-[0_8px_24px_rgba(255,138,31,0.3)]"
+                          ? "surface-coral-selected text-[#F5F1EA] border-transparent"
                           : "card-tactile text-[#F5F1EA] hover:border-[#FFC24D]"
                       }`}
                     >
@@ -584,7 +584,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
         <div className="shrink-0 pb-3 pt-2 w-full">
           <button
             onClick={handleFinalSubmit}
-            className="surface-coral-tactile w-full py-4 rounded-[22px] hover:brightness-105 active:scale-[0.97] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer shadow-[0_8px_24px_rgba(255,138,31,0.3)] transition-transform uppercase tracking-wide border border-transparent"
+            className="surface-coral-tactile w-full py-4 rounded-[22px] hover:brightness-105 active:scale-[0.97] text-[#100E0B] font-bold text-sm sm:text-base flex items-center justify-center gap-2 cursor-pointer shadow-[0_8px_24px_rgba(255,138,31,0.3)] transition-transform uppercase tracking-wide border border-transparent"
           >
             <Sparkles className="w-5 h-5 fill-current text-current" />
             <span>

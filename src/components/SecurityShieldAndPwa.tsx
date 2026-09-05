@@ -312,10 +312,16 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
               </button>
             </div>
 
-            {/* 3D Tactile Solid Black Button */}
+            {/* Il pulsante d'installazione portava la superficie di marca
+                solo su Kado; qui era un nero pieno lasciato da un modello,
+                e su Forma l'`hover` lo schiariva a #F0F5F1 tenendo il
+                testo bianco: bianco su bianco, invisibile appena ci passi
+                sopra. Ora e' la stessa superficie delle altre due app, col
+                testo nel fondo dell'app -- sul gradiente pieno il bianco
+                misura 1,6 di contrasto, il fondo ne misura piu' di 7. */}
             <button
               onClick={handleInstallClick}
-              className="w-full py-3.5 px-4 rounded-[18px] bg-[#000000] hover:bg-[#1A1A1A] active:scale-[0.97] text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all uppercase tracking-wide border border-black"
+              className="w-full py-3.5 px-4 rounded-[18px] surface-coral-tactile hover:brightness-105 active:scale-[0.97] text-[#100E0B] font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all uppercase tracking-wide border border-transparent"
             >
               <Download className="w-4 h-4 text-white" />
               <span>
