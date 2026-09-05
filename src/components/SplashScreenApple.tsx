@@ -78,7 +78,7 @@ export const SplashScreenApple: React.FC<SplashScreenAppleProps> = ({ onComplete
             <div className="absolute inset-0 rounded-full bg-[#FF8A1F]/20 blur-md animate-pulse" />
             
             {/* Cinematic spinning gradient ring */}
-            <div className="w-7 h-7 rounded-full border-[2.5px] border-[#2B2130] border-t-[#FF8A1F] border-r-[#FF8A1F]/60 animate-spin" />
+            <div className="w-7 h-7 rounded-full border-[2.5px] border-[#332A1E] border-t-[#FF8A1F] border-r-[#FF8A1F]/60 animate-spin" />
             
             {/* Core dot */}
             <div className="absolute w-2 h-2 rounded-full bg-[#FF8A1F] shadow-xs" />

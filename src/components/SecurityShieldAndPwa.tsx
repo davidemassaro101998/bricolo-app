@@ -109,13 +109,27 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     window.addEventListener("appinstalled", handleAppInstalled);
 
-    // 3. Intro Timing: Appear 2 seconds after opening (IF NOT STANDALONE AND NOT DISMISSED)
+    /* Quando chiedere di installare. PRIMA: due secondi dopo l'apertura,
+       sempre -- cioe' sopra il pannello di benvenuto, sul momento piu'
+       fragile, a uno che non sa ancora cosa fa l'app. Due interruzioni
+       prima del primo tocco utile.
+       ORA: solo dopo che ha visto almeno un risultato. Chiedere di
+       installare ha senso quando l'app ha gia' dimostrato di servire; e
+       chi non arriva mai a un risultato non riceve mai la richiesta. */
     let pwaTimer: any = null;
-    if (!standaloneMode && !isDismissed && !isInstalled) {
-      pwaTimer = setTimeout(() => {
-        setShowPwaBanner(true);
-      }, 2000);
-    }
+    let haVistoRisultati = false;
+    try {
+      haVistoRisultati = localStorage.getItem("bricolo_visto_risultati") === "1";
+    } catch (e) {}
+
+    const armaBanner = () => {
+      if (standaloneMode || isDismissed || isInstalled) return;
+      clearTimeout(pwaTimer);
+      pwaTimer = setTimeout(() => setShowPwaBanner(true), 2500);
+    };
+    if (haVistoRisultati) armaBanner();
+    // e se il primo risultato arriva adesso, senza ricaricare la pagina
+    window.addEventListener("bricolo:visto-risultati", armaBanner);
 
     // 4. Anti-Cloning & Security Hardening
     const handleContextMenu = (e: MouseEvent) => {
@@ -166,6 +180,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      window.removeEventListener("bricolo:visto-risultati", armaBanner);
       window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
       window.removeEventListener("appinstalled", handleAppInstalled);
       if (pwaTimer) clearTimeout(pwaTimer);
@@ -232,7 +247,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
-            className="fixed top-0 left-0 right-0 z-[100] bg-[#000000] text-white px-3 py-2 border-b border-[#2B2130]/20 flex items-center justify-between shadow-lg text-xs"
+            className="fixed top-0 left-0 right-0 z-[100] bg-[#000000] text-white px-3 py-2 border-b border-[#332A1E]/20 flex items-center justify-between shadow-lg text-xs"
           >
             <div className="flex items-center gap-2">
               <Smartphone className="w-4 h-4 text-[#FF8A1F] shrink-0" />
@@ -265,7 +280,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="fixed bottom-4 left-3 right-3 sm:left-auto sm:right-6 sm:max-w-md z-[90] bg-[#17111A]/95 backdrop-blur-2xl text-[#F5F1EA] p-4 rounded-[20px] border border-[#2B2130] shadow-[0_12px_32px_rgba(0,0,0,0.12)] flex flex-col gap-3 font-sans select-none"
+            className="fixed bottom-4 left-3 right-3 sm:left-auto sm:right-6 sm:max-w-md z-[90] bg-[#1A1610]/95 backdrop-blur-2xl text-[#F5F1EA] p-4 rounded-[20px] border border-[#332A1E] shadow-[0_12px_32px_rgba(0,0,0,0.12)] flex flex-col gap-3 font-sans select-none"
           >
             {/* Header with Title, Subtitle, Close X */}
             <div className="flex items-start justify-between gap-2">
@@ -273,7 +288,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
                 <img
                   src="/apple-touch-icon.png"
                   alt="Bricolo AI Icon"
-                  className="w-10 h-10 rounded-2xl object-cover border border-[#2B2130] shadow-2xs shrink-0"
+                  className="w-10 h-10 rounded-2xl object-cover border border-[#332A1E] shadow-2xs shrink-0"
                 />
                 <div>
                   <h4 className="font-black text-sm text-[#F5F1EA] tracking-tight leading-tight">
@@ -290,7 +305,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
               {/* Minimal Dismiss "X" Button */}
               <button
                 onClick={handleDismiss}
-                className="tocco-44 relative p-1.5 rounded-full hover:bg-[#1C1520] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer shrink-0"
+                className="tocco-44 relative p-1.5 rounded-full hover:bg-[#221C14] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer shrink-0"
                 title="Chiudi"
               >
                 <X className="w-4 h-4" />
@@ -332,9 +347,9 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: 120, opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 320, damping: 28 }}
-              className="w-full max-w-md mx-auto bg-[#17111A]/95 backdrop-blur-2xl rounded-[28px] border border-[#2B2130] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] flex flex-col gap-4 text-[#F5F1EA] relative"
+              className="w-full max-w-md mx-auto bg-[#1A1610]/95 backdrop-blur-2xl rounded-[28px] border border-[#332A1E] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] flex flex-col gap-4 text-[#F5F1EA] relative"
             >
-              <div className="flex items-center justify-between border-b border-[#2B2130] pb-3">
+              <div className="flex items-center justify-between border-b border-[#332A1E] pb-3">
                 <div className="flex items-center gap-2.5">
                   <div className="p-2 rounded-2xl bg-[#FF8A1F] text-[#100E0B] shadow-2xs">
                     <Smartphone className="w-4 h-4" />
@@ -345,7 +360,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
                 </div>
                 <button
                   onClick={handleDismiss}
-                  className="tocco-44 relative p-1.5 rounded-full hover:bg-[#1C1520] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer"
+                  className="tocco-44 relative p-1.5 rounded-full hover:bg-[#221C14] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer"
                   title="Chiudi"
                 >
                   <X className="w-4 h-4" />
@@ -354,7 +369,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
 
               {/* Step 1 & Step 2 Visual Instructions */}
               <div className="space-y-3">
-                <div className="p-3.5 rounded-2xl bg-[#1C1520] border border-[#2B2130] flex items-center gap-3">
+                <div className="p-3.5 rounded-2xl bg-[#221C14] border border-[#332A1E] flex items-center gap-3">
                   <div className="w-8 h-8 rounded-xl bg-[#FF8A1F] text-[#100E0B] flex items-center justify-center font-black text-xs shrink-0 shadow-2xs">
                     1
                   </div>
@@ -371,7 +386,7 @@ export const SecurityShieldAndPwa: React.FC<SecurityShieldAndPwaProps> = ({
                   <Share className="w-5 h-5 text-[#FF8A1F] shrink-0" />
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-[#1C1520] border border-[#2B2130] flex items-center gap-3">
+                <div className="p-3.5 rounded-2xl bg-[#221C14] border border-[#332A1E] flex items-center gap-3">
                   <div className="w-8 h-8 rounded-xl bg-[#000000] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-2xs">
                     2
                   </div>

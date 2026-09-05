@@ -51,16 +51,16 @@ export const OfflineScreenApple: React.FC<OfflineScreenAppleProps> = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[99999] bg-[#1C1520] flex flex-col items-center justify-center p-6 text-center select-none font-sans"
+        className="fixed inset-0 z-[99999] bg-[#221C14] flex flex-col items-center justify-center p-6 text-center select-none font-sans"
       >
         <motion.div
           initial={{ scale: 0.9, y: 20 }}
           animate={{ scale: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="w-full max-w-sm bg-[#17111A] border border-[#2B2130] rounded-[28px] p-6 shadow-[0_12px_36px_rgba(0,0,0,0.1)] flex flex-col items-center gap-4"
+          className="w-full max-w-sm bg-[#1A1610] border border-[#332A1E] rounded-[28px] p-6 shadow-[0_12px_36px_rgba(0,0,0,0.1)] flex flex-col items-center gap-4"
         >
           {/* Slashed Wi-Fi Icon Badge */}
-          <div className="w-16 h-16 rounded-full bg-[#1C1520] border border-[#2B2130] flex items-center justify-center text-[#97908A]">
+          <div className="w-16 h-16 rounded-full bg-[#221C14] border border-[#332A1E] flex items-center justify-center text-[#97908A]">
             <WifiOff className="w-8 h-8 text-[#97908A] stroke-[2]" />
           </div>
 

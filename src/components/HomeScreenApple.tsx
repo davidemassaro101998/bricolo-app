@@ -245,7 +245,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
             setIsVoiceDrawerOpen(true);
             voiceDrawerRef.current?.startListening();
           }}
-          className="w-full flex items-center justify-between py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-[18px] bg-[#17111A]/85 backdrop-blur-md border border-[#2B2130] shadow-[0_4px_20px_rgba(60,50,30,0.05)] cursor-pointer active:scale-[0.99] transition-transform group"
+          className="w-full flex items-center justify-between py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-[18px] bg-[#1A1610]/85 backdrop-blur-md border border-[#332A1E] shadow-[0_4px_20px_rgba(60,50,30,0.05)] cursor-pointer active:scale-[0.99] transition-transform group"
         >
           <div className="flex items-center gap-2.5 flex-1 min-w-0">
             <Search className="w-4 h-4 text-[#97908A] group-hover:text-[#FF8A1F] transition-colors shrink-0" />
@@ -257,7 +257,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
           </div>
 
           {wizardStep !== 1 && (
-            <div className="flex items-center gap-1.5 pl-2.5 shrink-0 border-l border-[#2B2130]">
+            <div className="flex items-center gap-1.5 pl-2.5 shrink-0 border-l border-[#332A1E]">
               <div className="p-1.5 rounded-full bg-[#FF8A1F]/10 text-[#FF8A1F] group-hover:bg-[#FF8A1F] group-hover:text-[#100E0B] transition-colors">
                 <Mic className="w-4 h-4 stroke-[2.2]" />
               </div>
@@ -266,7 +266,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
         </div>
 
         {/* Wizard Ultra-Thin Continuous Progress Line (2px) */}
-        <div className="w-full h-[2px] bg-[#2B2130] rounded-full overflow-hidden mt-2.5">
+        <div className="w-full h-[2px] bg-[#332A1E] rounded-full overflow-hidden mt-2.5">
           <div
             className="h-full bg-[#FF8A1F] transition-all duration-300 ease-out"
             style={{ width: `${(wizardStep / 3) * 100}%` }}
@@ -275,7 +275,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
 
         {/* PERMANENT STEP NAVIGATION BACK BAR FOR STEPS 2 & 3 (Never shifts position) */}
         {wizardStep > 1 && (
-          <div className="flex items-center justify-between py-1.5 px-0.5 border-b border-[#2B2130]/80 mt-1">
+          <div className="flex items-center justify-between py-1.5 px-0.5 border-b border-[#332A1E]/80 mt-1">
             <button
               onClick={handleGoBack}
               className="flex items-center gap-1.5 text-xs font-bold text-[#FF8A1F] hover:text-[#D96F0F] active:scale-95 transition-transform py-0.5 px-1 cursor-pointer"
@@ -479,10 +479,10 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
 
               {/* Card 2: Custom Budget Card */}
               <div
-                className={`p-3.5 rounded-[22px] bg-[#17111A] shadow-[0_4px_14px_-3px_rgba(60,50,30,0.04),0_2px_6px_-1px_rgba(0,0,0,0.02)] space-y-1.5 transition-colors border ${
+                className={`p-3.5 rounded-[22px] bg-[#1A1610] shadow-[0_4px_14px_-3px_rgba(60,50,30,0.04),0_2px_6px_-1px_rgba(0,0,0,0.02)] space-y-1.5 transition-colors border ${
                   isCustomBudgetFocused || customBudgetInput
                     ? "border-2 border-[#FF8A1F]"
-                    : "border-[#2B2130]"
+                    : "border-[#332A1E]"
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -520,7 +520,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
                       }
                     }}
                     placeholder={language === "it" ? "Cifra esatta (es. 18)" : "Exact amount (e.g. 18)"}
-                    className="w-full py-2.5 pl-8 pr-9 rounded-xl bg-[#1C1520] text-[#F5F1EA] placeholder-[#97908A] text-sm font-semibold focus:outline-none transition-colors"
+                    className="w-full py-2.5 pl-8 pr-9 rounded-xl bg-[#221C14] text-[#F5F1EA] placeholder-[#97908A] text-sm font-semibold focus:outline-none transition-colors"
                   />
                   {customBudgetInput && (
                     <button
@@ -530,7 +530,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
                         setCustomBudgetInput("");
                         setBudget(getDefaultBudget(country.currency, country.symbol));
                       }}
-                      className="absolute right-2.5 p-1 rounded-full bg-[#2B2130] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer"
+                      className="absolute right-2.5 p-1 rounded-full bg-[#332A1E] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer"
                       title={language === "it" ? "Cancella" : "Clear"}
                     >
                       <X className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -552,7 +552,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
                       triggerHaptic();
                       setHasAlreadyEverything(e.target.checked);
                     }}
-                    className="w-4 h-4 rounded border-[#2B2130] text-[#FF8A1F] focus:ring-0 accent-[#FF8A1F] cursor-pointer"
+                    className="w-4 h-4 rounded border-[#332A1E] text-[#FF8A1F] focus:ring-0 accent-[#FF8A1F] cursor-pointer"
                   />
                   <span className="text-xs sm:text-sm text-[#F5F1EA] font-normal leading-tight">
                     {language === "it"
@@ -570,7 +570,7 @@ export const HomeScreenApple: React.FC<HomeScreenAppleProps> = React.memo(({
                       ? "Dettaglio extra (opzionale)"
                       : "Extra details (optional)"
                   }
-                  className="w-full py-2 px-3 rounded-xl bg-[#1C1520] border border-[#2B2130] text-[#F5F1EA] placeholder-[#97908A] text-xs sm:text-sm font-normal focus:outline-none focus:border-[#FF8A1F]"
+                  className="w-full py-2 px-3 rounded-xl bg-[#221C14] border border-[#332A1E] text-[#F5F1EA] placeholder-[#97908A] text-xs sm:text-sm font-normal focus:outline-none focus:border-[#FF8A1F]"
                 />
               </div>
             </motion.div>

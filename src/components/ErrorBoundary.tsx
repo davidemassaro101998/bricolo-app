@@ -51,8 +51,8 @@ export class ErrorBoundary extends React.Component<
     if (this.state.hasError) {
       const isIt = (this.props.language || "it") === "it";
       return (
-        <div className="fixed inset-0 z-[999] bg-[#1C1520] flex flex-col items-center justify-center gap-4 px-8 text-center font-sans">
-          <div className="w-16 h-16 rounded-[24px] bg-[#17111A] border border-[#2B2130] shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center justify-center text-3xl">
+        <div className="fixed inset-0 z-[999] bg-[#221C14] flex flex-col items-center justify-center gap-4 px-8 text-center font-sans">
+          <div className="w-16 h-16 rounded-[24px] bg-[#1A1610] border border-[#332A1E] shadow-[0_10px_30px_rgba(0,0,0,0.08)] flex items-center justify-center text-3xl">
             🛠️
           </div>
           <h2

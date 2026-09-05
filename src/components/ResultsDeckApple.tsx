@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { GiftItem, QuizState, CountryConfig } from "../types";
+import { ImmagineProdotto } from "./ImmagineProdotto";
 import { buildAmazonUrl, buildAmazonCartUrl } from "../data/countries";
 import {
   ChevronLeft,
@@ -22,6 +23,7 @@ interface ResultsDeckAppleProps {
   quizState: QuizState;
   country: CountryConfig;
   language?: Language;
+  daAI?: boolean;
   initialActiveIndex?: number;
   onActiveIndexChange?: (index: number) => void;
   onStartOver: () => void;
@@ -33,6 +35,7 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
   quizState,
   country,
   language = "it",
+  daAI = false,
   initialActiveIndex = 0,
   onActiveIndexChange,
   onStartOver,
@@ -81,11 +84,11 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
   return (
     <div className="relative w-full h-full bg-tactile-linen flex flex-col justify-between pt-[max(6px,env(safe-area-inset-top,0px))] pb-[max(8px,env(safe-area-inset-bottom,0px))] px-[max(12px,env(safe-area-inset-left,0px))] pr-[max(12px,env(safe-area-inset-right,0px))] select-none max-w-lg sm:max-w-xl md:max-w-2xl mx-auto overflow-hidden font-sans">
       {/* Top Header Navigation */}
-      <div className="flex items-center justify-between shrink-0 pt-0.5 pb-2 border-b border-[#2B2130]">
+      <div className="flex items-center justify-between shrink-0 pt-0.5 pb-2 border-b border-[#332A1E]">
         <div className="flex items-center gap-2 min-w-0">
           <button
             onClick={onStartOver}
-            className="p-1.5 sm:p-2 rounded-full bg-[#17111A] border border-[#2B2130] text-[#F5F1EA] hover:bg-[#2B2130] active:scale-95 transition-transform cursor-pointer shadow-2xs shrink-0"
+            className="p-1.5 sm:p-2 rounded-full bg-[#1A1610] border border-[#332A1E] text-[#F5F1EA] hover:bg-[#332A1E] active:scale-95 transition-transform cursor-pointer shadow-2xs shrink-0"
             aria-label="Back"
           >
             <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#F5F1EA]" />
@@ -93,7 +96,17 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
           <div className="min-w-0">
             <span className="text-[9px] sm:text-[10px] font-extrabold text-[#FF8A1F] uppercase tracking-wider flex items-center gap-1">
               <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#FF8A1F] shrink-0" />
-              BRICOLO AI • {language === "it" ? "3 SELEZIONI PERFETTE" : "3 PERFECT PICKS"}
+              {/* Non si spaccia una lista fissa per una scelta dell'AI:
+                  quando la risposta non arriva l'utente vede comunque tre
+                  idee, ma sa che vengono dalla nostra selezione. */}
+              BRICOLO AI •{" "}
+              {daAI
+                ? language === "it"
+                  ? "3 SELEZIONI PERFETTE"
+                  : "3 PERFECT PICKS"
+                : language === "it"
+                  ? "3 IDEE DALLA NOSTRA SELEZIONE"
+                  : "3 IDEAS FROM OUR SHORTLIST"}
             </span>
             <h2 className="text-xs sm:text-sm font-extrabold text-[#F5F1EA] truncate">
               {quizState.recipient} • {quizState.vibe} ({quizState.budget})
@@ -103,14 +116,19 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
 
         <button
           onClick={onStartOver}
-          className="py-1 px-2.5 sm:py-1.5 sm:px-3 rounded-full bg-[#17111A] border border-[#2B2130] text-[#FF8A1F] hover:bg-[#2B2130] active:scale-95 transition-transform text-[11px] sm:text-xs font-bold shadow-2xs cursor-pointer shrink-0 ml-1"
+          className="py-1 px-2.5 sm:py-1.5 sm:px-3 rounded-full bg-[#1A1610] border border-[#332A1E] text-[#FF8A1F] hover:bg-[#332A1E] active:scale-95 transition-transform text-[11px] sm:text-xs font-bold shadow-2xs cursor-pointer shrink-0 ml-1"
         >
           {language === "it" ? "Nuova Ricerca" : "New Search"}
         </button>
       </div>
 
       {/* Main Interactive Container */}
-      <div className="relative flex-1 min-h-0 flex flex-col justify-center my-1.5 overflow-y-auto custom-scrollbar px-0.5">
+      <div /* `justify-center` faceva galleggiare la scheda a meta' dello spazio
+         che avanza: su uno schermo alto restavano 81px di vuoto fra la
+         riga degli indicatori e la scheda, e su uno basso il centraggio
+         tagliava sopra e sotto invece di far scorrere. Appoggiata in
+         alto fa tutte e due le cose bene. */
+      className="relative flex-1 min-h-0 flex flex-col justify-start my-1.5 overflow-y-auto custom-scrollbar px-0.5">
         {/* Progress Dots & Navigation Controls Indicator */}
         <div className="flex items-center justify-between gap-2 mb-2 shrink-0 px-1">
           <div className="flex items-center gap-1.5">
@@ -121,7 +139,7 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
                 className={`h-1.5 sm:h-2 rounded-full transition-all duration-200 cursor-pointer ${
                   idx === activeIndex
                     ? "w-6 sm:w-8 bg-[#FF8A1F]"
-                    : "w-1.5 sm:w-2 bg-[#2B2130] hover:bg-[#97908A]"
+                    : "w-1.5 sm:w-2 bg-[#332A1E] hover:bg-[#97908A]"
                 }`}
                 aria-label={`Option ${idx + 1}`}
               />
@@ -131,20 +149,16 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
           <div className="flex items-center gap-1">
             <button
               onClick={handlePrev}
-              className="p-1.5 rounded-full bg-[#17111A] border border-[#2B2130] text-[#F5F1EA] hover:bg-[#2B2130] active:scale-90 transition-transform cursor-pointer shadow-2xs flex items-center justify-center"
+              className="p-1.5 rounded-full bg-[#1A1610] border border-[#332A1E] text-[#F5F1EA] hover:bg-[#332A1E] active:scale-90 transition-transform cursor-pointer shadow-2xs flex items-center justify-center"
               title={language === "it" ? "Precedente" : "Previous"}
               aria-label="Previous option"
             >
               <ChevronLeft className="w-4 h-4 text-[#F5F1EA]" />
             </button>
 
-            <span className="text-[10px] sm:text-[11px] font-extrabold text-[#97908A] px-1 min-w-[32px] text-center">
-              {activeIndex + 1} / {gifts.length || 3}
-            </span>
-
             <button
               onClick={handleNext}
-              className="p-1.5 rounded-full bg-[#17111A] border border-[#2B2130] text-[#F5F1EA] hover:bg-[#2B2130] active:scale-90 transition-transform cursor-pointer shadow-2xs flex items-center justify-center"
+              className="p-1.5 rounded-full bg-[#1A1610] border border-[#332A1E] text-[#F5F1EA] hover:bg-[#332A1E] active:scale-90 transition-transform cursor-pointer shadow-2xs flex items-center justify-center"
               title={language === "it" ? "Successivo" : "Next"}
               aria-label="Next option"
             >
@@ -175,11 +189,11 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
                     ? { type: "spring", stiffness: 340, damping: 22, mass: 0.9 }
                     : { type: "spring", stiffness: 400, damping: 30, mass: 0.8 }
                 }
-                className="w-full rounded-[22px] sm:rounded-[26px] bg-[#17111A] p-3 sm:p-4 flex flex-col gap-2.5 sm:gap-3 relative overflow-hidden cursor-grab active:cursor-grabbing gpu-layer"
+                className="w-full rounded-[22px] sm:rounded-[26px] bg-[#1A1610] p-3 sm:p-4 flex flex-col gap-2.5 sm:gap-3 relative overflow-hidden cursor-grab active:cursor-grabbing gpu-layer"
                 style={{
                   touchAction: "pan-y",
                   willChange: "transform, opacity",
-                  border: isPrimary ? "2px solid var(--brand-coral)" : "1px solid #2B2130",
+                  border: isPrimary ? "2px solid var(--brand-coral)" : "1px solid #332A1E",
                   boxShadow: isPrimary
                     ? "0 10px 32px rgba(255,77,109,0.18)"
                     : "0 6px 24px rgba(0,0,0,0.05)",
@@ -209,13 +223,10 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
                 </div>
 
                 {/* 2. Amazon Image Stage (Compact & Modern) */}
-                <div className="relative w-full h-[125px] sm:h-[145px] rounded-[16px] sm:rounded-[20px] overflow-hidden bg-[#17111A] border border-[#2B2130] flex items-center justify-center p-2 shrink-0">
-                  <img
-                    src={currentGift.imageUrl}
-                    alt={currentGift.title}
-                    loading="eager"
-                    decoding="async"
-                    className="max-h-full max-w-full object-contain pointer-events-none"
+                <div className="relative w-full h-[125px] sm:h-[145px] rounded-[16px] sm:rounded-[20px] overflow-hidden border border-[#332A1E] shrink-0">
+                  <ImmagineProdotto
+                    titolo={currentGift.title}
+                    categoria={currentGift.category}
                   />
                   
                   {/* Price Tag Pill. Solid background, not backdrop-blur: this pill
@@ -223,7 +234,7 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
                       compositing a backdrop-filter blur under a moving element is
                       expensive -- at 95% opacity the blur was visually imperceptible
                       anyway, so a plain solid fill costs nothing to look at. */}
-                  <div className="absolute bottom-2 right-2 bg-[#17111A] text-[#F5F1EA] text-xs sm:text-sm font-extrabold px-2.5 py-1 rounded-full shadow-2xs border border-[#2B2130]">
+                  <div className="absolute bottom-2 right-2 bg-[#1A1610] text-[#F5F1EA] text-xs sm:text-sm font-extrabold px-2.5 py-1 rounded-full shadow-2xs border border-[#332A1E]">
                     {currentGift.price}
                   </div>
                 </div>
@@ -255,7 +266,7 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
                 </div>
 
                 {/* 4. AI Reason Box */}
-                <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-[#1C1520] border border-[#2B2130]">
+                <div className="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-[#221C14] border border-[#332A1E]">
                   <p className="text-[11px] sm:text-xs text-[#F5F1EA] font-normal leading-relaxed">
                     💡 <span className="font-bold text-[#F5F1EA]">{language === "it" ? "Perché è perfetto:" : "Why it's perfect:"}</span> {currentGift.reason}
                   </p>
@@ -283,7 +294,7 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
                         price: currentGift.price,
                       });
                     }}
-                    className="py-2.5 sm:py-3 px-2 rounded-[16px] bg-[#17111A] border-2 border-[#FF8A1F] hover:bg-[#1C1520] active:scale-[0.98] text-[#FF8A1F] font-black text-[11px] sm:text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs transition-transform uppercase tracking-wider"
+                    className="py-2.5 sm:py-3 px-2 rounded-[16px] bg-[#1A1610] border-2 border-[#FF8A1F] hover:bg-[#221C14] active:scale-[0.98] text-[#FF8A1F] font-black text-[11px] sm:text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs transition-transform uppercase tracking-wider"
                   >
                     <ShoppingBag className="w-4 h-4 text-[#FF8A1F] shrink-0" />
                     <span className="truncate">{language === "it" ? "VEDI NELLO STORE" : "SEE IN STORE"}</span>
@@ -323,14 +334,14 @@ export const ResultsDeckApple: React.FC<ResultsDeckAppleProps> = React.memo(({
       </div>
 
       {/* Permanently Fixed Bottom Action Buttons */}
-      <div className="shrink-0 pt-1.5 border-t border-[#2B2130] space-y-1">
+      <div className="shrink-0 pt-1.5 border-t border-[#332A1E] space-y-1">
         {/* [⚡️ Altri Prodotti] Direct Regenerate — meccanismo a ricompensa
             variabile (stesso principio dello swipe di Tinder: input
             semplice, esito non del tutto prevedibile), probabilmente la
             leva di engagement con più potenziale nell'app. */}
         <button
           onClick={onRegenerate}
-          className="w-full py-2.5 sm:py-3 px-2 rounded-2xl bg-[#17111A] hover:bg-[#241119] text-[#F5F1EA] font-bold text-xs flex items-center justify-center gap-1.5 transition-transform cursor-pointer active:scale-[0.98] border-2"
+          className="w-full py-2.5 sm:py-3 px-2 rounded-2xl bg-[#1A1610] hover:bg-[#241119] text-[#F5F1EA] font-bold text-xs flex items-center justify-center gap-1.5 transition-transform cursor-pointer active:scale-[0.98] border-2"
           style={{ borderColor: "var(--brand-coral)" }}
         >
           <RotateCcw className="w-4 h-4 shrink-0" style={{ color: "var(--brand-coral)" }} />

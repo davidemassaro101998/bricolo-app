@@ -102,10 +102,10 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-sm h-full bg-[#17111A] backdrop-blur-2xl border-l border-[#2B2130] pt-[max(16px,env(safe-area-inset-top,0px))] pb-[max(20px,env(safe-area-inset-bottom,0px))] px-5 shadow-2xl flex flex-col justify-between text-[#F5F1EA] font-sans overflow-hidden gpu-layer"
+            className="w-full max-w-sm h-full bg-[#1A1610] backdrop-blur-2xl border-l border-[#332A1E] pt-[max(16px,env(safe-area-inset-top,0px))] pb-[max(20px,env(safe-area-inset-bottom,0px))] px-5 shadow-2xl flex flex-col justify-between text-[#F5F1EA] font-sans overflow-hidden gpu-layer"
           >
             {/* Drawer Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-[#2B2130] mb-3">
+            <div className="flex items-center justify-between pb-3 border-b border-[#332A1E] mb-3">
               <div className="flex items-center gap-2">
                 <div className="p-2 rounded-xl bg-[#FF8A1F] text-[#100E0B] shadow-xs">
                   <Settings className="w-4 h-4" />
@@ -117,7 +117,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
               <button
                 onClick={onClose}
                 aria-label={isIt ? "Chiudi" : "Close"}
-                className="tocco-44 relative p-1.5 rounded-full hover:bg-[#1C1520] text-[#97908A] transition-colors cursor-pointer"
+                className="tocco-44 relative p-1.5 rounded-full hover:bg-[#221C14] text-[#97908A] transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -143,7 +143,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                   role="switch"
                   aria-checked={hapticEnabled}
                   aria-label={isIt ? "Feedback Tattile (Vibrazione)" : "Haptic Feedback"}
-                  className="w-full p-3.5 rounded-[22px] bg-[#1C1520] border border-[#2B2130] flex items-center justify-between text-left cursor-pointer transition-colors active:bg-[#2B2130]"
+                  className="w-full p-3.5 rounded-[22px] bg-[#221C14] border border-[#332A1E] flex items-center justify-between text-left cursor-pointer transition-colors active:bg-[#332A1E]"
                 >
                   <span className="flex items-center gap-2.5">
                     <Vibrate className="w-4 h-4 text-[#FF8A1F]" />
@@ -154,11 +154,11 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                   <span
                     aria-hidden
                     className={`w-11 h-6 shrink-0 rounded-full transition-colors relative p-0.5 block ${
-                      hapticEnabled ? "bg-[#FF8A1F]" : "bg-[#2B2130]"
+                      hapticEnabled ? "bg-[#FF8A1F]" : "bg-[#332A1E]"
                     }`}
                   >
                     <span
-                      className={`w-5 h-5 rounded-full bg-[#17111A] shadow-md transform transition-transform block ${
+                      className={`w-5 h-5 rounded-full bg-[#1A1610] shadow-md transform transition-transform block ${
                         hapticEnabled ? "translate-x-5" : "translate-x-0"
                       }`}
                     />
@@ -173,7 +173,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                 </span>
 
                 {/* Microfono */}
-                <div className="p-3.5 rounded-[22px] bg-[#1C1520] border border-[#2B2130] space-y-2.5">
+                <div className="p-3.5 rounded-[22px] bg-[#221C14] border border-[#332A1E] space-y-2.5">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
                       <Mic className="w-4 h-4 text-[#FF8A1F]" />
@@ -193,12 +193,12 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                       </div>
                     </div>
                     <span
-                      className={`text-xs font-bold px-2.5 py-1 rounded-full bg-[#17111A] border ${
+                      className={`text-xs font-bold px-2.5 py-1 rounded-full bg-[#1A1610] border ${
                         micPermission === "granted"
                           ? "border-[#34C759] text-[#34C759]"
                           : micPermission === "denied"
                           ? "border-[#FF8A1F] text-[#FF8A1F]"
-                          : "border-[#2B2130] text-[#97908A]"
+                          : "border-[#332A1E] text-[#97908A]"
                       }`}
                     >
                       {micPermission === "granted"
@@ -215,7 +215,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                         triggerHaptic();
                         requestMicAccess();
                       }}
-                      className="w-full min-h-[44px] py-2 px-3 rounded-xl bg-[#17111A] border border-[#2B2130] hover:border-[#FF8A1F] text-xs font-bold text-[#FF8A1F] flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+                      className="w-full min-h-[44px] py-2 px-3 rounded-xl bg-[#1A1610] border border-[#332A1E] hover:border-[#FF8A1F] text-xs font-bold text-[#FF8A1F] flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
                     >
                       <Mic className="w-3.5 h-3.5 text-[#FF8A1F]" />
                       <span>{isIt ? "Attiva Permesso Microfono" : "Enable Microphone Permission"}</span>
@@ -239,7 +239,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                   {isIt ? "LEGALE & COMPLIANCE" : "LEGAL & COMPLIANCE"}
                 </span>
 
-                <div className="p-1 rounded-[22px] bg-[#1C1520] border border-[#2B2130] space-y-1">
+                <div className="p-1 rounded-[22px] bg-[#221C14] border border-[#332A1E] space-y-1">
                   <button
                     onClick={() => {
                       triggerHaptic();
@@ -290,19 +290,19 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
                   {isIt ? "SUPPORTO & INFO" : "SUPPORT & INFO"}
                 </span>
 
-                <div className="p-3.5 rounded-[22px] bg-[#1C1520] border border-[#2B2130] space-y-3">
+                <div className="p-3.5 rounded-[22px] bg-[#221C14] border border-[#332A1E] space-y-3">
                   <button
                     onClick={() => {
                       triggerHaptic();
                       onSendFeedback();
                     }}
-                    className="w-full min-h-[44px] py-2.5 px-3 rounded-xl bg-[#17111A] border border-[#2B2130] hover:border-[#FF8A1F] text-xs font-bold text-[#FF8A1F] flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
+                    className="w-full min-h-[44px] py-2.5 px-3 rounded-xl bg-[#1A1610] border border-[#332A1E] hover:border-[#FF8A1F] text-xs font-bold text-[#FF8A1F] flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-[0.98]"
                   >
                     <Mail className="w-4 h-4 text-[#FF8A1F]" />
                     <span>{isIt ? "Invia un Feedback" : "Send Feedback"}</span>
                   </button>
 
-                  <div className="text-center pt-1 border-t border-[#2B2130]">
+                  <div className="text-center pt-1 border-t border-[#332A1E]">
                     <span className="text-[11px] text-[#97908A] font-medium block">
                       Bricolo AI v1.0.0 (Build Stable)
                     </span>
@@ -311,7 +311,7 @@ export const SettingsDrawer: React.FC<SettingsDrawerProps> = React.memo(({
               </div>
 
               {/* Amazon Affiliate Legal Disclaimer Banner inside Drawer */}
-              <div className="p-3.5 rounded-[22px] bg-[#1C1520] border border-[#2B2130]">
+              <div className="p-3.5 rounded-[22px] bg-[#221C14] border border-[#332A1E]">
                 <p className="text-[11px] text-[#97908A] font-normal leading-relaxed text-center">
                   {isIt
                     ? "In qualità di Affiliato Amazon, Bricolo AI riceve un guadagno dagli acquisti idonei."

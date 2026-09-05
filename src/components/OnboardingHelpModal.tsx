@@ -48,9 +48,9 @@ export const OnboardingHelpModal: React.FC<OnboardingHelpModalProps> = ({
             animate={{ y: 0 }}
             exit={{ y: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 28 }}
-            className="w-full max-w-lg mx-auto bg-[#17111A] rounded-t-[32px] p-6 pb-[max(24px,env(safe-area-inset-bottom,0px))] shadow-[0_-12px_40px_rgba(0,0,0,0.15)] flex flex-col items-center gap-4 select-none font-sans"
+            className="w-full max-w-lg mx-auto bg-[#1A1610] rounded-t-[32px] p-6 pb-[max(24px,env(safe-area-inset-bottom,0px))] shadow-[0_-12px_40px_rgba(0,0,0,0.15)] flex flex-col items-center gap-4 select-none font-sans"
           >
-            <div className="w-12 h-1.5 rounded-full bg-[#2B2130] shrink-0 -mt-1" />
+            <div className="w-12 h-1.5 rounded-full bg-[#332A1E] shrink-0 -mt-1" />
 
             <div className="w-16 h-16 rounded-full bg-[#FF8A1F]/10 flex items-center justify-center shrink-0">
               <Mic className="w-7 h-7 text-[#FF8A1F] stroke-[2.2]" />
@@ -73,8 +73,8 @@ export const OnboardingHelpModal: React.FC<OnboardingHelpModalProps> = ({
             </div>
 
             {showInstallTip && (
-              <div className="w-full rounded-[18px] bg-[#1C1520] p-3.5 flex items-start gap-3">
-                <div className="w-8 h-8 rounded-xl bg-[#17111A] shadow-sm flex items-center justify-center shrink-0 mt-0.5">
+              <div className="w-full rounded-[18px] bg-[#221C14] p-3.5 flex items-start gap-3">
+                <div className="w-8 h-8 rounded-xl bg-[#1A1610] shadow-sm flex items-center justify-center shrink-0 mt-0.5">
                   {platform === "ios" ? (
                     <Share className="w-4 h-4 text-[#FF8A1F]" />
                   ) : (

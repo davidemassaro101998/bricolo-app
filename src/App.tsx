@@ -129,6 +129,7 @@ export default function App() {
 
   // Results State
   const [gifts, setGifts] = useState<GiftItem[]>(() => savedSession?.gifts || []);
+  const [daAI, setDaAI] = useState(false);
   const [shownTitles, setShownTitles] = useState<string[]>(() => savedSession?.shownTitles || []);
   const [activeCardIndex, setActiveCardIndex] = useState<number>(() => savedSession?.activeCardIndex || 0);
 
@@ -206,6 +207,12 @@ export default function App() {
     const minLoadingPromise = new Promise((resolve) => setTimeout(resolve, 600));
 
     let fetchedGifts: GiftItem[] = [];
+    /* Da dove vengono davvero le idee. Il campo `source` della risposta
+       c'era gia' e veniva buttato via: lo schermo mostrava le idee di
+       ripiego con lo stesso «3 selezioni perfette» delle idee vere. Chi
+       legge non poteva distinguerle -- e sono liste fisse, non scelte per
+       lui. Ora la differenza si vede. */
+    let daAI = false;
 
     // 12-second safety timeout for API call
     const controller = new AbortController();
@@ -231,6 +238,7 @@ export default function App() {
 
       if (data.success && Array.isArray(data.gifts) && data.gifts.length > 0) {
         fetchedGifts = data.gifts.slice(0, 3);
+        daAI = true;
       } else {
         fetchedGifts = generateSmartFallbackGifts(quizData, currentCountry, language);
       }
@@ -253,7 +261,14 @@ export default function App() {
        abbondantemente le rigenerazioni che uno fa davvero. */
     setShownTitles((prev) => [...prev, ...newTitles].slice(-24));
 
+    setDaAI(daAI);
     setGifts(fetchedGifts);
+    // Da qui in poi ha senso proporre l'installazione: l'app ha gia' dato
+    // qualcosa. Prima no.
+    try {
+      localStorage.setItem("bricolo_visto_risultati", "1");
+      window.dispatchEvent(new Event("bricolo:visto-risultati"));
+    } catch (e) {}
     startTransition(() => {
       setScreen("results");
     });
@@ -376,6 +391,7 @@ export default function App() {
             >
               <ResultsDeckApple
                 gifts={gifts}
+                daAI={daAI}
                 quizState={quizState}
                 country={currentCountry}
                 language={language}

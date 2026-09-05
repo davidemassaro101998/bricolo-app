@@ -42,12 +42,12 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="bg-[#17111A] text-[#F5F1EA] rounded-[28px] p-5 sm:p-6 max-w-lg w-full border border-[#2B2130] shadow-2xl flex flex-col max-h-[85vh] overflow-hidden gpu-layer"
+          className="bg-[#1A1610] text-[#F5F1EA] rounded-[28px] p-5 sm:p-6 max-w-lg w-full border border-[#332A1E] shadow-2xl flex flex-col max-h-[85vh] overflow-hidden gpu-layer"
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-[#2B2130] pb-3 mb-3 shrink-0">
+          <div className="flex items-center justify-between border-b border-[#332A1E] pb-3 mb-3 shrink-0">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 rounded-xl bg-[#1C1520]">
+              <div className="p-2 rounded-xl bg-[#221C14]">
                 {getIcon()}
               </div>
               <h3 className="font-extrabold text-base text-[#F5F1EA]">
@@ -57,7 +57,7 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
             <button
               onClick={onClose}
               aria-label={isIt ? "Chiudi" : "Close"}
-              className="tocco-44 relative p-1.5 rounded-full hover:bg-[#1C1520] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer"
+              className="tocco-44 relative p-1.5 rounded-full hover:bg-[#221C14] text-[#97908A] hover:text-[#F5F1EA] transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -114,7 +114,7 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
                   Dichiarazione di Affiliazione Amazon & Disclaimers Obbligatori
                 </p>
 
-                <div className="p-3.5 rounded-2xl bg-[#1C1520] border border-[#2B2130] font-semibold text-xs text-[#F5F1EA] space-y-2">
+                <div className="p-3.5 rounded-2xl bg-[#221C14] border border-[#332A1E] font-semibold text-xs text-[#F5F1EA] space-y-2">
                   <p>
                     "In qualità di Affiliato Amazon, Bricolo AI riceve un guadagno dagli acquisti idonei."
                   </p>
@@ -123,7 +123,7 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-[#1C1520] border border-[#2B2130] space-y-1.5">
+                <div className="p-3.5 rounded-2xl bg-[#221C14] border border-[#332A1E] space-y-1.5">
                   <span className="font-bold text-xs text-[#F5F1EA] block">
                     Disclaimer Prezzi e Disponibilità:
                   </span>
@@ -136,7 +136,7 @@ export const LegalModal: React.FC<LegalModalProps> = React.memo(({
           </div>
 
           {/* Footer */}
-          <div className="pt-3 border-t border-[#2B2130] mt-3 flex justify-end shrink-0">
+          <div className="pt-3 border-t border-[#332A1E] mt-3 flex justify-end shrink-0">
             <button
               onClick={onClose}
               className="py-2.5 px-5 rounded-xl bg-[#FF8A1F] text-[#100E0B] font-bold text-xs cursor-pointer hover:bg-[#D96F0F] transition-colors"
