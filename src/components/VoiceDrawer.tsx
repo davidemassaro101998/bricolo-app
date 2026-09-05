@@ -326,7 +326,7 @@ export const VoiceDrawer = React.memo(forwardRef<VoiceDrawerHandle, VoiceDrawerP
                 type="button"
                 onClick={onClose}
                 aria-label={t.close}
-                className="cursor-pointer rounded-full bg-[#221C14] p-1.5 text-[#A89880] transition-colors hover:text-[#F5F1EA]"
+                className="tocco-44 relative cursor-pointer rounded-full bg-[#221C14] p-1.5 text-[#A89880] transition-colors hover:text-[#F5F1EA]"
               >
                 <X className="h-4 w-4 stroke-[2.5]" />
               </button>

@@ -213,7 +213,7 @@ export const CameraDrawer = React.memo(({ isOpen, onClose, onSubmitIdea, languag
                 type="button"
                 onClick={onClose}
                 aria-label={t.close}
-                className="cursor-pointer rounded-full bg-[#221C14] p-1.5 text-[#A89880] transition-colors hover:text-[#F5F1EA]"
+                className="tocco-44 relative cursor-pointer rounded-full bg-[#221C14] p-1.5 text-[#A89880] transition-colors hover:text-[#F5F1EA]"
               >
                 <X className="h-4 w-4 stroke-[2.5]" />
               </button>
@@ -255,7 +255,7 @@ export const CameraDrawer = React.memo(({ isOpen, onClose, onSubmitIdea, languag
                 <button
                   type="button"
                   onClick={() => setPhoto(null)}
-                  className="flex cursor-pointer items-center gap-2 rounded-full border border-[#332A1E] bg-[#221C14] px-5 py-3 text-xs font-bold uppercase tracking-wider text-[#F5F1EA] transition-colors hover:border-[#FF8A1F]"
+                  className="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full border border-[#332A1E] bg-[#221C14] px-5 py-3 text-xs font-bold uppercase tracking-wider text-[#F5F1EA] transition-colors hover:border-[#FF8A1F]"
                 >
                   <RotateCcw className="h-4 w-4" strokeWidth={2.4} />
                   {t.retake}
@@ -275,7 +275,7 @@ export const CameraDrawer = React.memo(({ isOpen, onClose, onSubmitIdea, languag
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="flex cursor-pointer items-center gap-2 rounded-full border border-[#332A1E] bg-[#221C14] px-5 py-3 text-xs font-bold uppercase tracking-wider text-[#A89880] transition-colors hover:border-[#FF8A1F] hover:text-[#F5F1EA]"
+                className="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full border border-[#332A1E] bg-[#221C14] px-5 py-3 text-xs font-bold uppercase tracking-wider text-[#A89880] transition-colors hover:border-[#FF8A1F] hover:text-[#F5F1EA]"
               >
                 <ImageIcon className="h-4 w-4" strokeWidth={2.4} />
                 {t.gallery}
